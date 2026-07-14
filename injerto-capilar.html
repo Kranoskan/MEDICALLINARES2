@@ -1,10 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="./logo_medicalinares.ico">
-  <link rel="icon" type="image/png" href="./logo_medicallinares.png">
 <title>Injerto Capilar — Medical Linares</title>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=neue-montreal@400,500&display=swap">
 <style>
@@ -200,6 +198,30 @@
 
   /* legacy classes kept as no-ops so old markup references don't break */
   .underline, .u-right, .u-left{ display:none; }
+
+  /* ---------- LIGHT RAYS: fondo de rayos de luz, fijo arriba, visible en toda la web ---------- */
+  .light-rays-fixed{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .light-rays-container{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .light-rays-container canvas{
+    display: block;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .light-rays-fixed{ display: none; }
+  }
 
   /* ---------- TOP NAV ---------- */
   .topnav{
@@ -605,6 +627,18 @@
     filter: drop-shadow(0 0 24px rgba(255,255,255,.12));
     margin-bottom: calc(var(--spacing) * 12);
     width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+  .footer-title-icon{
+    height: 2.4rem;
+    width: auto;
+    display: inline-block;
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+    -webkit-text-fill-color: initial;
+    opacity: .85;
   }
   .footer-locations{
     display:grid;
@@ -660,6 +694,7 @@
     color: var(--color-light-font);
     width: fit-content;
     transition: background .4s var(--ease-soft), border-color .4s var(--ease-soft), color .3s var(--ease-soft);
+    cursor: pointer;
   }
   .footer-pill:hover{
     background: linear-gradient(145deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.04) 100%);
@@ -727,16 +762,35 @@
   .footer-icon-btn:hover svg{ transform: translateY(-2px); }
   .footer-top-btn:hover svg{ transform: translateY(-3px); }
   .footer-credit{
-    margin-top: calc(var(--spacing) * 6);
-    padding-top: calc(var(--spacing) * 6);
-    border-top: 1px solid rgba(255,255,255,.08);
-    text-align:center;
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
     color: var(--color-light-font);
     opacity:.4;
   }
+  .footer-bottom-extra{
+    margin-top: calc(var(--spacing) * 6);
+    padding-top: calc(var(--spacing) * 6);
+    border-top: 1px solid rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+  .footer-junta-link{
+    display:inline-block;
+    flex-shrink:0;
+    line-height:0;
+  }
+  .footer-junta-logo{
+    height: 2.8rem;
+    width:auto;
+    filter: brightness(0) invert(1);
+    opacity:.45;
+    transition: opacity .3s var(--ease-soft);
+  }
+  .footer-junta-link:hover .footer-junta-logo{ opacity:.75; }
 
   @media(max-width: 900px){
     .footer-locations{ grid-template-columns: 1fr 1fr; }
@@ -746,45 +800,6 @@
     .footer-locations{ grid-template-columns: 1fr; }
     .footer-giant-text{ font-size: 18vw; }
   }
-  /* ---------- MENSAJE DEL DOCTOR: texto revelado al hacer scroll ---------- */
-  .doctor-section{
-    position:relative;
-    overflow:hidden;
-    background: var(--bg);
-    padding: clamp(6rem, 14vw, 11rem) calc(var(--spacing) * 10);
-  }
-  .doctor-bg{
-    position:absolute;
-    inset:0;
-    z-index:0;
-    background: var(--bg);
-  }
-  .doctor-bg img{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .doctor-overlay{
-    position:absolute;
-    inset:0;
-    z-index:1;
-    background: radial-gradient(120% 120% at 50% 25%, rgba(4,5,9,.28) 0%, rgba(2,3,6,.68) 100%);
-    pointer-events:none;
-  }
-  .doctor-inner{
-    position:relative;
-    z-index:2;
-    max-width: 68rem;
-    margin-inline:auto;
-    display: grid;
-    grid-template-columns: minmax(0, 22rem) 1fr;
-    gap: clamp(2.5rem, 6vw, 5rem);
-    align-items: center;
-  }
-
   /* componente ScrollReveal generico: cada bloque .scroll-reveal revela sus palabras al hacer scroll */
   .scroll-reveal{ margin:0; }
   .scroll-reveal-text{
@@ -794,79 +809,68 @@
   }
   .word{ display:inline-block; }
 
-  .doctor-text{
-    display:flex;
-    flex-direction:column;
-    gap: clamp(1.75rem, 3.5vw, 2.5rem);
+  /* ---------- VIDEO SHOWCASE: sustituye a la seccion del doctor, video a pantalla completa en bucle con boton de sonido ---------- */
+  .video-showcase-section{
+    position:relative;
+    height:100vh;
+    min-height: 32rem;
+    max-height: 56rem;
+    overflow:hidden;
+    background: var(--bg);
   }
-  .doctor-reveal-lg .scroll-reveal-text{
-    font-size: clamp(1.4rem, 2.6vw, 2.1rem);
-    line-height:1.5;
-    color:#fff;
-    text-align:left;
-    letter-spacing: var(--tracking-tight);
+  .video-showcase-media{
+    position:absolute;
+    inset:0;
+    z-index:0;
   }
-  .doctor-reveal-sm .scroll-reveal-text{
-    font-size: clamp(.95rem, 1.4vw, 1.05rem);
-    line-height:1.75;
-    color: var(--color-light-font);
-    font-weight: var(--font-weight-normal);
-    text-align:left;
+  .video-showcase-el{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
   }
-
-  /* video vertical y clicable: en escritorio a la izquierda, en movil despues del texto */
-  .doctor-video{
-    position: relative;
-    order: -1;
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,.12);
-    cursor: pointer;
-    background: #0a0a0d;
-  }
-  .doctor-video-el{
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .doctor-video::after{
-    content:'';
-    position:absolute; inset:0;
-    background: linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.4) 100%);
+  .video-showcase-desktop{ display:block; }
+  .video-showcase-overlay{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.05) 30%, rgba(0,0,0,.1) 70%, rgba(0,0,0,.55) 100%);
     pointer-events:none;
-    transition: opacity .4s var(--ease-soft);
   }
-  .doctor-video.is-playing::after{ opacity: 0; }
-  .doctor-video-play{
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 4.5rem; height: 4.5rem;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,.94);
-    border: none;
-    color: #111;
-    cursor: pointer;
-    transition: opacity .35s var(--ease-soft), transform .35s var(--ease-soft), background .3s var(--ease-soft);
+  .video-showcase-sound{
+    position:absolute;
+    right: calc(var(--spacing) * 10);
+    bottom: calc(var(--spacing) * 10);
+    z-index:3;
+    width:3.4rem; height:3.4rem;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(180deg, rgba(55,55,55,.85) 0%, rgba(5,5,5,.95) 100%);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(255,255,255,.18);
+    color:#fff;
+    cursor:pointer;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.25), inset 0 -6px 10px rgba(0,0,0,.4), 0 10px 24px rgba(0,0,0,.35);
+    transition: transform .35s var(--ease-soft), box-shadow .35s var(--ease-soft);
   }
-  .doctor-video-play svg{ margin-left: 3px; }
-  .doctor-video-play:hover{ background:#fff; transform: scale(1.06); }
-  .doctor-video.is-playing .doctor-video-play{ opacity: 0; pointer-events: none; transform: scale(.85); }
+  .video-showcase-sound:hover{ transform: translateY(-2px); }
+  .video-showcase-sound svg{ display:block; }
+  .video-showcase-sound .icon-unmuted{ display:none; }
+  .video-showcase-sound:not(.is-muted) .icon-muted{ display:none; }
+  .video-showcase-sound:not(.is-muted) .icon-unmuted{ display:block; }
 
   @media(max-width: 780px){
-    .doctor-inner{ grid-template-columns: 1fr; }
-    .doctor-video{ order: 0; max-width: 22rem; margin-inline: auto; }
+    .video-showcase-section{ max-height:44rem; }
+    .video-showcase-desktop{ display:none; }
+    .video-showcase-mobile{ display:block; }
   }
 
   /* ---------- TRATAMIENTOS CAPILARES: tarjetas de 2 en 2, la ultima centrada, Scroll Reveal ---------- */
   .tc-section{
     position: relative;
-    background: var(--bg);
     overflow: hidden;
   }
   .tc-intro{
@@ -948,7 +952,7 @@
   .tc-media{
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 5;
     width: 100%;
     background: var(--pl-panel-gray);
     border: 1px solid rgba(255,255,255,.08);
@@ -961,6 +965,7 @@
     object-fit: cover;
     display: block;
     transform: scale(1.15);
+    filter: grayscale(100%);
   }
   .tc-content{ display:flex; flex-direction:column; align-items:flex-start; }
   .tc-block-title{ margin-bottom: 1.5rem; }
@@ -1045,7 +1050,6 @@
   /* ---------- EQUIPO: intro "Mas informacion sobre nuestro equipo" ---------- */
   .eq-intro{
     position:relative;
-    background: var(--bg);
     padding: clamp(6rem, 12vw, 9rem) calc(var(--spacing) * 10) clamp(5rem, 9vw, 7.5rem);
   }
   .eq-intro-top{
@@ -1159,7 +1163,6 @@
   /* ---------- PREGUNTAS FRECUENTES: acordeon ---------- */
   .faq-section{
     position:relative;
-    background: var(--bg);
     padding: clamp(2rem, 5vw, 3.5rem) calc(var(--spacing) * 10) clamp(6rem, 10vw, 8rem);
   }
   .faq-grid{
@@ -1244,7 +1247,6 @@
   /* ---------- RESULTADO FINAL: foto de cierre (sin CSS en el original, estilo minimo añadido) ---------- */
   .cs-section{
     position:relative;
-    background: var(--bg);
     padding: 0 calc(var(--spacing) * 10) clamp(6rem, 10vw, 8rem);
   }
   .cs-inner{
@@ -1281,7 +1283,6 @@
   /* ---------- TODO LO QUE TRATAMOS: 7 a la izquierda, 7 a la derecha, titulo en medio ---------- */
   .tw-section{
     position: relative;
-    background: var(--bg);
     padding: clamp(5rem, 10vw, 7.5rem) calc(var(--spacing) * 10);
   }
   .tw-inner{
@@ -1322,38 +1323,13 @@
     .tw-col-left, .tw-col-right{ align-items: flex-start; text-align: left; }
   }
 
-
-  .footer-bottom-extra {
-    margin-top: calc(var(--spacing) * 6);
-    padding-top: calc(var(--spacing) * 6);
-    border-top: 1px solid rgba(255, 255, 255, .08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .footer-junta-link {
-    display: inline-block;
-    flex-shrink: 0;
-    line-height: 0;
-  }
-  .footer-junta-logo {
-    height: 2.8rem;
-    width: auto;
-    filter: brightness(0) invert(1);
-    opacity: .45;
-    transition: opacity .3s ease;
-  }
-  .footer-junta-link:hover .footer-junta-logo { opacity: .75; }
-  .footer-credit {
-    font-size: var(--text-xs, .75rem);
-    color: var(--color-light-font, #d8d8d8);
-    opacity: .4;
-    text-transform: uppercase;
-  }</style>
+</style>
 </head>
 <body>
+
+<div class="light-rays-fixed" aria-hidden="true">
+  <div class="light-rays-container" id="lightRaysContainer"></div>
+</div>
 
 <nav class="topnav" id="topnav">
   <a class="topnav-logo-link" href="index.html" aria-label="Ir al inicio — Medical Linares">
@@ -1404,34 +1380,24 @@
     <p class="ic-hero-caption">Tratamiento mínimamente invasivo con tecnología FUE de última generación para restaurar el cabello con resultados naturales y sin cicatriz lineal.</p>
   </section>
 
-  <section class="doctor-section">
-    <div class="doctor-bg" aria-hidden="true">
-      <img src="./img/fondoinjerto.png" alt="">
+  <section class="video-showcase-section" id="videoShowcase">
+    <div class="video-showcase-media" aria-hidden="true">
+      <video class="video-showcase-el video-showcase-desktop" id="videoShowcaseDesktop" src="./img/video-headerdoctor-horizontal.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <video class="video-showcase-el video-showcase-mobile" id="videoShowcaseMobile" src="./img/video-headerdoctor-vertical.mp4" autoplay muted loop playsinline preload="auto"></video>
     </div>
-    <div class="doctor-overlay" aria-hidden="true"></div>
-
-    <div class="doctor-inner">
-
-      <div class="doctor-text">
-        <div class="scroll-reveal doctor-reveal-lg" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
-          <p class="scroll-reveal-text">Soy el doctor Alfonso Rodríguez Jiménez, director médico de la clínica. Si has llegado hasta aquí, probablemente estés buscando información sobre los tratamientos capilares o estés valorando realizarte un injerto capilar.</p>
-        </div>
-        <div class="scroll-reveal doctor-reveal-sm" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
-          <p class="scroll-reveal-text">Nuestra prioridad siempre será ofrecerte una recomendación basada en el criterio médico y en lo que realmente necesitas. Porque nuestro compromiso no es hacer más tratamientos, sino ayudarte a tomar la mejor decisión para ti.</p>
-        </div>
-        <div class="scroll-reveal doctor-reveal-sm" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
-          <p class="scroll-reveal-text">Gracias por confiar en nosotros. Será un placer conocerte, resolver tus dudas y acompañarte en este proceso.</p>
-        </div>
-      </div>
-
-      <div class="doctor-video" id="doctorVideo">
-        <video class="doctor-video-el" id="doctorVideoEl" src="./img/doctor-alfonso.mp4" poster="./img/doctor-alfonso-poster.jpg" playsinline preload="metadata"></video>
-        <button class="doctor-video-play" id="doctorVideoPlay" type="button" aria-label="Reproducir vídeo">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-
-    </div>
+    <div class="video-showcase-overlay" aria-hidden="true"></div>
+    <button class="video-showcase-sound is-muted" id="videoShowcaseSound" type="button" aria-pressed="false" aria-label="Activar sonido">
+      <svg class="icon-muted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="4 9 8 9 12 5 12 19 8 15 4 15 4 9"></polygon>
+        <line x1="16.5" y1="9" x2="21.5" y2="15"></line>
+        <line x1="21.5" y1="9" x2="16.5" y2="15"></line>
+      </svg>
+      <svg class="icon-unmuted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="4 9 8 9 12 5 12 19 8 15 4 15 4 9"></polygon>
+        <path d="M16 8.5a4.5 4.5 0 0 1 0 7"></path>
+        <path d="M18.5 6a8 8 0 0 1 0 12"></path>
+      </svg>
+    </button>
   </section>
 
   <section class="tc-section" id="tratamientos-capilares">
@@ -1449,7 +1415,7 @@
       <!-- 1. Injerto Capilar FUE -->
       <article class="tc-item">
         <div class="tc-media">
-          <img src="./img/tratamientoinjerto1.png" alt="Injerto Capilar FUE — Medical Linares" loading="lazy">
+          <img src="https://scontent.fsvq1-1.fna.fbcdn.net/v/t51.82787-15/733655870_18015751877861447_5174008925985164060_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1080x1350&amp;ctp=s1080x1350&amp;_nc_cat=101&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_ohc=AM5gBdIDhtEQ7kNvwEQ21iW&amp;_nc_oc=AdrFdTQYVinJvNVdTm1QSyERwLzujtJQFlPHx9Qi64z8Pv55f47p_54w4xfbJNJ3Cwg&amp;_nc_zt=23&amp;_nc_ht=scontent.fsvq1-1.fna&amp;_nc_gid=cy-w6p4E3gYioy15dfp4pw&amp;_nc_ss=7b289&amp;oh=00_AQAwOz9iFCyfOBfRK7xHnUb7G5r7wT3imIQ1xx3KuY1MRQ&amp;oe=6A594928" alt="Injerto Capilar FUE — Medical Linares" loading="lazy">
         </div>
         <div class="tc-content">
           <div class="scroll-reveal tc-block-title" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="6">
@@ -1483,7 +1449,7 @@
       <!-- 2. Injerto Capilar DHI -->
       <article class="tc-item">
         <div class="tc-media">
-          <img src="./img/tratamientoinjerto2.png" alt="Injerto Capilar DHI — Medical Linares" loading="lazy">
+          <img src="https://scontent.fsvq5-1.fna.fbcdn.net/v/t51.82787-15/733674131_18015751892861447_4342879777369108183_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1080x1350&amp;ctp=s1080x1350&amp;_nc_cat=100&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_ohc=MeX10bz0xyYQ7kNvwFq_tA0&amp;_nc_oc=Adoej4p9YYLIQ6gQXvhOcAYxQQirn7JY9MnkPbSECzOPmNLirFz3cUP8JDt3DJcj_a0&amp;_nc_zt=23&amp;_nc_ht=scontent.fsvq5-1.fna&amp;_nc_gid=Ubt9o9O9Hq-2Z7HQBHyejg&amp;_nc_ss=7b289&amp;oh=00_AQDo7X1wLKFwGZiGG1XOpeRwmtzzK2gHCk46fpvywld9iw&amp;oe=6A594F84" alt="Injerto Capilar DHI — Medical Linares" loading="lazy">
         </div>
         <div class="tc-content">
           <div class="scroll-reveal tc-block-title" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="6">
@@ -1517,7 +1483,7 @@
       <!-- 3. Vasodilatador -->
       <article class="tc-item">
         <div class="tc-media">
-          <img src="./img/tratamientoinjerto3.png" alt="Vasodilatador capilar — Medical Linares" loading="lazy">
+          <img src="https://scontent.fsvq5-1.fna.fbcdn.net/v/t51.82787-15/640269604_17999475482861447_4798458678584248787_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1080x1350&amp;ctp=s1080x1350&amp;_nc_cat=100&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_ohc=v8v8EQ0n1-QQ7kNvwHso88V&amp;_nc_oc=AdpACL9xH1Kit85wbSdLeC6KkHaFdhvQGrJOJ0Ld5_VUm7HgHlUKLUXwk6fyw3iFHok&amp;_nc_zt=23&amp;_nc_ht=scontent.fsvq5-1.fna&amp;_nc_gid=1IRK5s3T5RmOqt_JJdk-kg&amp;_nc_ss=7b289&amp;oh=00_AQDkRW3UEyaLAAI-YRrsciIrchzqHlkJzcbxZiifM0K7PQ&amp;oe=6A5935FC" alt="Vasodilatador capilar — Medical Linares" loading="lazy">
         </div>
         <div class="tc-content">
           <div class="scroll-reveal tc-block-title" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="6">
@@ -1551,7 +1517,7 @@
       <!-- 4. Mesoterapia capilar -->
       <article class="tc-item">
         <div class="tc-media">
-          <img src="./img/tratamientoinjerto4.png" alt="Mesoterapia capilar — Medical Linares" loading="lazy">
+          <img src="https://scontent.fsvq5-1.fna.fbcdn.net/v/t51.82787-15/523892341_17976449927861447_3882686447898048933_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1080x1350&amp;ctp=s1080x1350&amp;_nc_cat=102&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_ohc=s-gYCMycrt0Q7kNvwE6SZuI&amp;_nc_oc=Adq6aql34LKs0F0ZHnfypOaAIOr9PhsOGnhXpnwFvM8-ecZZr4qtQA3WCiPQKruQd9M&amp;_nc_zt=23&amp;_nc_ht=scontent.fsvq5-1.fna&amp;_nc_gid=I6HIwTeN5_nD91ginYgvJg&amp;_nc_ss=7b289&amp;oh=00_AQCAqkT-o-XK_7Drkm_inIhZJ4qUrmrfvLTcJkt6ajArew&amp;oe=6A5955C6" alt="Mesoterapia capilar — Medical Linares" loading="lazy">
         </div>
         <div class="tc-content">
           <div class="scroll-reveal tc-block-title" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="6">
@@ -1588,7 +1554,7 @@
       <!-- 5. Tratamiento regenerativo (PRP) -->
       <article class="tc-item">
         <div class="tc-media">
-          <img src="./img/tratamientoinjerto5.png" alt="Tratamiento regenerativo capilar — Medical Linares" loading="lazy">
+          <img src="https://scontent.fsvq1-1.fna.fbcdn.net/v/t51.82787-15/521902009_17975360345861447_5863855795207262016_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1080x1350&amp;ctp=s1080x1350&amp;_nc_cat=108&amp;ccb=1-7&amp;_nc_sid=127cfc&amp;_nc_ohc=kcfrTMFhAoIQ7kNvwGg6fIx&amp;_nc_oc=Adovt2mOzdqzSPK_H0FgPaG_m1HDElJoY1lRRQljuldyDVo3IUOKNzMuZj_fW7IsWjw&amp;_nc_zt=23&amp;_nc_ht=scontent.fsvq1-1.fna&amp;_nc_gid=28GXz-US8MtfArx_QfxoMg&amp;_nc_ss=7b289&amp;oh=00_AQBIScAvBTxmGAlQD4fMa9kDuObOC7kI_vLvYJxY7R6qVg&amp;oe=6A5946E7" alt="Tratamiento regenerativo capilar — Medical Linares" loading="lazy">
         </div>
         <div class="tc-content">
           <div class="scroll-reveal tc-block-title" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="6">
@@ -1857,7 +1823,7 @@
 <footer class="site-footer" id="site-footer">
   <div class="footer-aurora" aria-hidden="true"></div>
   <div class="footer-grid-bg" aria-hidden="true"></div>
-  <div class="footer-giant-text" id="footerGiantText" aria-hidden="true">MEDICAL LINARES</div>
+  <div class="footer-giant-text" id="footerGiantText" aria-hidden="true">Medical Linares</div>
 
   <div class="footer-marquee" aria-hidden="true">
     <div class="footer-marquee-track">
@@ -1881,7 +1847,8 @@
   </div>
 
   <div class="wrap footer-inner" id="footerInner">
-    <h2 class="footer-title">¿Dónde estamos?</h2>
+    <h2 class="footer-title"><img src="./img/IconoMedical.png" alt="Medical Linares" class="footer-title-icon">
+      Medical Linares</h2>
 
     <div class="footer-locations">
       <div class="footer-loc">
@@ -1897,7 +1864,8 @@
 
       <div class="footer-loc">
         <span class="footer-loc-name">Granada</span>
-        <p class="footer-loc-address">Esquina Pablo Neruda, Av. Dr. López Cantarero Ballesteros, 1, 18200 Maracena, Granada</p>
+        <p class="footer-loc-address">Esquina Pablo Neruda, Av. Dr. López Cantarero Ballesteros, 1, 18200 Maracena,
+          Granada</p>
         <div class="footer-loc-row">
           <span class="footer-label">Horario L-V</span>
           <span class="footer-value">09:30 – 13:15</span>
@@ -1908,19 +1876,21 @@
 
       <nav class="footer-loc footer-treatments" aria-label="Tratamientos">
         <span class="footer-loc-name">Tratamientos</span>
-        <a href="https://medicallinares.com/injerto-capilar/" target="_blank" rel="noopener">Injerto Capilar</a>
-        <a href="https://medicallinares.com/lipolaser/" target="_blank" rel="noopener">Lipoláser</a>
-        <a href="https://medicallinares.com/medicina-estetica/" target="_blank" rel="noopener">Medicina Estética</a>
-        <a href="https://medicallinares.com/dermatologia/" target="_blank" rel="noopener">Dermatología</a>
-        <a href="https://medicallinares.com/ttos-faciales-y-corporales/" target="_blank" rel="noopener">Tratamientos Faciales y Corporales</a>
-        <a href="https://medicallinares.com/vascular/" target="_blank" rel="noopener">Vascular</a>
-        <a href="https://medicallinares.com/laser/" target="_blank" rel="noopener">Láser</a>
-        <a class="footer-pill footer-all" href="https://medicallinares.com/servicios/" target="_blank" rel="noopener">Todos →</a>
+        <a href="./injerto-capilar.html" target="_blank" rel="noopener">Injerto Capilar</a>
+        <a href="./lipolaser.html" target="_blank" rel="noopener">Lipoláser</a>
+        <a href="./medicina-estetica.html" target="_blank" rel="noopener">Medicina Estética</a>
+        <a href="./dermatologia.html" target="_blank" rel="noopener">Dermatología</a>
+        <a href="./ttos-faciales-y-corporales.html " target="_blank" rel="noopener">Tratamientos
+          Faciales y Corporales</a>
+        <a href="./vascular.html" target="_blank" rel="noopener">Vascular</a>
+        <a href="./laser.html" target="_blank" rel="noopener">Láser</a>
+        <a class="footer-pill footer-all" href="./index.html" target="_blank"
+          rel="noopener">Todos →</a>
       </nav>
     </div>
 
     <div class="footer-bottom">
-      <span class="footer-copy">© Medical Linares</span>
+      <span class="footer-copy">© 2026 Medical Linares · Todos los derechos reservados</span>
       <div class="footer-legal">
         <a class="footer-pill" href="politicasdeprivacidad.html">Política de cookies</a>
         <a class="footer-pill" href="politicasdeprivacidad.html">Aviso legal</a>
@@ -1928,33 +1898,40 @@
       </div>
       <div class="footer-right-group">
         <div class="footer-social">
-          <a class="footer-pill footer-icon-btn" href="https://www.instagram.com/medical_linares" target="_blank" rel="noopener" aria-label="Instagram de Medical Linares">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <a class="footer-pill footer-icon-btn" href="https://www.instagram.com/medical_linares" target="_blank"
+            rel="noopener" aria-label="Instagram de Medical Linares">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
             </svg>
           </a>
-          <a class="footer-pill footer-icon-btn" href="https://www.facebook.com/medicallinares" target="_blank" rel="noopener" aria-label="Facebook de Medical Linares">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <a class="footer-pill footer-icon-btn" href="https://www.facebook.com/medicallinares" target="_blank"
+            rel="noopener" aria-label="Facebook de Medical Linares">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
             </svg>
           </a>
         </div>
-        <button class="footer-pill footer-icon-btn footer-top-btn" id="footerTopBtn" aria-label="Volver arriba" type="button">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+        <button class="footer-pill footer-icon-btn footer-top-btn" id="footerTopBtn" aria-label="Volver arriba"
+          type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
         </button>
       </div>
     </div>
-    <div class="footer-credit">Página creada y diseñada por Saúl Expósito Jiménez</div>
-      <div class="footer-bottom-extra">
-        <div class="footer-credit">Página creada y diseñada por Saúl Expósito Jiménez</div>
-        <a class="footer-junta-link" href="https://www.juntadeandalucia.es" target="_blank" rel="noopener"
-          aria-label="Junta de Andalucía">
-          <img src="https://www.juntadeandalucia.es/sites/default/files/2023-02/byn_1.png" alt="Junta de Andalucía"
-            class="footer-junta-logo">
-        </a>
-      </div>
+    <div class="footer-bottom-extra">
+      <div class="footer-credit">Página creada y diseñada por Saúl Expósito Jiménez</div>
+      <a class="footer-junta-link" href="https://www.juntadeandalucia.es" target="_blank" rel="noopener"
+        aria-label="Junta de Andalucía">
+        <img src="https://www.juntadeandalucia.es/sites/default/files/2023-02/byn_1.png" alt="Junta de Andalucía"
+          class="footer-junta-logo">
+      </a>
+    </div>
   </div>
 </footer>
 
@@ -2277,25 +2254,47 @@ gsap.registerPlugin(ScrollTrigger);
 </script>
 
 <script>
-// ---------- VIDEO DEL DOCTOR: clic para reproducir / pausar ----------
-(function initDoctorVideo(){
-  const wrap = document.getElementById('doctorVideo');
-  const video = document.getElementById('doctorVideoEl');
-  const playBtn = document.getElementById('doctorVideoPlay');
-  if (!wrap || !video || !playBtn) return;
+// ---------- VIDEO SHOWCASE: video de fondo en bucle (escritorio/movil) con boton de silenciar/activar sonido ----------
+(function initVideoShowcase(){
+  const desktopVideo = document.getElementById('videoShowcaseDesktop');
+  const mobileVideo = document.getElementById('videoShowcaseMobile');
+  const soundBtn = document.getElementById('videoShowcaseSound');
+  if (!desktopVideo || !mobileVideo || !soundBtn) return;
 
-  function toggle(){
-    if (video.paused) {
-      video.play();
-      wrap.classList.add('is-playing');
-    } else {
-      video.pause();
-      wrap.classList.remove('is-playing');
-    }
+  let isMuted = true;
+  const mq = window.matchMedia('(max-width: 780px)');
+  let activeVideo = mq.matches ? mobileVideo : desktopVideo;
+
+  function syncPlayback(){
+    [desktopVideo, mobileVideo].forEach((video) => {
+      video.muted = isMuted;
+      if (video === activeVideo) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
   }
 
-  wrap.addEventListener('click', toggle);
-  video.addEventListener('ended', () => wrap.classList.remove('is-playing'));
+  function updateSoundButton(){
+    soundBtn.classList.toggle('is-muted', isMuted);
+    soundBtn.setAttribute('aria-pressed', String(!isMuted));
+    soundBtn.setAttribute('aria-label', isMuted ? 'Activar sonido' : 'Silenciar vídeo');
+  }
+
+  mq.addEventListener('change', (e) => {
+    activeVideo = e.matches ? mobileVideo : desktopVideo;
+    syncPlayback();
+  });
+
+  soundBtn.addEventListener('click', () => {
+    isMuted = !isMuted;
+    syncPlayback();
+    updateSoundButton();
+  });
+
+  updateSoundButton();
+  syncPlayback();
 })();
 </script>
 
@@ -2394,6 +2393,243 @@ gsap.registerPlugin(ScrollTrigger);
       }
     });
   });
+})();
+</script>
+<script>
+// ---------- OGL (WebGL library), version 1.0.11 — recorte propio con Renderer, Program, Triangle y Mesh, ----------
+// ---------- incrustado directamente para que el fondo Light Rays no dependa de ningun CDN externo ----------
+(()=>{function V(e){let t=e[0],i=e[1],r=e[2];return Math.sqrt(t*t+i*i+r*r)}function Q(e,t){return e[0]=t[0],e[1]=t[1],e[2]=t[2],e}function _t(e,t,i,r){return e[0]=t,e[1]=i,e[2]=r,e}function tt(e,t,i){return e[0]=t[0]+i[0],e[1]=t[1]+i[1],e[2]=t[2]+i[2],e}function et(e,t,i){return e[0]=t[0]-i[0],e[1]=t[1]-i[1],e[2]=t[2]-i[2],e}function vt(e,t,i){return e[0]=t[0]*i[0],e[1]=t[1]*i[1],e[2]=t[2]*i[2],e}function bt(e,t,i){return e[0]=t[0]/i[0],e[1]=t[1]/i[1],e[2]=t[2]/i[2],e}function Z(e,t,i){return e[0]=t[0]*i,e[1]=t[1]*i,e[2]=t[2]*i,e}function Ft(e,t){let i=t[0]-e[0],r=t[1]-e[1],s=t[2]-e[2];return Math.sqrt(i*i+r*r+s*s)}function Tt(e,t){let i=t[0]-e[0],r=t[1]-e[1],s=t[2]-e[2];return i*i+r*r+s*s}function it(e){let t=e[0],i=e[1],r=e[2];return t*t+i*i+r*r}function Rt(e,t){return e[0]=-t[0],e[1]=-t[1],e[2]=-t[2],e}function zt(e,t){return e[0]=1/t[0],e[1]=1/t[1],e[2]=1/t[2],e}function K(e,t){let i=t[0],r=t[1],s=t[2],n=i*i+r*r+s*s;return n>0&&(n=1/Math.sqrt(n)),e[0]=t[0]*n,e[1]=t[1]*n,e[2]=t[2]*n,e}function rt(e,t){return e[0]*t[0]+e[1]*t[1]+e[2]*t[2]}function st(e,t,i){let r=t[0],s=t[1],n=t[2],a=i[0],h=i[1],o=i[2];return e[0]=s*o-n*h,e[1]=n*a-r*o,e[2]=r*h-s*a,e}function nt(e,t,i,r){let s=t[0],n=t[1],a=t[2];return e[0]=s+r*(i[0]-s),e[1]=n+r*(i[1]-n),e[2]=a+r*(i[2]-a),e}function Lt(e,t,i,r,s){let n=Math.exp(-r*s),a=t[0],h=t[1],o=t[2];return e[0]=i[0]+(a-i[0])*n,e[1]=i[1]+(h-i[1])*n,e[2]=i[2]+(o-i[2])*n,e}function St(e,t,i){let r=t[0],s=t[1],n=t[2],a=i[3]*r+i[7]*s+i[11]*n+i[15];return a=a||1,e[0]=(i[0]*r+i[4]*s+i[8]*n+i[12])/a,e[1]=(i[1]*r+i[5]*s+i[9]*n+i[13])/a,e[2]=(i[2]*r+i[6]*s+i[10]*n+i[14])/a,e}function Pt(e,t,i){let r=t[0],s=t[1],n=t[2],a=i[3]*r+i[7]*s+i[11]*n+i[15];return a=a||1,e[0]=(i[0]*r+i[4]*s+i[8]*n)/a,e[1]=(i[1]*r+i[5]*s+i[9]*n)/a,e[2]=(i[2]*r+i[6]*s+i[10]*n)/a,e}function Ct(e,t,i){let r=t[0],s=t[1],n=t[2];return e[0]=r*i[0]+s*i[3]+n*i[6],e[1]=r*i[1]+s*i[4]+n*i[7],e[2]=r*i[2]+s*i[5]+n*i[8],e}function Nt(e,t,i){let r=t[0],s=t[1],n=t[2],a=i[0],h=i[1],o=i[2],l=i[3],c=h*n-o*s,f=o*r-a*n,u=a*s-h*r,p=h*u-o*f,d=o*c-a*u,m=a*f-h*c,g=l*2;return c*=g,f*=g,u*=g,p*=2,d*=2,m*=2,e[0]=r+c+p,e[1]=s+f+d,e[2]=n+u+m,e}var It=(function(){let e=[0,0,0],t=[0,0,0];return function(i,r){Q(e,i),Q(t,r),K(e,e),K(t,t);let s=rt(e,t);return s>1?0:s<-1?Math.PI:Math.acos(s)}})();function Ot(e,t){return e[0]===t[0]&&e[1]===t[1]&&e[2]===t[2]}var y=class e extends Array{constructor(t=0,i=t,r=t){return super(t,i,r),this}get x(){return this[0]}get y(){return this[1]}get z(){return this[2]}set x(t){this[0]=t}set y(t){this[1]=t}set z(t){this[2]=t}set(t,i=t,r=t){return t.length?this.copy(t):(_t(this,t,i,r),this)}copy(t){return Q(this,t),this}add(t,i){return i?tt(this,t,i):tt(this,this,t),this}sub(t,i){return i?et(this,t,i):et(this,this,t),this}multiply(t){return t.length?vt(this,this,t):Z(this,this,t),this}divide(t){return t.length?bt(this,this,t):Z(this,this,1/t),this}inverse(t=this){return zt(this,t),this}len(){return V(this)}distance(t){return t?Ft(this,t):V(this)}squaredLen(){return it(this)}squaredDistance(t){return t?Tt(this,t):it(this)}negate(t=this){return Rt(this,t),this}cross(t,i){return i?st(this,t,i):st(this,this,t),this}scale(t){return Z(this,this,t),this}normalize(){return K(this,this),this}dot(t){return rt(this,t)}equals(t){return Ot(this,t)}applyMatrix3(t){return Ct(this,this,t),this}applyMatrix4(t){return St(this,this,t),this}scaleRotateMatrix4(t){return Pt(this,this,t),this}applyQuaternion(t){return Nt(this,this,t),this}angle(t){return It(this,t)}lerp(t,i){return nt(this,this,t,i),this}smoothLerp(t,i,r){return Lt(this,this,t,i,r),this}clone(){return new e(this[0],this[1],this[2])}fromArray(t,i=0){return this[0]=t[i],this[1]=t[i+1],this[2]=t[i+2],this}toArray(t=[],i=0){return t[i]=this[0],t[i+1]=this[1],t[i+2]=this[2],t}transformDirection(t){let i=this[0],r=this[1],s=this[2];return this[0]=t[0]*i+t[4]*r+t[8]*s,this[1]=t[1]*i+t[5]*r+t[9]*s,this[2]=t[2]*i+t[6]*r+t[10]*s,this.normalize()}};var Bt=new y,Ve=1,Ue=1,Vt=!1,R=class{constructor(t,i={}){t.canvas||console.error("gl not passed as first argument to Geometry"),this.gl=t,this.attributes=i,this.id=Ve++,this.VAOs={},this.drawRange={start:0,count:0},this.instancedCount=0,this.gl.renderer.bindVertexArray(null),this.gl.renderer.currentGeometry=null,this.glState=this.gl.renderer.state;for(let r in i)this.addAttribute(r,i[r])}addAttribute(t,i){if(this.attributes[t]=i,i.id=Ue++,i.size=i.size||1,i.type=i.type||(i.data.constructor===Float32Array?this.gl.FLOAT:i.data.constructor===Uint16Array?this.gl.UNSIGNED_SHORT:this.gl.UNSIGNED_INT),i.target=t==="index"?this.gl.ELEMENT_ARRAY_BUFFER:this.gl.ARRAY_BUFFER,i.normalized=i.normalized||!1,i.stride=i.stride||0,i.offset=i.offset||0,i.count=i.count||(i.stride?i.data.byteLength/i.stride:i.data.length/i.size),i.divisor=i.instanced||0,i.needsUpdate=!1,i.usage=i.usage||this.gl.STATIC_DRAW,i.buffer||this.updateAttribute(i),i.divisor){if(this.isInstanced=!0,this.instancedCount&&this.instancedCount!==i.count*i.divisor)return console.warn("geometry has multiple instanced buffers of different length"),this.instancedCount=Math.min(this.instancedCount,i.count*i.divisor);this.instancedCount=i.count*i.divisor}else t==="index"?this.drawRange.count=i.count:this.attributes.index||(this.drawRange.count=Math.max(this.drawRange.count,i.count))}updateAttribute(t){let i=!t.buffer;i&&(t.buffer=this.gl.createBuffer()),this.glState.boundBuffer!==t.buffer&&(this.gl.bindBuffer(t.target,t.buffer),this.glState.boundBuffer=t.buffer),i?this.gl.bufferData(t.target,t.data,t.usage):this.gl.bufferSubData(t.target,0,t.data),t.needsUpdate=!1}setIndex(t){this.addAttribute("index",t)}setDrawRange(t,i){this.drawRange.start=t,this.drawRange.count=i}setInstancedCount(t){this.instancedCount=t}createVAO(t){this.VAOs[t.attributeOrder]=this.gl.renderer.createVertexArray(),this.gl.renderer.bindVertexArray(this.VAOs[t.attributeOrder]),this.bindAttributes(t)}bindAttributes(t){t.attributeLocations.forEach((i,{name:r,type:s})=>{if(!this.attributes[r]){console.warn(`active attribute ${r} not being supplied`);return}let n=this.attributes[r];this.gl.bindBuffer(n.target,n.buffer),this.glState.boundBuffer=n.buffer;let a=1;s===35674&&(a=2),s===35675&&(a=3),s===35676&&(a=4);let h=n.size/a,o=a===1?0:a*a*4,l=a===1?0:a*4;for(let c=0;c<a;c++)this.gl.vertexAttribPointer(i+c,h,n.type,n.normalized,n.stride+o,n.offset+c*l),this.gl.enableVertexAttribArray(i+c),this.gl.renderer.vertexAttribDivisor(i+c,n.divisor)}),this.attributes.index&&this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER,this.attributes.index.buffer)}draw({program:t,mode:i=this.gl.TRIANGLES}){this.gl.renderer.currentGeometry!==`${this.id}_${t.attributeOrder}`&&(this.VAOs[t.attributeOrder]||this.createVAO(t),this.gl.renderer.bindVertexArray(this.VAOs[t.attributeOrder]),this.gl.renderer.currentGeometry=`${this.id}_${t.attributeOrder}`),t.attributeLocations.forEach((s,{name:n})=>{let a=this.attributes[n];a.needsUpdate&&this.updateAttribute(a)});let r=2;this.attributes.index?.type===this.gl.UNSIGNED_INT&&(r=4),this.isInstanced?this.attributes.index?this.gl.renderer.drawElementsInstanced(i,this.drawRange.count,this.attributes.index.type,this.attributes.index.offset+this.drawRange.start*r,this.instancedCount):this.gl.renderer.drawArraysInstanced(i,this.drawRange.start,this.drawRange.count,this.instancedCount):this.attributes.index?this.gl.drawElements(i,this.drawRange.count,this.attributes.index.type,this.attributes.index.offset+this.drawRange.start*r):this.gl.drawArrays(i,this.drawRange.start,this.drawRange.count)}getPosition(){let t=this.attributes.position;if(t.data)return t;if(!Vt)return console.warn("No position buffer data found to compute bounds"),Vt=!0}computeBoundingBox(t){t||(t=this.getPosition());let i=t.data,r=t.size;this.bounds||(this.bounds={min:new y,max:new y,center:new y,scale:new y,radius:1/0});let s=this.bounds.min,n=this.bounds.max,a=this.bounds.center,h=this.bounds.scale;s.set(1/0),n.set(-1/0);for(let o=0,l=i.length;o<l;o+=r){let c=i[o],f=i[o+1],u=i[o+2];s.x=Math.min(c,s.x),s.y=Math.min(f,s.y),s.z=Math.min(u,s.z),n.x=Math.max(c,n.x),n.y=Math.max(f,n.y),n.z=Math.max(u,n.z)}h.sub(n,s),a.add(s,n).divide(2)}computeBoundingSphere(t){t||(t=this.getPosition());let i=t.data,r=t.size;this.bounds||this.computeBoundingBox(t);let s=0;for(let n=0,a=i.length;n<a;n+=r)Bt.fromArray(i,n),s=Math.max(s,this.bounds.center.squaredDistance(Bt));this.bounds.radius=Math.sqrt(s)}remove(){for(let t in this.VAOs)this.gl.renderer.deleteVertexArray(this.VAOs[t]),delete this.VAOs[t];for(let t in this.attributes)this.gl.deleteBuffer(this.attributes[t].buffer),delete this.attributes[t]}};var ke=1,Ut={},N=class{constructor(t,{vertex:i,fragment:r,uniforms:s={},transparent:n=!1,cullFace:a=t.BACK,frontFace:h=t.CCW,depthTest:o=!0,depthWrite:l=!0,depthFunc:c=t.LEQUAL}={}){t.canvas||console.error("gl not passed as first argument to Program"),this.gl=t,this.uniforms=s,this.id=ke++,i||console.warn("vertex shader not supplied"),r||console.warn("fragment shader not supplied"),this.transparent=n,this.cullFace=a,this.frontFace=h,this.depthTest=o,this.depthWrite=l,this.depthFunc=c,this.blendFunc={},this.blendEquation={},this.stencilFunc={},this.stencilOp={},this.transparent&&!this.blendFunc.src&&(this.gl.renderer.premultipliedAlpha?this.setBlendFunc(this.gl.ONE,this.gl.ONE_MINUS_SRC_ALPHA):this.setBlendFunc(this.gl.SRC_ALPHA,this.gl.ONE_MINUS_SRC_ALPHA)),this.vertexShader=t.createShader(t.VERTEX_SHADER),this.fragmentShader=t.createShader(t.FRAGMENT_SHADER),this.program=t.createProgram(),t.attachShader(this.program,this.vertexShader),t.attachShader(this.program,this.fragmentShader),this.setShaders({vertex:i,fragment:r})}setShaders({vertex:t,fragment:i}){if(t&&(this.gl.shaderSource(this.vertexShader,t),this.gl.compileShader(this.vertexShader),this.gl.getShaderInfoLog(this.vertexShader)!==""&&console.warn(`${this.gl.getShaderInfoLog(this.vertexShader)}
+Vertex Shader
+${kt(t)}`)),i&&(this.gl.shaderSource(this.fragmentShader,i),this.gl.compileShader(this.fragmentShader),this.gl.getShaderInfoLog(this.fragmentShader)!==""&&console.warn(`${this.gl.getShaderInfoLog(this.fragmentShader)}
+Fragment Shader
+${kt(i)}`)),this.gl.linkProgram(this.program),!this.gl.getProgramParameter(this.program,this.gl.LINK_STATUS))return console.warn(this.gl.getProgramInfoLog(this.program));this.uniformLocations=new Map;let r=this.gl.getProgramParameter(this.program,this.gl.ACTIVE_UNIFORMS);for(let a=0;a<r;a++){let h=this.gl.getActiveUniform(this.program,a);this.uniformLocations.set(h,this.gl.getUniformLocation(this.program,h.name));let o=h.name.match(/(\w+)/g);h.uniformName=o[0],h.nameComponents=o.slice(1)}this.attributeLocations=new Map;let s=[],n=this.gl.getProgramParameter(this.program,this.gl.ACTIVE_ATTRIBUTES);for(let a=0;a<n;a++){let h=this.gl.getActiveAttrib(this.program,a),o=this.gl.getAttribLocation(this.program,h.name);o!==-1&&(s[o]=h.name,this.attributeLocations.set(h,o))}this.attributeOrder=s.join("")}setBlendFunc(t,i,r,s){this.blendFunc.src=t,this.blendFunc.dst=i,this.blendFunc.srcAlpha=r,this.blendFunc.dstAlpha=s,t&&(this.transparent=!0)}setBlendEquation(t,i){this.blendEquation.modeRGB=t,this.blendEquation.modeAlpha=i}setStencilFunc(t,i,r){this.stencilRef=i,this.stencilFunc.func=t,this.stencilFunc.ref=i,this.stencilFunc.mask=r}setStencilOp(t,i,r){this.stencilOp.stencilFail=t,this.stencilOp.depthFail=i,this.stencilOp.depthPass=r}applyState(){this.depthTest?this.gl.renderer.enable(this.gl.DEPTH_TEST):this.gl.renderer.disable(this.gl.DEPTH_TEST),this.cullFace?this.gl.renderer.enable(this.gl.CULL_FACE):this.gl.renderer.disable(this.gl.CULL_FACE),this.blendFunc.src?this.gl.renderer.enable(this.gl.BLEND):this.gl.renderer.disable(this.gl.BLEND),this.cullFace&&this.gl.renderer.setCullFace(this.cullFace),this.gl.renderer.setFrontFace(this.frontFace),this.gl.renderer.setDepthMask(this.depthWrite),this.gl.renderer.setDepthFunc(this.depthFunc),this.blendFunc.src&&this.gl.renderer.setBlendFunc(this.blendFunc.src,this.blendFunc.dst,this.blendFunc.srcAlpha,this.blendFunc.dstAlpha),this.gl.renderer.setBlendEquation(this.blendEquation.modeRGB,this.blendEquation.modeAlpha),this.stencilFunc.func||this.stencilOp.stencilFail?this.gl.renderer.enable(this.gl.STENCIL_TEST):this.gl.renderer.disable(this.gl.STENCIL_TEST),this.gl.renderer.setStencilFunc(this.stencilFunc.func,this.stencilFunc.ref,this.stencilFunc.mask),this.gl.renderer.setStencilOp(this.stencilOp.stencilFail,this.stencilOp.depthFail,this.stencilOp.depthPass)}use({flipFaces:t=!1}={}){let i=-1;this.gl.renderer.state.currentProgram===this.id||(this.gl.useProgram(this.program),this.gl.renderer.state.currentProgram=this.id),this.uniformLocations.forEach((s,n)=>{let a=this.uniforms[n.uniformName];for(let h of n.nameComponents){if(!a)break;if(h in a)a=a[h];else{if(Array.isArray(a.value))break;a=void 0;break}}if(!a)return Gt(`Active uniform ${n.name} has not been supplied`);if(a&&a.value===void 0)return Gt(`${n.name} uniform is missing a value parameter`);if(a.value.texture)return i=i+1,a.value.update(i),at(this.gl,n.type,s,i);if(a.value.length&&a.value[0].texture){let h=[];return a.value.forEach(o=>{i=i+1,o.update(i),h.push(i)}),at(this.gl,n.type,s,h)}at(this.gl,n.type,s,a.value)}),this.applyState(),t&&this.gl.renderer.setFrontFace(this.frontFace===this.gl.CCW?this.gl.CW:this.gl.CCW)}remove(){this.gl.deleteProgram(this.program)}};function at(e,t,i,r){r=r.length?Ge(r):r;let s=e.renderer.state.uniformLocations.get(i);if(r.length)if(s===void 0||s.length!==r.length)e.renderer.state.uniformLocations.set(i,r.slice(0));else{if(Xe(s,r))return;s.set?s.set(r):We(s,r),e.renderer.state.uniformLocations.set(i,s)}else{if(s===r)return;e.renderer.state.uniformLocations.set(i,r)}switch(t){case 5126:return r.length?e.uniform1fv(i,r):e.uniform1f(i,r);case 35664:return e.uniform2fv(i,r);case 35665:return e.uniform3fv(i,r);case 35666:return e.uniform4fv(i,r);case 35670:case 5124:case 35678:case 36306:case 35680:case 36289:return r.length?e.uniform1iv(i,r):e.uniform1i(i,r);case 35671:case 35667:return e.uniform2iv(i,r);case 35672:case 35668:return e.uniform3iv(i,r);case 35673:case 35669:return e.uniform4iv(i,r);case 35674:return e.uniformMatrix2fv(i,!1,r);case 35675:return e.uniformMatrix3fv(i,!1,r);case 35676:return e.uniformMatrix4fv(i,!1,r)}}function kt(e){let t=e.split(`
+`);for(let i=0;i<t.length;i++)t[i]=i+1+": "+t[i];return t.join(`
+`)}function Ge(e){let t=e.length,i=e[0].length;if(i===void 0)return e;let r=t*i,s=Ut[r];s||(Ut[r]=s=new Float32Array(r));for(let n=0;n<t;n++)s.set(e[n],n*i);return s}function Xe(e,t){if(e.length!==t.length)return!1;for(let i=0,r=e.length;i<r;i++)if(e[i]!==t[i])return!1;return!0}function We(e,t){for(let i=0,r=e.length;i<r;i++)e[i]=t[i]}var ot=0;function Gt(e){ot>100||(console.warn(e),ot++,ot>100&&console.warn("More than 100 program warnings - stopping logs."))}var ht=new y,qe=1,Y=class{constructor({canvas:t=document.createElement("canvas"),width:i=300,height:r=150,dpr:s=1,alpha:n=!1,depth:a=!0,stencil:h=!1,antialias:o=!1,premultipliedAlpha:l=!1,preserveDrawingBuffer:c=!1,powerPreference:f="default",autoClear:u=!0,webgl:p=2}={}){let d={alpha:n,depth:a,stencil:h,antialias:o,premultipliedAlpha:l,preserveDrawingBuffer:c,powerPreference:f};this.dpr=s,this.alpha=n,this.color=!0,this.depth=a,this.stencil=h,this.premultipliedAlpha=l,this.autoClear=u,this.id=qe++,p===2&&(this.gl=t.getContext("webgl2",d)),this.isWebgl2=!!this.gl,this.gl||(this.gl=t.getContext("webgl",d)),this.gl||console.error("unable to create webgl context"),this.gl.renderer=this,this.setSize(i,r),this.state={},this.state.blendFunc={src:this.gl.ONE,dst:this.gl.ZERO},this.state.blendEquation={modeRGB:this.gl.FUNC_ADD},this.state.cullFace=!1,this.state.frontFace=this.gl.CCW,this.state.depthMask=!0,this.state.depthFunc=this.gl.LEQUAL,this.state.premultiplyAlpha=!1,this.state.flipY=!1,this.state.unpackAlignment=4,this.state.framebuffer=null,this.state.viewport={x:0,y:0,width:null,height:null},this.state.textureUnits=[],this.state.activeTextureUnit=0,this.state.boundBuffer=null,this.state.uniformLocations=new Map,this.state.currentProgram=null,this.extensions={},this.isWebgl2?(this.getExtension("EXT_color_buffer_float"),this.getExtension("OES_texture_float_linear")):(this.getExtension("OES_texture_float"),this.getExtension("OES_texture_float_linear"),this.getExtension("OES_texture_half_float"),this.getExtension("OES_texture_half_float_linear"),this.getExtension("OES_element_index_uint"),this.getExtension("OES_standard_derivatives"),this.getExtension("EXT_sRGB"),this.getExtension("WEBGL_depth_texture"),this.getExtension("WEBGL_draw_buffers")),this.getExtension("WEBGL_compressed_texture_astc"),this.getExtension("EXT_texture_compression_bptc"),this.getExtension("WEBGL_compressed_texture_s3tc"),this.getExtension("WEBGL_compressed_texture_etc1"),this.getExtension("WEBGL_compressed_texture_pvrtc"),this.getExtension("WEBKIT_WEBGL_compressed_texture_pvrtc"),this.vertexAttribDivisor=this.getExtension("ANGLE_instanced_arrays","vertexAttribDivisor","vertexAttribDivisorANGLE"),this.drawArraysInstanced=this.getExtension("ANGLE_instanced_arrays","drawArraysInstanced","drawArraysInstancedANGLE"),this.drawElementsInstanced=this.getExtension("ANGLE_instanced_arrays","drawElementsInstanced","drawElementsInstancedANGLE"),this.createVertexArray=this.getExtension("OES_vertex_array_object","createVertexArray","createVertexArrayOES"),this.bindVertexArray=this.getExtension("OES_vertex_array_object","bindVertexArray","bindVertexArrayOES"),this.deleteVertexArray=this.getExtension("OES_vertex_array_object","deleteVertexArray","deleteVertexArrayOES"),this.drawBuffers=this.getExtension("WEBGL_draw_buffers","drawBuffers","drawBuffersWEBGL"),this.parameters={},this.parameters.maxTextureUnits=this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS),this.parameters.maxAnisotropy=this.getExtension("EXT_texture_filter_anisotropic")?this.gl.getParameter(this.getExtension("EXT_texture_filter_anisotropic").MAX_TEXTURE_MAX_ANISOTROPY_EXT):0}setSize(t,i){this.width=t,this.height=i,this.gl.canvas.width=t*this.dpr,this.gl.canvas.height=i*this.dpr,this.gl.canvas.style&&Object.assign(this.gl.canvas.style,{width:t+"px",height:i+"px"})}setViewport(t,i,r=0,s=0){this.state.viewport.width===t&&this.state.viewport.height===i||(this.state.viewport.width=t,this.state.viewport.height=i,this.state.viewport.x=r,this.state.viewport.y=s,this.gl.viewport(r,s,t,i))}setScissor(t,i,r=0,s=0){this.gl.scissor(r,s,t,i)}enable(t){this.state[t]!==!0&&(this.gl.enable(t),this.state[t]=!0)}disable(t){this.state[t]!==!1&&(this.gl.disable(t),this.state[t]=!1)}setBlendFunc(t,i,r,s){this.state.blendFunc.src===t&&this.state.blendFunc.dst===i&&this.state.blendFunc.srcAlpha===r&&this.state.blendFunc.dstAlpha===s||(this.state.blendFunc.src=t,this.state.blendFunc.dst=i,this.state.blendFunc.srcAlpha=r,this.state.blendFunc.dstAlpha=s,r!==void 0?this.gl.blendFuncSeparate(t,i,r,s):this.gl.blendFunc(t,i))}setBlendEquation(t,i){t=t||this.gl.FUNC_ADD,!(this.state.blendEquation.modeRGB===t&&this.state.blendEquation.modeAlpha===i)&&(this.state.blendEquation.modeRGB=t,this.state.blendEquation.modeAlpha=i,i!==void 0?this.gl.blendEquationSeparate(t,i):this.gl.blendEquation(t))}setCullFace(t){this.state.cullFace!==t&&(this.state.cullFace=t,this.gl.cullFace(t))}setFrontFace(t){this.state.frontFace!==t&&(this.state.frontFace=t,this.gl.frontFace(t))}setDepthMask(t){this.state.depthMask!==t&&(this.state.depthMask=t,this.gl.depthMask(t))}setDepthFunc(t){this.state.depthFunc!==t&&(this.state.depthFunc=t,this.gl.depthFunc(t))}setStencilMask(t){this.state.stencilMask!==t&&(this.state.stencilMask=t,this.gl.stencilMask(t))}setStencilFunc(t,i,r){this.state.stencilFunc===t&&this.state.stencilRef===i&&this.state.stencilFuncMask===r||(this.state.stencilFunc=t||this.gl.ALWAYS,this.state.stencilRef=i||0,this.state.stencilFuncMask=r||0,this.gl.stencilFunc(t||this.gl.ALWAYS,i||0,r||0))}setStencilOp(t,i,r){this.state.stencilFail===t&&this.state.stencilDepthFail===i&&this.state.stencilDepthPass===r||(this.state.stencilFail=t,this.state.stencilDepthFail=i,this.state.stencilDepthPass=r,this.gl.stencilOp(t,i,r))}activeTexture(t){this.state.activeTextureUnit!==t&&(this.state.activeTextureUnit=t,this.gl.activeTexture(this.gl.TEXTURE0+t))}bindFramebuffer({target:t=this.gl.FRAMEBUFFER,buffer:i=null}={}){this.state.framebuffer!==i&&(this.state.framebuffer=i,this.gl.bindFramebuffer(t,i))}getExtension(t,i,r){return i&&this.gl[i]?this.gl[i].bind(this.gl):(this.extensions[t]||(this.extensions[t]=this.gl.getExtension(t)),i?this.extensions[t]?this.extensions[t][r].bind(this.extensions[t]):null:this.extensions[t])}sortOpaque(t,i){return t.renderOrder!==i.renderOrder?t.renderOrder-i.renderOrder:t.program.id!==i.program.id?t.program.id-i.program.id:t.zDepth!==i.zDepth?t.zDepth-i.zDepth:i.id-t.id}sortTransparent(t,i){return t.renderOrder!==i.renderOrder?t.renderOrder-i.renderOrder:t.zDepth!==i.zDepth?i.zDepth-t.zDepth:i.id-t.id}sortUI(t,i){return t.renderOrder!==i.renderOrder?t.renderOrder-i.renderOrder:t.program.id!==i.program.id?t.program.id-i.program.id:i.id-t.id}getRenderList({scene:t,camera:i,frustumCull:r,sort:s}){let n=[];if(i&&r&&i.updateFrustum(),t.traverse(a=>{if(!a.visible)return!0;a.draw&&(r&&a.frustumCulled&&i&&!i.frustumIntersectsMesh(a)||n.push(a))}),s){let a=[],h=[],o=[];n.forEach(l=>{l.program.transparent?l.program.depthTest?h.push(l):o.push(l):a.push(l),l.zDepth=0,!(l.renderOrder!==0||!l.program.depthTest||!i)&&(l.worldMatrix.getTranslation(ht),ht.applyMatrix4(i.projectionViewMatrix),l.zDepth=ht.z)}),a.sort(this.sortOpaque),h.sort(this.sortTransparent),o.sort(this.sortUI),n=a.concat(h,o)}return n}render({scene:t,camera:i,target:r=null,update:s=!0,sort:n=!0,frustumCull:a=!0,clear:h}){r===null?(this.bindFramebuffer(),this.setViewport(this.width*this.dpr,this.height*this.dpr)):(this.bindFramebuffer(r),this.setViewport(r.width,r.height)),(h||this.autoClear&&h!==!1)&&(this.depth&&(!r||r.depth)&&(this.enable(this.gl.DEPTH_TEST),this.setDepthMask(!0)),(this.stencil||!r||r.stencil)&&(this.enable(this.gl.STENCIL_TEST),this.setStencilMask(255)),this.gl.clear((this.color?this.gl.COLOR_BUFFER_BIT:0)|(this.depth?this.gl.DEPTH_BUFFER_BIT:0)|(this.stencil?this.gl.STENCIL_BUFFER_BIT:0))),s&&t.updateMatrixWorld(),i&&i.updateMatrixWorld(),this.getRenderList({scene:t,camera:i,frustumCull:a,sort:n}).forEach(l=>{l.draw({camera:i})})}};function lt(e,t){return e[0]=t[0],e[1]=t[1],e[2]=t[2],e[3]=t[3],e}function ct(e,t,i,r,s){return e[0]=t,e[1]=i,e[2]=r,e[3]=s,e}function ft(e,t){let i=t[0],r=t[1],s=t[2],n=t[3],a=i*i+r*r+s*s+n*n;return a>0&&(a=1/Math.sqrt(a)),e[0]=i*a,e[1]=r*a,e[2]=s*a,e[3]=n*a,e}function ut(e,t){return e[0]*t[0]+e[1]*t[1]+e[2]*t[2]+e[3]*t[3]}function Wt(e){return e[0]=0,e[1]=0,e[2]=0,e[3]=1,e}function qt(e,t,i){i=i*.5;let r=Math.sin(i);return e[0]=r*t[0],e[1]=r*t[1],e[2]=r*t[2],e[3]=Math.cos(i),e}function pt(e,t,i){let r=t[0],s=t[1],n=t[2],a=t[3],h=i[0],o=i[1],l=i[2],c=i[3];return e[0]=r*c+a*h+s*l-n*o,e[1]=s*c+a*o+n*h-r*l,e[2]=n*c+a*l+r*o-s*h,e[3]=a*c-r*h-s*o-n*l,e}function Yt(e,t,i){i*=.5;let r=t[0],s=t[1],n=t[2],a=t[3],h=Math.sin(i),o=Math.cos(i);return e[0]=r*o+a*h,e[1]=s*o+n*h,e[2]=n*o-s*h,e[3]=a*o-r*h,e}function jt(e,t,i){i*=.5;let r=t[0],s=t[1],n=t[2],a=t[3],h=Math.sin(i),o=Math.cos(i);return e[0]=r*o-n*h,e[1]=s*o+a*h,e[2]=n*o+r*h,e[3]=a*o-s*h,e}function Ht(e,t,i){i*=.5;let r=t[0],s=t[1],n=t[2],a=t[3],h=Math.sin(i),o=Math.cos(i);return e[0]=r*o+s*h,e[1]=s*o-r*h,e[2]=n*o+a*h,e[3]=a*o-n*h,e}function Qt(e,t,i,r){let s=t[0],n=t[1],a=t[2],h=t[3],o=i[0],l=i[1],c=i[2],f=i[3],u,p,d,m,g;return p=s*o+n*l+a*c+h*f,p<0&&(p=-p,o=-o,l=-l,c=-c,f=-f),1-p>1e-6?(u=Math.acos(p),d=Math.sin(u),m=Math.sin((1-r)*u)/d,g=Math.sin(r*u)/d):(m=1-r,g=r),e[0]=m*s+g*o,e[1]=m*n+g*l,e[2]=m*a+g*c,e[3]=m*h+g*f,e}function Kt(e,t){let i=t[0],r=t[1],s=t[2],n=t[3],a=i*i+r*r+s*s+n*n,h=a?1/a:0;return e[0]=-i*h,e[1]=-r*h,e[2]=-s*h,e[3]=n*h,e}function Zt(e,t){return e[0]=-t[0],e[1]=-t[1],e[2]=-t[2],e[3]=t[3],e}function $t(e,t){let i=t[0]+t[4]+t[8],r;if(i>0)r=Math.sqrt(i+1),e[3]=.5*r,r=.5/r,e[0]=(t[5]-t[7])*r,e[1]=(t[6]-t[2])*r,e[2]=(t[1]-t[3])*r;else{let s=0;t[4]>t[0]&&(s=1),t[8]>t[s*3+s]&&(s=2);let n=(s+1)%3,a=(s+2)%3;r=Math.sqrt(t[s*3+s]-t[n*3+n]-t[a*3+a]+1),e[s]=.5*r,r=.5/r,e[3]=(t[n*3+a]-t[a*3+n])*r,e[n]=(t[n*3+s]+t[s*3+n])*r,e[a]=(t[a*3+s]+t[s*3+a])*r}return e}function Jt(e,t,i="YXZ"){let r=Math.sin(t[0]*.5),s=Math.cos(t[0]*.5),n=Math.sin(t[1]*.5),a=Math.cos(t[1]*.5),h=Math.sin(t[2]*.5),o=Math.cos(t[2]*.5);return i==="XYZ"?(e[0]=r*a*o+s*n*h,e[1]=s*n*o-r*a*h,e[2]=s*a*h+r*n*o,e[3]=s*a*o-r*n*h):i==="YXZ"?(e[0]=r*a*o+s*n*h,e[1]=s*n*o-r*a*h,e[2]=s*a*h-r*n*o,e[3]=s*a*o+r*n*h):i==="ZXY"?(e[0]=r*a*o-s*n*h,e[1]=s*n*o+r*a*h,e[2]=s*a*h+r*n*o,e[3]=s*a*o-r*n*h):i==="ZYX"?(e[0]=r*a*o-s*n*h,e[1]=s*n*o+r*a*h,e[2]=s*a*h-r*n*o,e[3]=s*a*o+r*n*h):i==="YZX"?(e[0]=r*a*o+s*n*h,e[1]=s*n*o+r*a*h,e[2]=s*a*h-r*n*o,e[3]=s*a*o-r*n*h):i==="XZY"&&(e[0]=r*a*o-s*n*h,e[1]=s*n*o-r*a*h,e[2]=s*a*h+r*n*o,e[3]=s*a*o+r*n*h),e}var te=lt,ee=ct;var ie=ut;var re=ft;var U=class extends Array{constructor(t=0,i=0,r=0,s=1){super(t,i,r,s),this.onChange=()=>{},this._target=this;let n=["0","1","2","3"];return new Proxy(this,{set(a,h){let o=Reflect.set(...arguments);return o&&n.includes(h)&&a.onChange(),o}})}get x(){return this[0]}get y(){return this[1]}get z(){return this[2]}get w(){return this[3]}set x(t){this._target[0]=t,this.onChange()}set y(t){this._target[1]=t,this.onChange()}set z(t){this._target[2]=t,this.onChange()}set w(t){this._target[3]=t,this.onChange()}identity(){return Wt(this._target),this.onChange(),this}set(t,i,r,s){return t.length?this.copy(t):(ee(this._target,t,i,r,s),this.onChange(),this)}rotateX(t){return Yt(this._target,this._target,t),this.onChange(),this}rotateY(t){return jt(this._target,this._target,t),this.onChange(),this}rotateZ(t){return Ht(this._target,this._target,t),this.onChange(),this}inverse(t=this._target){return Kt(this._target,t),this.onChange(),this}conjugate(t=this._target){return Zt(this._target,t),this.onChange(),this}copy(t){return te(this._target,t),this.onChange(),this}normalize(t=this._target){return re(this._target,t),this.onChange(),this}multiply(t,i){return i?pt(this._target,t,i):pt(this._target,this._target,t),this.onChange(),this}dot(t){return ie(this._target,t)}fromMatrix3(t){return $t(this._target,t),this.onChange(),this}fromEuler(t,i){return Jt(this._target,t,t.order),i||this.onChange(),this}fromAxisAngle(t,i){return qt(this._target,t,i),this.onChange(),this}slerp(t,i){return Qt(this._target,this._target,t,i),this.onChange(),this}fromArray(t,i=0){return this._target[0]=t[i],this._target[1]=t[i+1],this._target[2]=t[i+2],this._target[3]=t[i+3],this.onChange(),this}toArray(t=[],i=0){return t[i]=this[0],t[i+1]=this[1],t[i+2]=this[2],t[i+3]=this[3],t}};var He=1e-6;function se(e,t){return e[0]=t[0],e[1]=t[1],e[2]=t[2],e[3]=t[3],e[4]=t[4],e[5]=t[5],e[6]=t[6],e[7]=t[7],e[8]=t[8],e[9]=t[9],e[10]=t[10],e[11]=t[11],e[12]=t[12],e[13]=t[13],e[14]=t[14],e[15]=t[15],e}function ne(e,t,i,r,s,n,a,h,o,l,c,f,u,p,d,m,g){return e[0]=t,e[1]=i,e[2]=r,e[3]=s,e[4]=n,e[5]=a,e[6]=h,e[7]=o,e[8]=l,e[9]=c,e[10]=f,e[11]=u,e[12]=p,e[13]=d,e[14]=m,e[15]=g,e}function ae(e){return e[0]=1,e[1]=0,e[2]=0,e[3]=0,e[4]=0,e[5]=1,e[6]=0,e[7]=0,e[8]=0,e[9]=0,e[10]=1,e[11]=0,e[12]=0,e[13]=0,e[14]=0,e[15]=1,e}function oe(e,t){let i=t[0],r=t[1],s=t[2],n=t[3],a=t[4],h=t[5],o=t[6],l=t[7],c=t[8],f=t[9],u=t[10],p=t[11],d=t[12],m=t[13],g=t[14],x=t[15],v=i*h-r*a,M=i*o-s*a,w=i*l-n*a,A=r*o-s*h,E=r*l-n*h,b=s*l-n*o,L=c*m-f*d,S=c*g-u*d,F=c*x-p*d,P=f*g-u*m,T=f*x-p*m,C=u*x-p*g,_=v*C-M*T+w*P+A*F-E*S+b*L;return _?(_=1/_,e[0]=(h*C-o*T+l*P)*_,e[1]=(s*T-r*C-n*P)*_,e[2]=(m*b-g*E+x*A)*_,e[3]=(u*E-f*b-p*A)*_,e[4]=(o*F-a*C-l*S)*_,e[5]=(i*C-s*F+n*S)*_,e[6]=(g*w-d*b-x*M)*_,e[7]=(c*b-u*w+p*M)*_,e[8]=(a*T-h*F+l*L)*_,e[9]=(r*F-i*T-n*L)*_,e[10]=(d*E-m*w+x*v)*_,e[11]=(f*w-c*E-p*v)*_,e[12]=(h*S-a*P-o*L)*_,e[13]=(i*P-r*S+s*L)*_,e[14]=(m*M-d*A-g*v)*_,e[15]=(c*A-f*M+u*v)*_,e):null}function dt(e){let t=e[0],i=e[1],r=e[2],s=e[3],n=e[4],a=e[5],h=e[6],o=e[7],l=e[8],c=e[9],f=e[10],u=e[11],p=e[12],d=e[13],m=e[14],g=e[15],x=t*a-i*n,v=t*h-r*n,M=t*o-s*n,w=i*h-r*a,A=i*o-s*a,E=r*o-s*h,b=l*d-c*p,L=l*m-f*p,S=l*g-u*p,F=c*m-f*d,P=c*g-u*d,T=f*g-u*m;return x*T-v*P+M*F+w*S-A*L+E*b}function mt(e,t,i){let r=t[0],s=t[1],n=t[2],a=t[3],h=t[4],o=t[5],l=t[6],c=t[7],f=t[8],u=t[9],p=t[10],d=t[11],m=t[12],g=t[13],x=t[14],v=t[15],M=i[0],w=i[1],A=i[2],E=i[3];return e[0]=M*r+w*h+A*f+E*m,e[1]=M*s+w*o+A*u+E*g,e[2]=M*n+w*l+A*p+E*x,e[3]=M*a+w*c+A*d+E*v,M=i[4],w=i[5],A=i[6],E=i[7],e[4]=M*r+w*h+A*f+E*m,e[5]=M*s+w*o+A*u+E*g,e[6]=M*n+w*l+A*p+E*x,e[7]=M*a+w*c+A*d+E*v,M=i[8],w=i[9],A=i[10],E=i[11],e[8]=M*r+w*h+A*f+E*m,e[9]=M*s+w*o+A*u+E*g,e[10]=M*n+w*l+A*p+E*x,e[11]=M*a+w*c+A*d+E*v,M=i[12],w=i[13],A=i[14],E=i[15],e[12]=M*r+w*h+A*f+E*m,e[13]=M*s+w*o+A*u+E*g,e[14]=M*n+w*l+A*p+E*x,e[15]=M*a+w*c+A*d+E*v,e}function he(e,t,i){let r=i[0],s=i[1],n=i[2],a,h,o,l,c,f,u,p,d,m,g,x;return t===e?(e[12]=t[0]*r+t[4]*s+t[8]*n+t[12],e[13]=t[1]*r+t[5]*s+t[9]*n+t[13],e[14]=t[2]*r+t[6]*s+t[10]*n+t[14],e[15]=t[3]*r+t[7]*s+t[11]*n+t[15]):(a=t[0],h=t[1],o=t[2],l=t[3],c=t[4],f=t[5],u=t[6],p=t[7],d=t[8],m=t[9],g=t[10],x=t[11],e[0]=a,e[1]=h,e[2]=o,e[3]=l,e[4]=c,e[5]=f,e[6]=u,e[7]=p,e[8]=d,e[9]=m,e[10]=g,e[11]=x,e[12]=a*r+c*s+d*n+t[12],e[13]=h*r+f*s+m*n+t[13],e[14]=o*r+u*s+g*n+t[14],e[15]=l*r+p*s+x*n+t[15]),e}function le(e,t,i){let r=i[0],s=i[1],n=i[2];return e[0]=t[0]*r,e[1]=t[1]*r,e[2]=t[2]*r,e[3]=t[3]*r,e[4]=t[4]*s,e[5]=t[5]*s,e[6]=t[6]*s,e[7]=t[7]*s,e[8]=t[8]*n,e[9]=t[9]*n,e[10]=t[10]*n,e[11]=t[11]*n,e[12]=t[12],e[13]=t[13],e[14]=t[14],e[15]=t[15],e}function ce(e,t,i,r){let s=r[0],n=r[1],a=r[2],h=Math.hypot(s,n,a),o,l,c,f,u,p,d,m,g,x,v,M,w,A,E,b,L,S,F,P,T,C,_,q;return Math.abs(h)<He?null:(h=1/h,s*=h,n*=h,a*=h,o=Math.sin(i),l=Math.cos(i),c=1-l,f=t[0],u=t[1],p=t[2],d=t[3],m=t[4],g=t[5],x=t[6],v=t[7],M=t[8],w=t[9],A=t[10],E=t[11],b=s*s*c+l,L=n*s*c+a*o,S=a*s*c-n*o,F=s*n*c-a*o,P=n*n*c+l,T=a*n*c+s*o,C=s*a*c+n*o,_=n*a*c-s*o,q=a*a*c+l,e[0]=f*b+m*L+M*S,e[1]=u*b+g*L+w*S,e[2]=p*b+x*L+A*S,e[3]=d*b+v*L+E*S,e[4]=f*F+m*P+M*T,e[5]=u*F+g*P+w*T,e[6]=p*F+x*P+A*T,e[7]=d*F+v*P+E*T,e[8]=f*C+m*_+M*q,e[9]=u*C+g*_+w*q,e[10]=p*C+x*_+A*q,e[11]=d*C+v*_+E*q,t!==e&&(e[12]=t[12],e[13]=t[13],e[14]=t[14],e[15]=t[15]),e)}function fe(e,t){return e[0]=t[12],e[1]=t[13],e[2]=t[14],e}function gt(e,t){let i=t[0],r=t[1],s=t[2],n=t[4],a=t[5],h=t[6],o=t[8],l=t[9],c=t[10];return e[0]=Math.hypot(i,r,s),e[1]=Math.hypot(n,a,h),e[2]=Math.hypot(o,l,c),e}function ue(e){let t=e[0],i=e[1],r=e[2],s=e[4],n=e[5],a=e[6],h=e[8],o=e[9],l=e[10],c=t*t+i*i+r*r,f=s*s+n*n+a*a,u=h*h+o*o+l*l;return Math.sqrt(Math.max(c,f,u))}var xt=(function(){let e=[1,1,1];return function(t,i){let r=e;gt(r,i);let s=1/r[0],n=1/r[1],a=1/r[2],h=i[0]*s,o=i[1]*n,l=i[2]*a,c=i[4]*s,f=i[5]*n,u=i[6]*a,p=i[8]*s,d=i[9]*n,m=i[10]*a,g=h+f+m,x=0;return g>0?(x=Math.sqrt(g+1)*2,t[3]=.25*x,t[0]=(u-d)/x,t[1]=(p-l)/x,t[2]=(o-c)/x):h>f&&h>m?(x=Math.sqrt(1+h-f-m)*2,t[3]=(u-d)/x,t[0]=.25*x,t[1]=(o+c)/x,t[2]=(p+l)/x):f>m?(x=Math.sqrt(1+f-h-m)*2,t[3]=(p-l)/x,t[0]=(o+c)/x,t[1]=.25*x,t[2]=(u+d)/x):(x=Math.sqrt(1+m-h-f)*2,t[3]=(o-c)/x,t[0]=(p+l)/x,t[1]=(u+d)/x,t[2]=.25*x),t}})();function pe(e,t,i,r){let s=V([e[0],e[1],e[2]]),n=V([e[4],e[5],e[6]]),a=V([e[8],e[9],e[10]]);dt(e)<0&&(s=-s),i[0]=e[12],i[1]=e[13],i[2]=e[14];let o=e.slice(),l=1/s,c=1/n,f=1/a;o[0]*=l,o[1]*=l,o[2]*=l,o[4]*=c,o[5]*=c,o[6]*=c,o[8]*=f,o[9]*=f,o[10]*=f,xt(t,o),r[0]=s,r[1]=n,r[2]=a}function de(e,t,i,r){let s=e,n=t[0],a=t[1],h=t[2],o=t[3],l=n+n,c=a+a,f=h+h,u=n*l,p=n*c,d=n*f,m=a*c,g=a*f,x=h*f,v=o*l,M=o*c,w=o*f,A=r[0],E=r[1],b=r[2];return s[0]=(1-(m+x))*A,s[1]=(p+w)*A,s[2]=(d-M)*A,s[3]=0,s[4]=(p-w)*E,s[5]=(1-(u+x))*E,s[6]=(g+v)*E,s[7]=0,s[8]=(d+M)*b,s[9]=(g-v)*b,s[10]=(1-(u+m))*b,s[11]=0,s[12]=i[0],s[13]=i[1],s[14]=i[2],s[15]=1,s}function me(e,t){let i=t[0],r=t[1],s=t[2],n=t[3],a=i+i,h=r+r,o=s+s,l=i*a,c=r*a,f=r*h,u=s*a,p=s*h,d=s*o,m=n*a,g=n*h,x=n*o;return e[0]=1-f-d,e[1]=c+x,e[2]=u-g,e[3]=0,e[4]=c-x,e[5]=1-l-d,e[6]=p+m,e[7]=0,e[8]=u+g,e[9]=p-m,e[10]=1-l-f,e[11]=0,e[12]=0,e[13]=0,e[14]=0,e[15]=1,e}function ge(e,t,i,r,s){let n=1/Math.tan(t/2),a=1/(r-s);return e[0]=n/i,e[1]=0,e[2]=0,e[3]=0,e[4]=0,e[5]=n,e[6]=0,e[7]=0,e[8]=0,e[9]=0,e[10]=(s+r)*a,e[11]=-1,e[12]=0,e[13]=0,e[14]=2*s*r*a,e[15]=0,e}function xe(e,t,i,r,s,n,a){let h=1/(t-i),o=1/(r-s),l=1/(n-a);return e[0]=-2*h,e[1]=0,e[2]=0,e[3]=0,e[4]=0,e[5]=-2*o,e[6]=0,e[7]=0,e[8]=0,e[9]=0,e[10]=2*l,e[11]=0,e[12]=(t+i)*h,e[13]=(s+r)*o,e[14]=(a+n)*l,e[15]=1,e}function ye(e,t,i,r){let s=t[0],n=t[1],a=t[2],h=r[0],o=r[1],l=r[2],c=s-i[0],f=n-i[1],u=a-i[2],p=c*c+f*f+u*u;p===0?u=1:(p=1/Math.sqrt(p),c*=p,f*=p,u*=p);let d=o*u-l*f,m=l*c-h*u,g=h*f-o*c;return p=d*d+m*m+g*g,p===0&&(l?h+=1e-6:o?l+=1e-6:o+=1e-6,d=o*u-l*f,m=l*c-h*u,g=h*f-o*c,p=d*d+m*m+g*g),p=1/Math.sqrt(p),d*=p,m*=p,g*=p,e[0]=d,e[1]=m,e[2]=g,e[3]=0,e[4]=f*g-u*m,e[5]=u*d-c*g,e[6]=c*m-f*d,e[7]=0,e[8]=c,e[9]=f,e[10]=u,e[11]=0,e[12]=s,e[13]=n,e[14]=a,e[15]=1,e}function yt(e,t,i){return e[0]=t[0]+i[0],e[1]=t[1]+i[1],e[2]=t[2]+i[2],e[3]=t[3]+i[3],e[4]=t[4]+i[4],e[5]=t[5]+i[5],e[6]=t[6]+i[6],e[7]=t[7]+i[7],e[8]=t[8]+i[8],e[9]=t[9]+i[9],e[10]=t[10]+i[10],e[11]=t[11]+i[11],e[12]=t[12]+i[12],e[13]=t[13]+i[13],e[14]=t[14]+i[14],e[15]=t[15]+i[15],e}function wt(e,t,i){return e[0]=t[0]-i[0],e[1]=t[1]-i[1],e[2]=t[2]-i[2],e[3]=t[3]-i[3],e[4]=t[4]-i[4],e[5]=t[5]-i[5],e[6]=t[6]-i[6],e[7]=t[7]-i[7],e[8]=t[8]-i[8],e[9]=t[9]-i[9],e[10]=t[10]-i[10],e[11]=t[11]-i[11],e[12]=t[12]-i[12],e[13]=t[13]-i[13],e[14]=t[14]-i[14],e[15]=t[15]-i[15],e}function we(e,t,i){return e[0]=t[0]*i,e[1]=t[1]*i,e[2]=t[2]*i,e[3]=t[3]*i,e[4]=t[4]*i,e[5]=t[5]*i,e[6]=t[6]*i,e[7]=t[7]*i,e[8]=t[8]*i,e[9]=t[9]*i,e[10]=t[10]*i,e[11]=t[11]*i,e[12]=t[12]*i,e[13]=t[13]*i,e[14]=t[14]*i,e[15]=t[15]*i,e}var I=class extends Array{constructor(t=1,i=0,r=0,s=0,n=0,a=1,h=0,o=0,l=0,c=0,f=1,u=0,p=0,d=0,m=0,g=1){return super(t,i,r,s,n,a,h,o,l,c,f,u,p,d,m,g),this}get x(){return this[12]}get y(){return this[13]}get z(){return this[14]}get w(){return this[15]}set x(t){this[12]=t}set y(t){this[13]=t}set z(t){this[14]=t}set w(t){this[15]=t}set(t,i,r,s,n,a,h,o,l,c,f,u,p,d,m,g){return t.length?this.copy(t):(ne(this,t,i,r,s,n,a,h,o,l,c,f,u,p,d,m,g),this)}translate(t,i=this){return he(this,i,t),this}rotate(t,i,r=this){return ce(this,r,t,i),this}scale(t,i=this){return le(this,i,typeof t=="number"?[t,t,t]:t),this}add(t,i){return i?yt(this,t,i):yt(this,this,t),this}sub(t,i){return i?wt(this,t,i):wt(this,this,t),this}multiply(t,i){return t.length?i?mt(this,t,i):mt(this,this,t):we(this,this,t),this}identity(){return ae(this),this}copy(t){return se(this,t),this}fromPerspective({fov:t,aspect:i,near:r,far:s}={}){return ge(this,t,i,r,s),this}fromOrthogonal({left:t,right:i,bottom:r,top:s,near:n,far:a}){return xe(this,t,i,r,s,n,a),this}fromQuaternion(t){return me(this,t),this}setPosition(t){return this.x=t[0],this.y=t[1],this.z=t[2],this}inverse(t=this){return oe(this,t),this}compose(t,i,r){return de(this,t,i,r),this}decompose(t,i,r){return pe(this,t,i,r),this}getRotation(t){return xt(t,this),this}getTranslation(t){return fe(t,this),this}getScaling(t){return gt(t,this),this}getMaxScaleOnAxis(){return ue(this)}lookAt(t,i,r){return ye(this,t,i,r),this}determinant(){return dt(this)}fromArray(t,i=0){return this[0]=t[i],this[1]=t[i+1],this[2]=t[i+2],this[3]=t[i+3],this[4]=t[i+4],this[5]=t[i+5],this[6]=t[i+6],this[7]=t[i+7],this[8]=t[i+8],this[9]=t[i+9],this[10]=t[i+10],this[11]=t[i+11],this[12]=t[i+12],this[13]=t[i+13],this[14]=t[i+14],this[15]=t[i+15],this}toArray(t=[],i=0){return t[i]=this[0],t[i+1]=this[1],t[i+2]=this[2],t[i+3]=this[3],t[i+4]=this[4],t[i+5]=this[5],t[i+6]=this[6],t[i+7]=this[7],t[i+8]=this[8],t[i+9]=this[9],t[i+10]=this[10],t[i+11]=this[11],t[i+12]=this[12],t[i+13]=this[13],t[i+14]=this[14],t[i+15]=this[15],t}};function Me(e,t,i="YXZ"){return i==="XYZ"?(e[1]=Math.asin(Math.min(Math.max(t[8],-1),1)),Math.abs(t[8])<.99999?(e[0]=Math.atan2(-t[9],t[10]),e[2]=Math.atan2(-t[4],t[0])):(e[0]=Math.atan2(t[6],t[5]),e[2]=0)):i==="YXZ"?(e[0]=Math.asin(-Math.min(Math.max(t[9],-1),1)),Math.abs(t[9])<.99999?(e[1]=Math.atan2(t[8],t[10]),e[2]=Math.atan2(t[1],t[5])):(e[1]=Math.atan2(-t[2],t[0]),e[2]=0)):i==="ZXY"?(e[0]=Math.asin(Math.min(Math.max(t[6],-1),1)),Math.abs(t[6])<.99999?(e[1]=Math.atan2(-t[2],t[10]),e[2]=Math.atan2(-t[4],t[5])):(e[1]=0,e[2]=Math.atan2(t[1],t[0]))):i==="ZYX"?(e[1]=Math.asin(-Math.min(Math.max(t[2],-1),1)),Math.abs(t[2])<.99999?(e[0]=Math.atan2(t[6],t[10]),e[2]=Math.atan2(t[1],t[0])):(e[0]=0,e[2]=Math.atan2(-t[4],t[5]))):i==="YZX"?(e[2]=Math.asin(Math.min(Math.max(t[1],-1),1)),Math.abs(t[1])<.99999?(e[0]=Math.atan2(-t[9],t[5]),e[1]=Math.atan2(-t[2],t[0])):(e[0]=0,e[1]=Math.atan2(t[8],t[10]))):i==="XZY"&&(e[2]=Math.asin(-Math.min(Math.max(t[4],-1),1)),Math.abs(t[4])<.99999?(e[0]=Math.atan2(t[6],t[5]),e[1]=Math.atan2(t[8],t[0])):(e[0]=Math.atan2(-t[9],t[10]),e[1]=0)),e}var Ee=new I,j=class extends Array{constructor(t=0,i=t,r=t,s="YXZ"){super(t,i,r),this.order=s,this.onChange=()=>{},this._target=this;let n=["0","1","2"];return new Proxy(this,{set(a,h){let o=Reflect.set(...arguments);return o&&n.includes(h)&&a.onChange(),o}})}get x(){return this[0]}get y(){return this[1]}get z(){return this[2]}set x(t){this._target[0]=t,this.onChange()}set y(t){this._target[1]=t,this.onChange()}set z(t){this._target[2]=t,this.onChange()}set(t,i=t,r=t){return t.length?this.copy(t):(this._target[0]=t,this._target[1]=i,this._target[2]=r,this.onChange(),this)}copy(t){return this._target[0]=t[0],this._target[1]=t[1],this._target[2]=t[2],this.onChange(),this}reorder(t){return this._target.order=t,this.onChange(),this}fromRotationMatrix(t,i=this.order){return Me(this._target,t,i),this.onChange(),this}fromQuaternion(t,i=this.order,r){return Ee.fromQuaternion(t),this._target.fromRotationMatrix(Ee,i),r||this.onChange(),this}fromArray(t,i=0){return this._target[0]=t[i],this._target[1]=t[i+1],this._target[2]=t[i+2],this}toArray(t=[],i=0){return t[i]=this[0],t[i+1]=this[1],t[i+2]=this[2],t}};var O=class{constructor(){this.parent=null,this.children=[],this.visible=!0,this.matrix=new I,this.worldMatrix=new I,this.matrixAutoUpdate=!0,this.worldMatrixNeedsUpdate=!1,this.position=new y,this.quaternion=new U,this.scale=new y(1),this.rotation=new j,this.up=new y(0,1,0),this.rotation._target.onChange=()=>this.quaternion.fromEuler(this.rotation,!0),this.quaternion._target.onChange=()=>this.rotation.fromQuaternion(this.quaternion,void 0,!0)}setParent(t,i=!0){this.parent&&t!==this.parent&&this.parent.removeChild(this,!1),this.parent=t,i&&t&&t.addChild(this,!1)}addChild(t,i=!0){~this.children.indexOf(t)||this.children.push(t),i&&t.setParent(this,!1)}removeChild(t,i=!0){~this.children.indexOf(t)&&this.children.splice(this.children.indexOf(t),1),i&&t.setParent(null,!1)}updateMatrixWorld(t){this.matrixAutoUpdate&&this.updateMatrix(),(this.worldMatrixNeedsUpdate||t)&&(this.parent===null?this.worldMatrix.copy(this.matrix):this.worldMatrix.multiply(this.parent.worldMatrix,this.matrix),this.worldMatrixNeedsUpdate=!1,t=!0);for(let i=0,r=this.children.length;i<r;i++)this.children[i].updateMatrixWorld(t)}updateMatrix(){this.matrix.compose(this.quaternion,this.position,this.scale),this.worldMatrixNeedsUpdate=!0}traverse(t){if(!t(this))for(let i=0,r=this.children.length;i<r;i++)this.children[i].traverse(t)}decompose(){this.matrix.decompose(this.quaternion._target,this.position,this.scale),this.rotation.fromQuaternion(this.quaternion)}lookAt(t,i=!1){i?this.matrix.lookAt(this.position,t,this.up):this.matrix.lookAt(t,this.position,this.up),this.matrix.getRotation(this.quaternion._target),this.rotation.fromQuaternion(this.quaternion)}};function Ae(e,t){return e[0]=t[0],e[1]=t[1],e[2]=t[2],e[3]=t[4],e[4]=t[5],e[5]=t[6],e[6]=t[8],e[7]=t[9],e[8]=t[10],e}function _e(e,t){let i=t[0],r=t[1],s=t[2],n=t[3],a=i+i,h=r+r,o=s+s,l=i*a,c=r*a,f=r*h,u=s*a,p=s*h,d=s*o,m=n*a,g=n*h,x=n*o;return e[0]=1-f-d,e[3]=c-x,e[6]=u+g,e[1]=c+x,e[4]=1-l-d,e[7]=p-m,e[2]=u-g,e[5]=p+m,e[8]=1-l-f,e}function ve(e,t){return e[0]=t[0],e[1]=t[1],e[2]=t[2],e[3]=t[3],e[4]=t[4],e[5]=t[5],e[6]=t[6],e[7]=t[7],e[8]=t[8],e}function be(e,t,i,r,s,n,a,h,o,l){return e[0]=t,e[1]=i,e[2]=r,e[3]=s,e[4]=n,e[5]=a,e[6]=h,e[7]=o,e[8]=l,e}function Fe(e){return e[0]=1,e[1]=0,e[2]=0,e[3]=0,e[4]=1,e[5]=0,e[6]=0,e[7]=0,e[8]=1,e}function Te(e,t){let i=t[0],r=t[1],s=t[2],n=t[3],a=t[4],h=t[5],o=t[6],l=t[7],c=t[8],f=c*a-h*l,u=-c*n+h*o,p=l*n-a*o,d=i*f+r*u+s*p;return d?(d=1/d,e[0]=f*d,e[1]=(-c*r+s*l)*d,e[2]=(h*r-s*a)*d,e[3]=u*d,e[4]=(c*i-s*o)*d,e[5]=(-h*i+s*n)*d,e[6]=p*d,e[7]=(-l*i+r*o)*d,e[8]=(a*i-r*n)*d,e):null}function Mt(e,t,i){let r=t[0],s=t[1],n=t[2],a=t[3],h=t[4],o=t[5],l=t[6],c=t[7],f=t[8],u=i[0],p=i[1],d=i[2],m=i[3],g=i[4],x=i[5],v=i[6],M=i[7],w=i[8];return e[0]=u*r+p*a+d*l,e[1]=u*s+p*h+d*c,e[2]=u*n+p*o+d*f,e[3]=m*r+g*a+x*l,e[4]=m*s+g*h+x*c,e[5]=m*n+g*o+x*f,e[6]=v*r+M*a+w*l,e[7]=v*s+M*h+w*c,e[8]=v*n+M*o+w*f,e}function Re(e,t,i){let r=t[0],s=t[1],n=t[2],a=t[3],h=t[4],o=t[5],l=t[6],c=t[7],f=t[8],u=i[0],p=i[1];return e[0]=r,e[1]=s,e[2]=n,e[3]=a,e[4]=h,e[5]=o,e[6]=u*r+p*a+l,e[7]=u*s+p*h+c,e[8]=u*n+p*o+f,e}function ze(e,t,i){let r=t[0],s=t[1],n=t[2],a=t[3],h=t[4],o=t[5],l=t[6],c=t[7],f=t[8],u=Math.sin(i),p=Math.cos(i);return e[0]=p*r+u*a,e[1]=p*s+u*h,e[2]=p*n+u*o,e[3]=p*a-u*r,e[4]=p*h-u*s,e[5]=p*o-u*n,e[6]=l,e[7]=c,e[8]=f,e}function Le(e,t,i){let r=i[0],s=i[1];return e[0]=r*t[0],e[1]=r*t[1],e[2]=r*t[2],e[3]=s*t[3],e[4]=s*t[4],e[5]=s*t[5],e[6]=t[6],e[7]=t[7],e[8]=t[8],e}function Se(e,t){let i=t[0],r=t[1],s=t[2],n=t[3],a=t[4],h=t[5],o=t[6],l=t[7],c=t[8],f=t[9],u=t[10],p=t[11],d=t[12],m=t[13],g=t[14],x=t[15],v=i*h-r*a,M=i*o-s*a,w=i*l-n*a,A=r*o-s*h,E=r*l-n*h,b=s*l-n*o,L=c*m-f*d,S=c*g-u*d,F=c*x-p*d,P=f*g-u*m,T=f*x-p*m,C=u*x-p*g,_=v*C-M*T+w*P+A*F-E*S+b*L;return _?(_=1/_,e[0]=(h*C-o*T+l*P)*_,e[1]=(o*F-a*C-l*S)*_,e[2]=(a*T-h*F+l*L)*_,e[3]=(s*T-r*C-n*P)*_,e[4]=(i*C-s*F+n*S)*_,e[5]=(r*F-i*T-n*L)*_,e[6]=(m*b-g*E+x*A)*_,e[7]=(g*w-d*b-x*M)*_,e[8]=(d*E-m*w+x*v)*_,e):null}var k=class extends Array{constructor(t=1,i=0,r=0,s=0,n=1,a=0,h=0,o=0,l=1){return super(t,i,r,s,n,a,h,o,l),this}set(t,i,r,s,n,a,h,o,l){return t.length?this.copy(t):(be(this,t,i,r,s,n,a,h,o,l),this)}translate(t,i=this){return Re(this,i,t),this}rotate(t,i=this){return ze(this,i,t),this}scale(t,i=this){return Le(this,i,t),this}multiply(t,i){return i?Mt(this,t,i):Mt(this,this,t),this}identity(){return Fe(this),this}copy(t){return ve(this,t),this}fromMatrix4(t){return Ae(this,t),this}fromQuaternion(t){return _e(this,t),this}fromBasis(t,i,r){return this.set(t[0],t[1],t[2],i[0],i[1],i[2],r[0],r[1],r[2]),this}inverse(t=this){return Te(this,t),this}getNormalMatrix(t){return Se(this,t),this}};var $e=0,z=class extends O{constructor(t,{geometry:i,program:r,mode:s=t.TRIANGLES,frustumCulled:n=!0,renderOrder:a=0}={}){super(),t.canvas||console.error("gl not passed as first argument to Mesh"),this.gl=t,this.id=$e++,this.geometry=i,this.program=r,this.mode=s,this.frustumCulled=n,this.renderOrder=a,this.modelViewMatrix=new I,this.normalMatrix=new k,this.beforeRenderCallbacks=[],this.afterRenderCallbacks=[]}onBeforeRender(t){return this.beforeRenderCallbacks.push(t),this}onAfterRender(t){return this.afterRenderCallbacks.push(t),this}draw({camera:t}={}){t&&(this.program.uniforms.modelMatrix||Object.assign(this.program.uniforms,{modelMatrix:{value:null},viewMatrix:{value:null},modelViewMatrix:{value:null},normalMatrix:{value:null},projectionMatrix:{value:null},cameraPosition:{value:null}}),this.program.uniforms.projectionMatrix.value=t.projectionMatrix,this.program.uniforms.cameraPosition.value=t.worldPosition,this.program.uniforms.viewMatrix.value=t.viewMatrix,this.modelViewMatrix.multiply(t.viewMatrix,this.worldMatrix),this.normalMatrix.getNormalMatrix(this.modelViewMatrix),this.program.uniforms.modelMatrix.value=this.worldMatrix,this.program.uniforms.modelViewMatrix.value=this.modelViewMatrix,this.program.uniforms.normalMatrix.value=this.normalMatrix),this.beforeRenderCallbacks.forEach(r=>r&&r({mesh:this,camera:t}));let i=this.program.cullFace&&this.worldMatrix.determinant()<0;this.program.use({flipFaces:i}),this.geometry.draw({mode:this.mode,program:this.program}),this.afterRenderCallbacks.forEach(r=>r&&r({mesh:this,camera:t}))}};var Vi=new Uint8Array(4);var B=class extends R{constructor(t,{attributes:i={}}={}){Object.assign(i,{position:{size:2,data:new Float32Array([-1,-1,3,-1,-1,3])},uv:{size:2,data:new Float32Array([0,0,2,0,0,2])}}),super(t,i)}};var Et="catmullrom",At="cubicbezier",Ie="quadraticbezier",G=new y,X=new y,$=new y,Pe=new y;function ii(e,t,i=.168,r=.168){if(t<1?G.sub(e[1],e[0]).scale(i).add(e[0]):G.sub(e[t+1],e[t-1]).scale(i).add(e[t]),t>e.length-3){let s=e.length-1;X.sub(e[s-1],e[s]).scale(r).add(e[s])}else X.sub(e[t],e[t+2]).scale(r).add(e[t+1]);return[G.clone(),X.clone()]}function Ce(e,t,i,r){let s=1-e;G.copy(t).scale(s**2),X.copy(i).scale(2*s*e),$.copy(r).scale(e**2);let n=new y;return n.add(G,X).add($),n}function Ne(e,t,i,r,s){let n=1-e;G.copy(t).scale(n**3),X.copy(i).scale(3*n**2*e),$.copy(r).scale(3*n*e**2),Pe.copy(s).scale(e**3);let a=new y;return a.add(G,X).add($).add(Pe),a}var W=class e{constructor({points:t=[new y(0,0,0),new y(0,1,0),new y(1,1,0),new y(1,0,0)],divisions:i=12,type:r=Et}={}){this.points=t,this.divisions=i,this.type=r}_getQuadraticBezierPoints(t=this.divisions){let i=[],r=this.points.length;if(r<3)return console.warn("Not enough points provided."),[];let s=this.points[0],n=this.points[1],a=this.points[2];for(let o=0;o<=t;o++){let l=Ce(o/t,s,n,a);i.push(l)}let h=3;for(;r-h>0;){s.copy(a),n=a.scale(2).sub(n),a=this.points[h];for(let o=1;o<=t;o++){let l=Ce(o/t,s,n,a);i.push(l)}h++}return i}_getCubicBezierPoints(t=this.divisions){let i=[],r=this.points.length;if(r<4)return console.warn("Not enough points provided."),[];let s=this.points[0],n=this.points[1],a=this.points[2],h=this.points[3];for(let l=0;l<=t;l++){let c=Ne(l/t,s,n,a,h);i.push(c)}let o=4;for(;r-o>1;){s.copy(h),n=h.scale(2).sub(a),a=this.points[o],h=this.points[o+1];for(let l=1;l<=t;l++){let c=Ne(l/t,s,n,a,h);i.push(c)}o+=2}return i}_getCatmullRomPoints(t=this.divisions,i=.168,r=.168){let s=[];if(this.points.length<=2)return this.points;let a;return this.points.forEach((h,o)=>{if(o===0)a=h;else{let[l,c]=ii(this.points,o-1,i,r),f=new e({points:[a,l,c,h],type:At});s.pop(),s.push(...f.getPoints(t)),a=h}}),s}getPoints(t=this.divisions,i=.168,r=.168){let s=this.type;return s===Ie?this._getQuadraticBezierPoints(t):s===At?this._getCubicBezierPoints(t):s===Et?this._getCatmullRomPoints(t,i,r):this.points}};W.CATMULLROM=Et;W.CUBICBEZIER=At;W.QUADRATICBEZIER=Ie;window.OGL={Renderer:Y,Program:N,Triangle:B,Mesh:z};})();
+</script>
+<script>
+// ---------- LIGHT RAYS: fondo de rayos de luz, fijo, visible a partir de "Tratamientos capilares" (WebGL via ogl) ----------
+(function initLightRays(){
+  try {
+    const container = document.getElementById('lightRaysContainer');
+    if (!container) return;
+
+    // respeta la preferencia de movimiento reducido: no se monta el efecto
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    if (!window.OGL) { console.warn('Light Rays: la librería ogl no se cargó.'); return; }
+    const { Renderer, Program, Triangle, Mesh } = window.OGL;
+
+    const options = {
+      raysOrigin: 'top-center',
+      raysColor: '#ffffff',
+      raysSpeed: 1,
+      lightSpread: 0.5,
+      rayLength: 3,
+      pulsating: false,
+      fadeDistance: 1,
+      saturation: 1,
+      followMouse: true,
+      mouseInfluence: 0.1,
+      noiseAmount: 0,
+      distortion: 0
+    };
+
+    const hexToRgb = (hex) => {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
+    };
+
+    const getAnchorAndDir = (origin, w, h) => {
+      const outside = 0.2;
+      switch (origin) {
+        case 'top-left': return { anchor: [0, -outside * h], dir: [0, 1] };
+        case 'top-right': return { anchor: [w, -outside * h], dir: [0, 1] };
+        case 'left': return { anchor: [-outside * w, 0.5 * h], dir: [1, 0] };
+        case 'right': return { anchor: [(1 + outside) * w, 0.5 * h], dir: [-1, 0] };
+        case 'bottom-left': return { anchor: [0, (1 + outside) * h], dir: [0, -1] };
+        case 'bottom-center': return { anchor: [0.5 * w, (1 + outside) * h], dir: [0, -1] };
+        case 'bottom-right': return { anchor: [w, (1 + outside) * h], dir: [0, -1] };
+        default: return { anchor: [0.5 * w, -outside * h], dir: [0, 1] }; // "top-center"
+      }
+    };
+
+    const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true });
+    const gl = renderer.gl;
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
+    container.appendChild(gl.canvas);
+
+    const vert = `
+attribute vec2 position;
+varying vec2 vUv;
+void main() {
+  vUv = position * 0.5 + 0.5;
+  gl_Position = vec4(position, 0.0, 1.0);
+}`;
+
+    const frag = `precision highp float;
+
+uniform float iTime;
+uniform vec2  iResolution;
+
+uniform vec2  rayPos;
+uniform vec2  rayDir;
+uniform vec3  raysColor;
+uniform float raysSpeed;
+uniform float lightSpread;
+uniform float rayLength;
+uniform float pulsating;
+uniform float fadeDistance;
+uniform float saturation;
+uniform vec2  mousePos;
+uniform float mouseInfluence;
+uniform float noiseAmount;
+uniform float distortion;
+
+varying vec2 vUv;
+
+float noise(vec2 st) {
+  return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+float rayStrength(vec2 raySource, vec2 rayRefDirection, vec2 coord,
+                  float seedA, float seedB, float speed) {
+  vec2 sourceToCoord = coord - raySource;
+  vec2 dirNorm = normalize(sourceToCoord);
+  float cosAngle = dot(dirNorm, rayRefDirection);
+
+  float distortedAngle = cosAngle + distortion * sin(iTime * 2.0 + length(sourceToCoord) * 0.01) * 0.2;
+
+  float spreadFactor = pow(max(distortedAngle, 0.0), 1.0 / max(lightSpread, 0.001));
+
+  float distance = length(sourceToCoord);
+  float maxDistance = iResolution.x * rayLength;
+  float lengthFalloff = clamp((maxDistance - distance) / maxDistance, 0.0, 1.0);
+
+  float fadeFalloff = clamp((iResolution.x * fadeDistance - distance) / (iResolution.x * fadeDistance), 0.5, 1.0);
+  float pulse = pulsating > 0.5 ? (0.8 + 0.2 * sin(iTime * speed * 3.0)) : 1.0;
+
+  float baseStrength = clamp(
+    (0.45 + 0.15 * sin(distortedAngle * seedA + iTime * speed)) +
+    (0.3 + 0.2 * cos(-distortedAngle * seedB + iTime * speed)),
+    0.0, 1.0
+  );
+
+  return baseStrength * lengthFalloff * fadeFalloff * spreadFactor * pulse;
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+  vec2 coord = vec2(fragCoord.x, iResolution.y - fragCoord.y);
+
+  vec2 finalRayDir = rayDir;
+  if (mouseInfluence > 0.0) {
+    vec2 mouseScreenPos = mousePos * iResolution.xy;
+    vec2 mouseDirection = normalize(mouseScreenPos - rayPos);
+    finalRayDir = normalize(mix(rayDir, mouseDirection, mouseInfluence));
+  }
+
+  vec4 rays1 = vec4(1.0) *
+               rayStrength(rayPos, finalRayDir, coord, 36.2214, 21.11349,
+                           1.5 * raysSpeed);
+  vec4 rays2 = vec4(1.0) *
+               rayStrength(rayPos, finalRayDir, coord, 22.3991, 18.0234,
+                           1.1 * raysSpeed);
+
+  fragColor = rays1 * 0.5 + rays2 * 0.4;
+
+  if (noiseAmount > 0.0) {
+    float n = noise(coord * 0.01 + iTime * 0.1);
+    fragColor.rgb *= (1.0 - noiseAmount + noiseAmount * n);
+  }
+
+  float brightness = 1.0 - (coord.y / iResolution.y);
+  fragColor.x *= 0.1 + brightness * 0.8;
+  fragColor.y *= 0.3 + brightness * 0.6;
+  fragColor.z *= 0.5 + brightness * 0.5;
+
+  if (saturation != 1.0) {
+    float gray = dot(fragColor.rgb, vec3(0.299, 0.587, 0.114));
+    fragColor.rgb = mix(vec3(gray), fragColor.rgb, saturation);
+  }
+
+  fragColor.rgb *= raysColor;
+}
+
+void main() {
+  vec4 color;
+  mainImage(color, gl_FragCoord.xy);
+  gl_FragColor  = color;
+}`;
+
+    const uniforms = {
+      iTime: { value: 0 },
+      iResolution: { value: [1, 1] },
+      rayPos: { value: [0, 0] },
+      rayDir: { value: [0, 1] },
+      raysColor: { value: hexToRgb(options.raysColor) },
+      raysSpeed: { value: options.raysSpeed },
+      lightSpread: { value: options.lightSpread },
+      rayLength: { value: options.rayLength },
+      pulsating: { value: options.pulsating ? 1.0 : 0.0 },
+      fadeDistance: { value: options.fadeDistance },
+      saturation: { value: options.saturation },
+      mousePos: { value: [0.5, 0.5] },
+      mouseInfluence: { value: options.mouseInfluence },
+      noiseAmount: { value: options.noiseAmount },
+      distortion: { value: options.distortion }
+    };
+
+    const geometry = new Triangle(gl);
+    const program = new Program(gl, { vertex: vert, fragment: frag, uniforms });
+    const mesh = new Mesh(gl, { geometry, program });
+
+    const mouse = { x: 0.5, y: 0.5 };
+    const smoothMouse = { x: 0.5, y: 0.5 };
+
+    function updatePlacement(){
+      renderer.dpr = Math.min(window.devicePixelRatio, 2);
+      const wCSS = container.clientWidth;
+      const hCSS = container.clientHeight;
+      renderer.setSize(wCSS, hCSS);
+      const dpr = renderer.dpr;
+      const w = wCSS * dpr;
+      const h = hCSS * dpr;
+      uniforms.iResolution.value = [w, h];
+      const { anchor, dir } = getAnchorAndDir(options.raysOrigin, w, h);
+      uniforms.rayPos.value = anchor;
+      uniforms.rayDir.value = dir;
+    }
+
+    function loop(t){
+      uniforms.iTime.value = t * 0.001;
+      if (options.followMouse && options.mouseInfluence > 0) {
+        const smoothing = 0.92;
+        smoothMouse.x = smoothMouse.x * smoothing + mouse.x * (1 - smoothing);
+        smoothMouse.y = smoothMouse.y * smoothing + mouse.y * (1 - smoothing);
+        uniforms.mousePos.value = [smoothMouse.x, smoothMouse.y];
+      }
+      try {
+        renderer.render({ scene: mesh });
+        requestAnimationFrame(loop);
+      } catch (err) {
+        console.warn('Error renderizando Light Rays:', err);
+      }
+    }
+
+    function handleMouseMove(e){
+      const rect = container.getBoundingClientRect();
+      mouse.x = (e.clientX - rect.left) / rect.width;
+      mouse.y = (e.clientY - rect.top) / rect.height;
+    }
+
+    window.addEventListener('resize', updatePlacement);
+    if (options.followMouse) window.addEventListener('mousemove', handleMouseMove);
+
+    updatePlacement();
+    requestAnimationFrame(loop);
+  } catch (err) {
+    console.warn('No se pudo iniciar el fondo Light Rays:', err);
+  }
 })();
 </script>
 </body>
