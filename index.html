@@ -720,7 +720,6 @@
       height: 100%;
       border: 0;
       display: block;
-      filter: grayscale(1) contrast(1.15) brightness(.72);
     }
 
     .loc-body {
@@ -771,7 +770,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #000;
+      background: #2c6b52;
       color: #fff;
       border-radius: 999px;
       padding: 1rem 1.9rem;
@@ -783,7 +782,7 @@
     }
 
     .loc-btn:hover {
-      background: #2c6b52;
+      background: #000;
       transform: translateY(-1px);
     }
 
@@ -904,38 +903,6 @@
       border-radius: inherit;
       overflow: hidden;
       z-index: 1;
-    }
-
-    /* Liquid glass "coming soon" card */
-    .kf-card.soon {
-      background: linear-gradient(160deg, rgba(60, 60, 60, .55), rgba(10, 10, 10, .75));
-      backdrop-filter: blur(18px) saturate(140%);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      border: 1px solid rgba(255, 255, 255, .14);
-      color: var(--color-light-font);
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, .2), inset 0 -20px 40px rgba(0, 0, 0, .35), 0 20px 40px rgba(0, 0, 0, .25);
-      gap: calc(var(--spacing) * 6);
-    }
-
-    .soon-mark {
-      width: 5rem;
-      height: 5rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .5), rgba(255, 255, 255, .05) 60%), rgba(255, 255, 255, .08);
-      border: 1px solid rgba(255, 255, 255, .18);
-    }
-
-    .kf-card.soon p {
-      font-size: var(--text-lg);
-      max-width: 16rem;
-      opacity: .9;
     }
 
     .kf-media-placeholder {
@@ -1217,7 +1184,7 @@
       font-size: var(--text-xs);
       letter-spacing: var(--tracking-widest);
       text-transform: uppercase;
-      color: var(--color-black);
+      color: #2c6b52;
       text-decoration: none;
       white-space: nowrap;
     }
@@ -2298,8 +2265,7 @@
       font-size: var(--text-xs);
       letter-spacing: var(--tracking-widest);
       text-transform: uppercase;
-      color: var(--color-light-font);
-      opacity: .6;
+      color: #fff;
     }
 
     .appointment-form .form-full {
@@ -2329,7 +2295,7 @@
     .appointment-form input:focus,
     .appointment-form textarea:focus {
       outline: none;
-      border-color: #fff;
+      border-color: #4a9c7a;
     }
 
     .appointment-submit {
@@ -2771,20 +2737,20 @@
      Blur Reveal (entrada difuminada para elementos sin animar)
      ============================================================ */
 
-    /* ---------- SHINY TEXT: brillo continuo sobre los titulares ---------- */
+    /* ---------- SHINY TEXT: brillo continuo sobre los titulares (verde de marca) ---------- */
     .shiny-text {
-      --shiny-base: var(--color-light-font);
+      --shiny-base: #4daa74;
       --shiny-shine: #ffffff;
       background-image: linear-gradient(120deg,
-          var(--shiny-base) 0%, var(--shiny-base) 38%,
+          var(--shiny-base) 0%, var(--shiny-base) 35%,
           var(--shiny-shine) 50%,
-          var(--shiny-base) 62%, var(--shiny-base) 100%);
-      background-size: 220% auto;
+          var(--shiny-base) 65%, var(--shiny-base) 100%);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       -webkit-text-fill-color: transparent;
-      animation: shiny-sweep 6.5s linear infinite;
+      animation: shiny-sweep 2.5s linear infinite;
     }
 
     @keyframes shiny-sweep {
@@ -3113,14 +3079,14 @@
               data-desc="Injerto capilar con valoración médica y diseño capilar personalizado para un resultado armónico y acorde a tu rostro."
               data-q="¿Qué incluye el tratamiento?"
               data-a="Planificación + extracción de folículos de la zona donante e implantación en las áreas con menor densidad (técnica FUE/DHI según el caso), con indicaciones y seguimiento post-procedimiento."
-              data-link="injerto-capilar.html" data-linktext="Ver servicio">
+              data-link="injerto-capilar.html" data-linktext="Más información">
               <div class="service-media">
                 <img src="./img/injerto-capilar.webp" alt="Injerto Capilar en Medical Linares" class="service-img" draggable="false">
               </div>
               <div class="service-head">
                 <h3>Injerto Capilar</h3>
                 <a class="service-link" href="injerto-capilar.html" target="_blank"
-                  rel="noopener">Ver servicio →</a>
+                  rel="noopener">Más información →</a>
               </div>
               <p class="service-tagline">Recupera densidad con naturalidad</p>
               <p class="service-desc">Injerto capilar con valoración médica y diseño capilar personalizado para un
@@ -3131,14 +3097,14 @@
               data-desc="Lipoláser en Linares para ayudar a definir zonas con grasa localizada con un tratamiento cómodo y adaptado a tu objetivo."
               data-q="¿Cómo funciona?"
               data-a="Tecnología láser de baja intensidad que actúa sobre el tejido adiposo para favorecer la reducción de volumen y mejorar el contorno, con protocolo personalizado y recomendaciones posteriores para potenciar resultados."
-              data-link="lipolaser.html" data-linktext="Ver servicio">
+              data-link="lipolaser.html" data-linktext="Más información">
               <div class="service-media">
                 <img src="./img/lipolaser.webp" alt="Lipoláser en Medical Linares" class="service-img" draggable="false">
               </div>
               <div class="service-head">
                 <h3>Lipoláser</h3>
-                <a class="service-link" href="lipolaser.html" target="_blank" rel="noopener">Ver
-                  servicio →</a>
+                <a class="service-link" href="lipolaser.html" target="_blank" rel="noopener">Más
+                  información →</a>
               </div>
               <p class="service-tagline">Reduce volumen sin cirugía</p>
               <p class="service-desc">Lipoláser en Linares para ayudar a definir zonas con grasa localizada con un
@@ -3148,14 +3114,14 @@
             <div class="service-card" tabindex="0" data-title="Medicina Estética" data-tagline="Natural, sin excesos"
               data-desc="Tratamientos a medida para mejorar tu rostro sin cambiarlo." data-q="¿Qué trabajamos?"
               data-a="Arrugas, volumen e hidratación con plan personalizado."
-              data-link="medicina-estetica.html" data-linktext="Ver servicio">
+              data-link="medicina-estetica.html" data-linktext="Más información">
               <div class="service-media">
                 <img src="./img/medicina-estetica.webp" alt="Medicina Estética en Medical Linares" class="service-img" draggable="false">
               </div>
               <div class="service-head">
                 <h3>Medicina Estética</h3>
                 <a class="service-link" href="https://medicallinares.com/medicina-estetica/" target="_blank"
-                  rel="noopener">Ver servicio →</a>
+                  rel="noopener">Más información →</a>
               </div>
               <p class="service-tagline">Natural, sin excesos</p>
               <p class="service-desc">Tratamientos a medida para mejorar tu rostro sin cambiarlo.</p>
@@ -3164,14 +3130,14 @@
             <div class="service-card" tabindex="0" data-title="Dermatología" data-tagline="Piel sana, controlada"
               data-desc="Diagnóstico y tratamiento dermatológico adaptado a tu caso." data-q="¿Qué tratamos?"
               data-a="Acné, manchas, dermatitis, psoriasis e infecciones."
-              data-link="dermatologia.html" data-linktext="Ver servicio">
+              data-link="dermatologia.html" data-linktext="Más información">
               <div class="service-media">
                 <img src="./img/dermatologia.webp" alt="Dermatología en Medical Linares" class="service-img" draggable="false">
               </div>
               <div class="service-head">
                 <h3>Dermatología</h3>
                 <a class="service-link" href="dermatologia.html" target="_blank"
-                  rel="noopener">Ver servicio →</a>
+                  rel="noopener">Más información →</a>
               </div>
               <p class="service-tagline">Piel sana, controlada</p>
               <p class="service-desc">Diagnóstico y tratamiento dermatológico adaptado a tu caso.</p>
@@ -3181,14 +3147,14 @@
               data-tagline="Mejora visible, sin complicarte"
               data-desc="Tratamientos faciales y corporales para cuidar, revitalizar y definir."
               data-q="¿Para qué sirve?" data-a="Hidratación, firmeza y regeneración con plan personalizado."
-              data-link="ttos-faciales-y-corporales.html" data-linktext="Ver tratamientos">
+              data-link="ttos-faciales-y-corporales.html" data-linktext="Más información">
               <div class="service-media">
                 <img src="./img/tratamientos.webp" alt="Tratamientos en Medical Linares" class="service-img" draggable="false">
               </div>
               <div class="service-head">
                 <h3>Tratamientos</h3>
                 <a class="service-link" href="ttos-faciales-y-corporales.html" target="_blank"
-                  rel="noopener">Ver tratamientos →</a>
+                  rel="noopener">Más información →</a>
               </div>
               <p class="service-tagline">Mejora visible, sin complicarte</p>
               <p class="service-desc">Tratamientos faciales y corporales para cuidar, revitalizar y definir.</p>
@@ -3197,14 +3163,14 @@
             <div class="service-card" tabindex="0" data-title="Vascular" data-tagline="Piernas más ligeras"
               data-desc="Tratamientos vasculares para mejorar circulación y estética." data-q="¿Qué tratamos?"
               data-a="Varices, arañas vasculares y molestias." data-link="vascular.html"
-              data-linktext="Ver servicio">
+              data-linktext="Más información">
               <div class="service-media">
                 <img src="./img/vascular.webp" alt="Tratamientos vasculares en Medical Linares" class="service-img" draggable="false">
               </div>
               <div class="service-head">
                 <h3>Vascular</h3>
-                <a class="service-link" href="vascular.html" target="_blank" rel="noopener">Ver
-                  servicio →</a>
+                <a class="service-link" href="vascular.html" target="_blank" rel="noopener">Más
+                  información →</a>
               </div>
               <p class="service-tagline">Piernas más ligeras</p>
               <p class="service-desc">Tratamientos vasculares para mejorar circulación y estética.</p>
@@ -3213,14 +3179,14 @@
             <div class="service-card" tabindex="0" data-title="Láser" data-tagline="Piel más uniforme"
               data-desc="Láser para mejorar textura, tono y marcas." data-q="¿Para qué sirve?"
               data-a="Manchas, cicatrices, rojeces y rejuvenecimiento." data-link="laser.html"
-              data-linktext="Ver servicio">
+              data-linktext="Más información">
               <div class="service-media">
                 <img src="./img/laser.webp" alt="Láser en Medical Linares" class="service-img" draggable="false">
               </div>
               <div class="service-head">
                 <h3>Láser</h3>
-                <a class="service-link" href="laser.html" target="_blank" rel="noopener">Ver
-                  servicio →</a>
+                <a class="service-link" href="laser.html" target="_blank" rel="noopener">Más
+                  información →</a>
               </div>
               <p class="service-tagline">Piel más uniforme</p>
               <p class="service-desc">Láser para mejorar textura, tono y marcas.</p>
@@ -3236,7 +3202,7 @@
 
     <section class="services-more">
       <div class="services-more-inner">
-        <p>Ver más de<br>Nuestros Servicios</p>
+        <p class="shiny-text">Ver más de<br>Nuestros Servicios</p>
         <a class="btn btn-green" href="index.html" target="_blank" rel="noopener">
           <span class="word">Ver todos los servicios</span>
           <span class="arrow-circle">
@@ -3312,11 +3278,9 @@
             <div class="loc-body">
               <span class="loc-title">Linares (Jaén)</span>
               <span class="loc-postal">CP 23700 · Linares, Jaén</span>
-              <a class="loc-phone" href="tel:+34953073025">953 07 30 25</a>
+              <a class="loc-phone" href="tel:+34645036752">645 03 67 52</a>
               <div class="loc-actions">
-                <a class="loc-btn"
-                  href="https://medicallinares.com/#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjU2NCIsInRvZ2dsZSI6ZmFsc2V9"
-                  target="_blank" rel="noopener">Contáctanos</a>
+                <a class="loc-btn" href="ciudades.html">Contáctanos</a>
                 <a class="loc-more" href="./clinicas/medicalinares.html">Más información</a>
               </div>
             </div>
@@ -3336,21 +3300,12 @@
               <span class="loc-postal">CP 18200 · Maracena, Granada</span>
               <a class="loc-phone" href="tel:+34650064923">650 06 49 23</a>
               <div class="loc-actions">
-                <a class="loc-btn"
-                  href="https://medicallinares.com/#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjU2NCIsInRvZ2dsZSI6ZmFsc2V9"
-                  target="_blank" rel="noopener">Contáctanos</a>
+                <a class="loc-btn" href="ciudades.html">Contáctanos</a>
                 <a class="loc-more" href="./clinicas/medicalgranada.html">Más información</a>
               </div>
             </div>
           </div>
           <div class="edge-light"></div>
-        </div>
-
-        <!-- Próximamente -->
-        <div class="kf-card soon">
-          <span class="soon-mark">?</span>
-          <span class="kf-card-title">Próximamente</span>
-          <p>Muy pronto, más localizaciones cerca de ti.</p>
         </div>
       </div>
     </section>
