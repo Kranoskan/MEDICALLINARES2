@@ -158,17 +158,47 @@
       pointer-events: none;
     }
 
-    /* Section below the video hero for rating + right content */
-    .hero-below {
-      position: relative;
+    /* Capa negra sobre el video: lo oscurece los 2.5s iniciales (mientras el titular esta a pantalla completa) y luego se retira */
+    .hero-dark-veil {
+      position: absolute;
+      inset: 0;
       z-index: 2;
+      background: #000;
+      opacity: .82;
+      pointer-events: none;
+      animation: hero-dark-veil-fade .8s ease 2.5s forwards;
+    }
+
+    @keyframes hero-dark-veil-fade {
+      from {
+        opacity: .82;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-dark-veil {
+        animation-duration: .01ms;
+        animation-delay: 0s;
+      }
+    }
+
+    /* Rating + acciones: superpuestos sobre el video, en la franja del degradado inferior */
+    .hero-below {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 4;
       display: flex;
       flex-direction: row;
-      align-items: flex-start;
+      align-items: flex-end;
       justify-content: space-between;
       gap: 2rem;
       padding: calc(var(--spacing) * 10) calc(var(--spacing) * 10) calc(var(--spacing) * 12);
-      background: var(--bg);
       flex-wrap: wrap;
     }
 
@@ -185,6 +215,7 @@
     @media (max-width: 640px) {
       .hero-below {
         flex-direction: column;
+        align-items: flex-start;
         gap: 1.5rem;
       }
       .hero-below .hero-right {
@@ -232,13 +263,19 @@
       animation: hero-video-title-reveal 3.3s ease forwards;
     }
 
+    .hero-video-title-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(.35rem, 1.4vw, .9rem);
+    }
+
     .hero-video-title-text {
       margin: 0;
       text-align: center;
       text-transform: uppercase;
-      font-family: 'Roboto Flex', var(--font-neue);
-      font-variation-settings: 'wght' 1000, 'wdth' 151;
-      font-weight: 900;
+      font-family: Impact, 'Arial Narrow Bold', var(--font-neue);
+      font-weight: 400;
       font-size: clamp(2.4rem, 9vw, 7.5rem);
       line-height: .96;
       letter-spacing: -.01em;
@@ -253,6 +290,18 @@
       color: transparent;
       -webkit-text-fill-color: transparent;
       filter: grayscale(1) contrast(1.15);
+    }
+
+    .hero-video-subtitle {
+      margin: 0;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: Impact, 'Arial Narrow Bold', var(--font-neue);
+      font-weight: 400;
+      font-size: clamp(.8rem, 2.3vw, 1.5rem);
+      line-height: 1.2;
+      letter-spacing: .06em;
+      color: rgba(255, 255, 255, .85);
     }
 
     @keyframes hero-video-title-reveal {
@@ -316,6 +365,7 @@
 
     .words {
       display: inline;
+      white-space: nowrap;
     }
 
     .lines {
@@ -452,29 +502,29 @@
       transform: translate(2px, -2px);
     }
 
-    /* ---------- PEDIR CITA: version negativa (blanca) del boton, solo aqui ---------- */
+    /* ---------- PEDIR CITA: version verde (degradado), igual que btn-green ---------- */
     .btn-negative {
-      color: #111;
-      background: linear-gradient(180deg, rgba(255, 255, 255, .96) 0%, rgba(232, 232, 232, .98) 100%);
-      border: 1px solid rgba(0, 0, 0, .10);
+      color: #fff;
+      background: linear-gradient(180deg, #4a9c7a 0%, #2c6b52 100%);
+      border: 1px solid rgba(255, 255, 255, .18);
       box-shadow:
-        inset 0 1px 1px rgba(255, 255, 255, .7),
-        inset 0 -6px 10px rgba(0, 0, 0, .05),
-        0 10px 24px rgba(0, 0, 0, .18);
+        inset 0 1px 1px rgba(255, 255, 255, .3),
+        inset 0 -6px 10px rgba(0, 0, 0, .2),
+        0 10px 24px rgba(20, 60, 45, .35);
     }
 
     .btn-negative:hover {
       box-shadow:
-        inset 0 1px 1px rgba(255, 255, 255, .8),
-        inset 0 -6px 10px rgba(0, 0, 0, .07),
-        0 14px 30px rgba(0, 0, 0, .22);
+        inset 0 1px 1px rgba(255, 255, 255, .4),
+        inset 0 -6px 10px rgba(0, 0, 0, .25),
+        0 14px 30px rgba(20, 60, 45, .45);
     }
 
     .btn-negative .arrow-circle {
       background:
-        radial-gradient(circle at 32% 28%, rgba(0, 0, 0, .3), rgba(0, 0, 0, .03) 55%),
-        rgba(0, 0, 0, .05);
-      border-color: rgba(0, 0, 0, .14);
+        radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .55), rgba(255, 255, 255, .08) 55%),
+        rgba(255, 255, 255, .14);
+      border-color: rgba(255, 255, 255, .28);
     }
 
     /* ---------- VER ESPECIALIDADES: version verde del boton, solo aqui ---------- */
@@ -519,6 +569,10 @@
       line-height: 1.25;
       color: rgba(216, 216, 216, .1);
       padding-inline: clamp(1.5rem, 8vw, 8rem);
+    }
+
+    .about-accent {
+      color: rgba(74, 156, 122, .3);
     }
 
     .line-plus {
@@ -1087,7 +1141,7 @@
       width: 5.5rem;
       height: 5.5rem;
       border-radius: 50%;
-      background: rgba(20, 20, 20, .85);
+      background: linear-gradient(180deg, rgba(74, 156, 122, .92) 0%, rgba(44, 107, 82, .92) 100%);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       display: flex;
@@ -1494,11 +1548,16 @@
     }
 
     .nav-link:hover {
-      opacity: .7;
+      color: #4a9c7a;
+      opacity: 1;
     }
 
     .topnav.on-light .nav-link {
       color: #000;
+    }
+
+    .topnav.on-light .nav-link:hover {
+      color: #4a9c7a;
     }
 
     .nav-link::after {
@@ -2948,52 +3007,57 @@
         <source src="./img/video-header.mp4" type="video/mp4">
       </video>
       <div class="hero-bg-overlay" aria-hidden="true"></div>
+      <div class="hero-dark-veil" aria-hidden="true"></div>
       <div class="hero-bottom-gradient" aria-hidden="true"></div>
       <div class="hero-video-title" id="heroVideoTitle" aria-hidden="true">
-        <h2 class="hero-video-title-text">Medical Linares</h2>
-      </div>
-    </section>
-
-    <!-- Hero below: rating + actions, positioned below the video -->
-    <div class="hero-below wrap">
-      <div class="hero-rating">
-        <span class="hero-rating-score">5/5</span>
-        <span class="hero-rating-stars" aria-hidden="true">★★★★★</span>
-        <span class="hero-rating-count">+300 Reseñas</span>
+        <div class="hero-video-title-stack">
+          <h2 class="hero-video-title-text">Medical Linares</h2>
+          <p class="hero-video-subtitle">Injerto Capilar &amp; Medicina Estética</p>
+        </div>
       </div>
 
-      <div class="hero-right">
-        <div class="hero-actions">
-          <div class="button_wrapper">
-            <a class="btn btn-green" href="#services-section" id="heroEspecialidadesToggle">
-              <span class="word">Ver Especialidades</span>
-              <span class="arrow-circle">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.4"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-            </a>
-          </div>
-          <div class="button_wrapper">
-            <a class="btn" href="contacto.html">
-              <span class="word">Contáctanos</span>
-              <span class="arrow-circle">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.4"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-            </a>
+      <!-- Hero below: rating + acciones, superpuesto sobre el video, en la franja del degradado inferior -->
+      <div class="hero-below wrap">
+        <div class="hero-rating">
+          <span class="hero-rating-score">5/5</span>
+          <span class="hero-rating-stars" aria-hidden="true">★★★★★</span>
+          <span class="hero-rating-count">+300 Reseñas</span>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-actions">
+            <div class="button_wrapper">
+              <a class="btn btn-green" href="#services-section" id="heroEspecialidadesToggle">
+                <span class="word">Ver Especialidades</span>
+                <span class="arrow-circle">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.4"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </a>
+            </div>
+            <div class="button_wrapper">
+              <a class="btn" href="contacto.html">
+                <span class="word">Contáctanos</span>
+                <span class="arrow-circle">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.4"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <section class="about wrap" id="s2-text">
       <h2 class="about-title">
-        <span class="fill">Tu clínica es tu centro de referencia</span> en medicina y estética, cuidando tu imagen y tu
-        bienestar con un trato cercano y profesional en Linares y Maracena.
+        Tu clínica de referencia en <span class="about-accent">injerto capilar y medicina estética</span>, cuidando tu
+        imagen y tu bienestar con un trato cercano y profesional en <span class="about-accent">Linares y
+          Granada</span>.
       </h2>
 
       <div class="line-plus">
@@ -3016,7 +3080,7 @@
             cuidando de tu salud, tu imagen y tu confianza en un entorno cercano y de confianza.</p>
 
           <div class="button_wrapper">
-            <a class="btn"
+            <a class="btn btn-green"
               href="https://medicallinares.com/#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjU2NCIsInRvZ2dsZSI6ZmFsc2V9">
               <span class="word">Conócenos más</span>
               <span class="arrow-circle">
@@ -3173,7 +3237,7 @@
     <section class="services-more">
       <div class="services-more-inner">
         <p>Ver más de<br>Nuestros Servicios</p>
-        <a class="btn" href="index.html" target="_blank" rel="noopener">
+        <a class="btn btn-green" href="index.html" target="_blank" rel="noopener">
           <span class="word">Ver todos los servicios</span>
           <span class="arrow-circle">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3218,7 +3282,7 @@
       <div class="reviews-overlay"></div>
       <div class="reviews-content wrap">
         <h2 class="reviews-title shiny-text">Nuestros Pacientes<br>Te lo Cuentan</h2>
-        <a class="btn" href="https://www.google.com/maps/place/Medical+Linares/@38.095595,-3.6321308,17z"
+        <a class="btn btn-green" href="https://www.google.com/maps/place/Medical+Linares/@38.095595,-3.6321308,17z"
           target="_blank" rel="noopener">
           <span class="word">Añadir reseña</span>
           <span class="arrow-circle">
@@ -3608,25 +3672,56 @@
 
     // Hero title has been removed; skip char animation.
 
-    // About: split y animar el texto en blanco progresivo segun el scroll
+    // About: split y animar el texto progresivamente segun el scroll.
+    // Soporta tramos normales (blanco) y tramos ".about-accent" (verde), con un
+    // unico stagger continuo en el orden de lectura de toda la frase.
     const aboutTitle = document.querySelector('.about-title');
     if (aboutTitle) {
-      // Envolvemos los dos tramos de texto (fill + resto) manteniendo el <span class="fill">
-      const fillSpan = aboutTitle.querySelector('.fill');
-      const restText = aboutTitle.lastChild;
+      const ACCENT_DIM = 'rgba(74,156,122,.3)';
+      const ACCENT_FINAL = '#4a9c7a';
+      const NORMAL_DIM = 'rgba(216,216,216,.12)';
+      const NORMAL_FINAL = '#ffffff';
 
-      const fillChars = splitToChars(fillSpan);
-      // el nodo de texto suelto lo metemos en un span para poder trocearlo también
-      const restSpan = document.createElement('span');
-      restSpan.textContent = restText.textContent;
-      aboutTitle.replaceChild(restSpan, restText);
-      const restChars = splitToChars(restSpan);
+      const originalNodes = Array.from(aboutTitle.childNodes);
+      aboutTitle.innerHTML = '';
 
-      const allChars = [...fillChars, ...restChars];
-      gsap.set(allChars, { display: 'inline-block', color: 'rgba(216,216,216,.12)' });
+      const allChars = [];
+
+      originalNodes.forEach((node, ni) => {
+        const isAccent = node.nodeType === 1 && node.classList && node.classList.contains('about-accent');
+        let text = (node.textContent || '').replace(/\s+/g, ' ');
+        if (ni === 0) text = text.replace(/^\s+/, '');
+        if (ni === originalNodes.length - 1) text = text.replace(/\s+$/, '');
+        if (!text) return;
+
+        const words = text.split(' ');
+        words.forEach((word, wi) => {
+          if (word === '') {
+            aboutTitle.appendChild(document.createTextNode(' '));
+            return;
+          }
+          const wordSpan = document.createElement('span');
+          wordSpan.className = 'words';
+          [...word].forEach((ch) => {
+            const charSpan = document.createElement('span');
+            charSpan.className = 'chars';
+            charSpan.textContent = ch;
+            charSpan.dataset.accent = isAccent ? '1' : '0';
+            wordSpan.appendChild(charSpan);
+            allChars.push(charSpan);
+          });
+          aboutTitle.appendChild(wordSpan);
+          if (wi < words.length - 1) aboutTitle.appendChild(document.createTextNode(' '));
+        });
+      });
+
+      gsap.set(allChars, {
+        display: 'inline-block',
+        color: (i, el) => (el.dataset.accent === '1' ? ACCENT_DIM : NORMAL_DIM)
+      });
 
       gsap.to(allChars, {
-        color: '#ffffff',
+        color: (i, el) => (el.dataset.accent === '1' ? ACCENT_FINAL : NORMAL_FINAL),
         stagger: 0.02,
         ease: 'none',
         scrollTrigger: {
