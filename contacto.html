@@ -365,21 +365,13 @@
     .marquee__img{ width:130px; }
   }
 
-  /* =========================================================
-     PÁGINA CONTACTO — fondo Color Bends, botones de cristal
-     y encuesta minimalista de WhatsApp
-     ========================================================= */
+
 
   /* ---------- FONDO ANIMADO (Color Bends, vía three.js) ---------- */
   .colorbends-bg{
     position: fixed;
     inset: 0;
-    /* OJO: nunca uses z-index negativo aquí. Como <body> tiene su propio
-       background-color opaco, cualquier descendiente con z-index negativo
-       se pinta ANTES que ese fondo del body y queda tapado por él.
-       Con z-index:0 (y estando antes en el DOM que el resto del contenido,
-       que ya lleva z-index positivo) se mantiene detrás de todo igualmente,
-       pero sin quedar oculto. */
+   
     z-index: 0;
     overflow: hidden;
     background: var(--bg);
@@ -1683,14 +1675,14 @@ void main() {
 (function initSurvey(){
 
   // Catálogo general de tratamientos (compartido por ambas clínicas;
-  // el número de destino ya identifica la sede)
+
   const SERVICES = [
     {
       title: 'Injerto Capilar',
       items: [
         'Alopecia androgenética masculina', 'Alopecia androgenética femenina', 'Caída capilar difusa',
         'Efluvio estacional', 'Dermatitis seborreica asociada a caída capilar', 'Diagnóstico capilar médico',
-        'Tricoscopia digital', 'Injerto capilar FUE', 'PRP capilar', 'Mesoterapia capilar',
+        'Tricoscopia digital', 'Medicina regenerativa capilar', 'Mesoterapia capilar',
         'Mesoterapia con dutasteride', 'Exosomas capilares', 'Tratamientos médicos capilares', 'Vitaminas y biotina capilar'
       ]
     },
