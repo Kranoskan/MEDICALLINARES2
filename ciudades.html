@@ -1,10 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="./logo_medicalinares.ico">
-  <link rel="icon" type="image/png" href="./logo_medicallinares.png">
 <title>Ciudades — Medical Linares</title>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=neue-montreal@400,500&display=swap">
 <style>
@@ -566,7 +564,8 @@
     text-align: center;
     gap: clamp(1.25rem, 3vw, 2rem);
   }
-
+  /* las palabras de blur-text usan flex internamente (flex-start por defecto);
+     dentro de este hero centrado forzamos el centrado de cada linea */
   .loc-hero-content .blur-text{
     justify-content: center;
     width: 100%;
@@ -869,33 +868,18 @@
 
   .footer-inner{ position:relative; z-index:2; }
 
- .footer-title {
-      font-size: clamp(1.9rem, 4.5vw, 3rem);
-      line-height: 1.1;
-      font-weight: var(--font-weight-normal);
-      letter-spacing: var(--tracking-tight);
-      text-transform: uppercase;
-      background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, .35) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 24px rgba(255, 255, 255, .12));
-      margin-bottom: calc(var(--spacing) * 12);
-      width: fit-content;
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-    }
-
-    .footer-title-icon {
-      height: 2.4rem;
-      width: auto;
-      display: inline-block;
-      flex-shrink: 0;
-      filter: brightness(0) invert(1);
-      -webkit-text-fill-color: initial;
-      opacity: .85;
-    }
+  .footer-title{
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+    line-height:1.1;
+    font-weight: var(--font-weight-normal);
+    letter-spacing: var(--tracking-tight);
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,.35) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    filter: drop-shadow(0 0 24px rgba(255,255,255,.12));
+    margin-bottom: calc(var(--spacing) * 12);
+    width: fit-content;
+  }
   .footer-locations{
     display:grid;
     grid-template-columns: repeat(3, minmax(0,1fr));
@@ -1262,24 +1246,6 @@
     color: #fff;
     line-height: 1.6;
   }
-  
-    .footer-junta-link {
-      display: inline-block;
-      flex-shrink: 0;
-      line-height: 0;
-    }
-
-    .footer-junta-logo {
-      height: 2.8rem;
-      width: auto;
-      filter: brightness(0) invert(1);
-      opacity: .45;
-      transition: opacity .3s var(--ease-soft);
-    }
-
-    .footer-junta-link:hover .footer-junta-logo {
-      opacity: .75;
-    }
   .tc-block-lead-desc{ margin-bottom: 1.75rem; max-width: 26rem; }
   .scroll-reveal-text.tc-lead-desc{
     font-size: var(--text-base);
@@ -1625,6 +1591,148 @@
     .tw-col-left, .tw-col-right{ align-items: flex-start; text-align: left; }
   }
 
+
+  /* ---------- BOTON VERDE: "Ver sitio" / "Llamanos" en la pantalla selectora ---------- */
+  .btn-green{
+    color:#fff;
+    background: linear-gradient(180deg, #4a9c7a 0%, #2c6b52 100%);
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.4),
+      inset 0 -6px 10px rgba(0,0,0,.25),
+      0 14px 30px rgba(20,60,45,.45);
+  }
+  .btn-green:hover{
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.5),
+      inset 0 -6px 10px rgba(0,0,0,.3),
+      0 18px 36px rgba(20,60,45,.55);
+  }
+  button.btn{
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  /* ---------- CIUDADES: pantalla selectora inicial (fondo Grainient + 2 columnas) ---------- */
+  .city-select{
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .city-select-inner{
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--container-7xl);
+    margin-inline: auto;
+    padding-inline: calc(var(--spacing) * 10);
+    padding-block: clamp(5rem, 12vw, 8rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(3rem, 7vw, 5rem);
+  }
+  .city-select-title{
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    color: #171717;
+    text-align: center;
+  }
+  .city-select-title.blur-text{ justify-content: center; width: 100%; }
+
+  .city-select-cols{
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+  .city-select-divider{
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(0,0,0,.12);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .city-select-col{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(1.5rem, 3.5vw, 2.25rem);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .city-select-name{
+    font-size: clamp(1.7rem, 4.2vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-grey-light);
+  }
+  .city-select-name.blur-text{ justify-content: center; width: 100%; }
+
+  @media(max-width: 780px){
+    .city-select-cols{ grid-template-columns: 1fr; gap: 3rem; }
+    .city-select-divider{ display:none; }
+  }
+
+  /* ---------- CIUDADES: ventana emergente por localizacion (desliza desde el lado elegido) ---------- */
+  .city-modal{
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: var(--bg);
+    transform: translateX(-100%);
+    transition: transform .55s var(--ease-soft);
+  }
+  .city-modal--right{
+    transform: translateX(100%);
+  }
+  .city-modal.is-open{
+    transform: translateX(0);
+  }
+  .city-modal-scroll{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .city-modal-close{
+    position: fixed;
+    top: 1.5rem;
+    right: calc(var(--spacing) * 10);
+    z-index: 5;
+    width: 3rem; height: 3rem;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(20,20,20,.55);
+    border: 1px solid rgba(255,255,255,.25);
+    color:#fff;
+    cursor:pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background .3s var(--ease-soft), transform .4s var(--ease-soft);
+  }
+  .city-modal-close:hover{
+    background: rgba(20,20,20,.8);
+    transform: rotate(90deg);
+  }
+
 </style>
 </head>
 <body>
@@ -1667,257 +1775,346 @@
 
 <main>
 
-  <section class="loc-hero" id="linares" data-nav-theme="light">
-    <div class="loc-hero-map" aria-hidden="true">
-      <iframe src="https://www.google.com/maps?q=C.%20Rep%C3%BAblica%20Argentina%2C%207%2C%2023700%20Linares%2C%20Ja%C3%A9n&output=embed" loading="lazy" tabindex="-1" title=""></iframe>
-    </div>
-
-    <div class="loc-hero-content">
-      <h1 class="loc-hero-title blur-text" data-direction="bottom" data-delay="40">Donde nos encontramos</h1>
-
-      <div class="loc-hero-address">
-        <p class="blur-text" data-direction="bottom" data-delay="20">C/ República Argentina 7, 23700</p>
-        <p class="blur-text" data-direction="bottom" data-delay="20">Linares, Jaén</p>
-      </div>
-
-      <div class="loc-hero-giant" aria-hidden="true">
-        <p class="blur-text" data-direction="bottom" data-delay="15">Medical Linares</p>
-        <p class="blur-text" data-direction="bottom" data-delay="15">Linares</p>
-      </div>
-
-      <div class="loc-hero-actions">
-        <div class="button_wrapper">
-          <a class="btn" href="tel:+34953073025">
-            <span class="word">Llamanos</span>
-            <span class="arrow-circle">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#151515" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.44 1.32 4.94L2 22l5.24-1.37c1.44.79 3.06 1.2 4.8 1.2 5.5 0 9.96-4.45 9.96-9.96C22 6.46 17.54 2 12.04 2Zm0 18.2c-1.55 0-3.06-.42-4.38-1.2l-.31-.19-3.11.82.83-3.03-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.27-8.25 8.27Zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.89 2.41 1.02 2.58c.12.17 1.75 2.68 4.25 3.75.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.11-.23-.17-.48-.29Z"/>
-              </svg>
-            </span>
-          </a>
-        </div>
-        <div class="button_wrapper">
-          <a class="btn" href="contacto.html">
-            <span class="word">Contáctanos</span>
-            <span class="arrow-circle">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
-            </span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="loc-hero" id="maracena" data-nav-theme="light">
-    <div class="loc-hero-map" aria-hidden="true">
-      <iframe src="https://www.google.com/maps?q=C.%20Pablo%20Neruda%2C%201%2C%2018200%20Maracena%2C%20Granada%2C%20Espa%C3%B1a&output=embed" loading="lazy" tabindex="-1" title=""></iframe>
-    </div>
-
-    <div class="loc-hero-content">
-      <h1 class="loc-hero-title blur-text" data-direction="bottom" data-delay="40">Donde nos encontramos</h1>
-
-      <div class="loc-hero-address">
-        <p class="blur-text" data-direction="bottom" data-delay="20">Esquina Pablo Neruda, Av. Dr. López Cantarero Ballesteros, 1, 18200</p>
-        <p class="blur-text" data-direction="bottom" data-delay="20">Maracena, Granada</p>
-      </div>
-
-      <div class="loc-hero-giant" aria-hidden="true">
-        <p class="blur-text" data-direction="bottom" data-delay="15">Medical Linares</p>
-        <p class="blur-text" data-direction="bottom" data-delay="15">Maracena</p>
-      </div>
-
-      <div class="loc-hero-actions">
-        <div class="button_wrapper">
-          <a class="btn" href="tel:+34650064923">
-            <span class="word">Llamanos</span>
-            <span class="arrow-circle">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#151515" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.44 1.32 4.94L2 22l5.24-1.37c1.44.79 3.06 1.2 4.8 1.2 5.5 0 9.96-4.45 9.96-9.96C22 6.46 17.54 2 12.04 2Zm0 18.2c-1.55 0-3.06-.42-4.38-1.2l-.31-.19-3.11.82.83-3.03-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.27-8.25 8.27Zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.89 2.41 1.02 2.58c.12.17 1.75 2.68 4.25 3.75.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.11-.23-.17-.48-.29Z"/>
-              </svg>
-            </span>
-          </a>
-        </div>
-        <div class="button_wrapper">
-          <a class="btn" href="contacto.html">
-            <span class="word">Contáctanos</span>
-            <span class="arrow-circle">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
-            </span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="loc-hours" data-nav-theme="light">
+  <section class="city-select" data-nav-theme="light">
     <div class="grainient-bg" aria-hidden="true"></div>
-    <div class="loc-hours-inner">
-      <p class="loc-hours-label blur-text" data-direction="bottom" data-delay="20">Lunes a Viernes</p>
-      <div class="loc-hours-times">
-        <p class="blur-text" data-direction="bottom" data-delay="15">09:30 – 13:30</p>
-        <p class="blur-text" data-direction="bottom" data-delay="15">17:00 – 20:30</p>
-      </div>
-    </div>
-  </section>
 
-  <section class="clinic-gallery" data-nav-theme="light">
-    <div class="grainient-bg" aria-hidden="true"></div>
-    <div class="clinic-gallery-grid">
-      <div class="clinic-gallery-item reveal-up">
-        <img src="./img/origen.webp" alt="Instalaciones de Medical Linares" loading="lazy">
-      </div>
-      <div class="clinic-gallery-item reveal-up" data-reveal-delay="0.15">
-        <img src="./img/origen2.webp" alt="Instalaciones de Medical Linares" loading="lazy">
-      </div>
-    </div>
+    <div class="city-select-inner">
+      <h1 class="city-select-title blur-text" data-direction="bottom" data-delay="30">Donde nos encontramos</h1>
 
-    <div class="clinic-gallery-text">
-      <p class="blur-text" data-direction="bottom" data-delay="12">En Medical Linares somos un centro especializado en injerto capilar & medicina estética en Linares enfocado en resultados naturales, seguros y armónicos. Trabajamos desde un enfoque profesional y cercano: valoramos tu caso, definimos un plan realista y te acompañamos con seguimiento para que cada mejora sea progresiva y coherente contigo.</p>
-      <p class="blur-text clinic-gallery-highlight" data-direction="bottom" data-delay="15">Integramos distintas áreas para ofrecer un servicio completo en un mismo lugar.</p>
-    </div>
-  </section>
+      <div class="city-select-cols">
+        <div class="city-select-divider" aria-hidden="true"></div>
 
-  <section class="clinic-directions" data-nav-theme="dark">
-    <div class="clinic-directions-inner">
-      <h2 class="clinic-directions-title blur-text" data-direction="bottom" data-delay="30">¿Cómo llegar a nuestra clínica?</h2>
-
-      <div class="clinic-directions-text">
-        <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
-          <p class="scroll-reveal-text">En nuestra clínica abordamos tratamientos faciales, dermatología, láser, vascular, nutrición, lipoláser y salud capilar, incluyendo injerto capilar cuando el objetivo es recuperar densidad y línea frontal con un resultado estético de alta calidad. Así conseguimos que el tratamiento no sea "uno más", sino una solución adaptada a tu necesidad y a tu estilo de vida.</p>
+        <div class="city-select-col">
+          <p class="city-select-name blur-text" data-direction="bottom" data-delay="20">Medical Linares</p>
+          <div class="button_wrapper">
+            <button class="btn btn-green" type="button" data-open-modal="modalLinares">
+              <span class="word">Ver sitio</span>
+              <span class="arrow-circle">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              </span>
+            </button>
+          </div>
         </div>
-        <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
-          <p class="scroll-reveal-text">Nos diferenciamos por la forma de trabajar: buscamos precisión, criterios claros y una atención honesta. Te explicamos opciones, tiempos, cuidados y expectativas para que tomes decisiones con seguridad, sin promesas vacías. Nuestro objetivo es que te veas mejor, sí, pero sobre todo que te sientas bien con un resultado que no "canta".</p>
-        </div>
-        <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
-          <p class="scroll-reveal-text">Si estás buscando una clínica de medicina estética en Jaén, en Medical Linares te ayudamos a elegir el tratamiento adecuado con una valoración personalizada y un plan diseñado para ti.</p>
+
+        <div class="city-select-col">
+          <p class="city-select-name blur-text" data-direction="bottom" data-delay="20">Medical Linares Maracena</p>
+          <div class="button_wrapper">
+            <button class="btn btn-green" type="button" data-open-modal="modalMaracena">
+              <span class="word">Ver sitio</span>
+              <span class="arrow-circle">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              </span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="clinic-photo" data-nav-theme="dark">
-    <div class="clinic-photo-frame reveal-up">
-      <img src="https://scontent.fsvq1-1.fna.fbcdn.net/v/t51.82787-15/682032205_18006563291861447_1817102893997717936_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1405&ctp=s1080x1405&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=7zZkJeWfSdoQ7kNvwHLLagj&_nc_oc=AdqSlo5qrWM41CPSsetUaB5bILzOOtC31_qRvjSjGlq80uC0zMGpo5DDgbUMR9mdwvw&_nc_zt=23&_nc_ht=scontent.fsvq1-1.fna&_nc_gid=pbAxpnOAhsfbvHQ13NcMfQ&_nc_ss=7b289&oh=00_AQAmR-9Ek8vq_wHAxwV95z8sFdW4N40TDcbPpIkEDwMxVQ&oe=6A580D0C" alt="Medical Linares" loading="lazy">
     </div>
   </section>
 
 </main>
 
-  <footer class="site-footer" id="site-footer">
-    <div class="footer-aurora" aria-hidden="true"></div>
-    <div class="footer-grid-bg" aria-hidden="true"></div>
-    <div class="footer-giant-text" id="footerGiantText" aria-hidden="true">Medical Linares</div>
+<div class="city-modal city-modal--left" id="modalLinares" aria-hidden="true">
+  <button class="city-modal-close" type="button" data-close-modal aria-label="Cerrar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="city-modal-scroll">
+    <section class="loc-hero" id="linares" data-nav-theme="light">
+        <div class="loc-hero-map" aria-hidden="true">
+          <iframe src="https://www.google.com/maps?q=C.%20Rep%C3%BAblica%20Argentina%2C%207%2C%2023700%20Linares%2C%20Ja%C3%A9n&output=embed" loading="lazy" tabindex="-1" title=""></iframe>
+        </div>
 
-    <div class="footer-marquee" aria-hidden="true">
-      <div class="footer-marquee-track">
-        <div class="footer-marquee-group">
-          <span>Medicina Estética</span><span class="dot">✦</span>
-          <span>Dermatología</span><span class="dot">✦</span>
-          <span>Injerto Capilar</span><span class="dot">✦</span>
-          <span>Confianza</span><span class="dot">✦</span>
-          <span>Láser</span><span class="dot">✦</span>
-          <span>Cuidado Real</span><span class="dot">✦</span>
+        <div class="loc-hero-content">
+          <h1 class="loc-hero-title blur-text" data-direction="bottom" data-delay="40">Donde nos encontramos</h1>
+
+          <div class="loc-hero-address">
+            <p class="blur-text" data-direction="bottom" data-delay="20">C/ República Argentina 7, 23700</p>
+            <p class="blur-text" data-direction="bottom" data-delay="20">Linares, Jaén</p>
+          </div>
+
+          <div class="loc-hero-giant" aria-hidden="true">
+            <p class="blur-text" data-direction="bottom" data-delay="15">Medical Linares</p>
+            <p class="blur-text" data-direction="bottom" data-delay="15">Linares</p>
+          </div>
+
+          <div class="loc-hero-actions">
+            <div class="button_wrapper">
+              <a class="btn btn-green" href="tel:+34953073025">
+                <span class="word">Llamanos</span>
+                <span class="arrow-circle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#151515" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.44 1.32 4.94L2 22l5.24-1.37c1.44.79 3.06 1.2 4.8 1.2 5.5 0 9.96-4.45 9.96-9.96C22 6.46 17.54 2 12.04 2Zm0 18.2c-1.55 0-3.06-.42-4.38-1.2l-.31-.19-3.11.82.83-3.03-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.27-8.25 8.27Zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.89 2.41 1.02 2.58c.12.17 1.75 2.68 4.25 3.75.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.11-.23-.17-.48-.29Z"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+            <div class="button_wrapper">
+              <a class="btn" href="contacto.html">
+                <span class="word">Contáctanos</span>
+                <span class="arrow-circle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="footer-marquee-group">
-          <span>Medicina Estética</span><span class="dot">✦</span>
-          <span>Dermatología</span><span class="dot">✦</span>
-          <span>Injerto Capilar</span><span class="dot">✦</span>
-          <span>Confianza</span><span class="dot">✦</span>
-          <span>Láser</span><span class="dot">✦</span>
-          <span>Cuidado Real</span><span class="dot">✦</span>
+      </section>
+
+    <section class="loc-hours" data-nav-theme="light">
+        <div class="grainient-bg" aria-hidden="true"></div>
+        <div class="loc-hours-inner">
+          <p class="loc-hours-label blur-text" data-direction="bottom" data-delay="20">Lunes a Viernes</p>
+          <div class="loc-hours-times">
+            <p class="blur-text" data-direction="bottom" data-delay="15">09:30 – 13:30</p>
+            <p class="blur-text" data-direction="bottom" data-delay="15">17:00 – 20:30</p>
+          </div>
         </div>
+      </section>
+
+    <section class="clinic-gallery" data-nav-theme="light">
+        <div class="grainient-bg" aria-hidden="true"></div>
+        <div class="clinic-gallery-grid">
+          <div class="clinic-gallery-item reveal-up">
+            <img src="./img/imagenclinica.webp" alt="Instalaciones de Medical Linares" loading="lazy">
+          </div>
+          <div class="clinic-gallery-item reveal-up" data-reveal-delay="0.15">
+            <img src="./img/imagenclinica2.webp" alt="Instalaciones de Medical Linares" loading="lazy">
+          </div>
+        </div>
+
+        <div class="clinic-gallery-text">
+          <p class="blur-text" data-direction="bottom" data-delay="12">En Medical Linares somos un centro especializado en medicina estética en Linares enfocado en resultados naturales, seguros y armónicos. Trabajamos desde un enfoque profesional y cercano: valoramos tu caso, definimos un plan realista y te acompañamos con seguimiento para que cada mejora sea progresiva y coherente contigo.</p>
+          <p class="blur-text clinic-gallery-highlight" data-direction="bottom" data-delay="15">Integramos distintas áreas para ofrecer un servicio completo en un mismo lugar.</p>
+        </div>
+      </section>
+
+    <section class="clinic-directions" data-nav-theme="dark">
+        <div class="clinic-directions-inner">
+          <h2 class="clinic-directions-title blur-text" data-direction="bottom" data-delay="30">¿Cómo llegar a nuestra clínica?</h2>
+
+          <div class="clinic-directions-text">
+            <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
+              <p class="scroll-reveal-text">En nuestra clínica abordamos tratamientos faciales, dermatología, láser, vascular, nutrición, lipoláser y salud capilar, incluyendo injerto capilar cuando el objetivo es recuperar densidad y línea frontal con un resultado estético de alta calidad. Así conseguimos que el tratamiento no sea "uno más", sino una solución adaptada a tu necesidad y a tu estilo de vida.</p>
+            </div>
+            <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
+              <p class="scroll-reveal-text">Nos diferenciamos por la forma de trabajar: buscamos precisión, criterios claros y una atención honesta. Te explicamos opciones, tiempos, cuidados y expectativas para que tomes decisiones con seguridad, sin promesas vacías. Nuestro objetivo es que te veas mejor, sí, pero sobre todo que te sientas bien con un resultado que no "canta".</p>
+            </div>
+            <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
+              <p class="scroll-reveal-text">Si estás buscando una clínica de medicina estética en Jaén, en Medical Linares te ayudamos a elegir el tratamiento adecuado con una valoración personalizada y un plan diseñado para ti.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <section class="clinic-photo" data-nav-theme="dark">
+        <div class="clinic-photo-frame reveal-up">
+          <img src="https://scontent.fsvq1-1.fna.fbcdn.net/v/t51.82787-15/682032205_18006563291861447_1817102893997717936_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1405&ctp=s1080x1405&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=7zZkJeWfSdoQ7kNvwHLLagj&_nc_oc=AdqSlo5qrWM41CPSsetUaB5bILzOOtC31_qRvjSjGlq80uC0zMGpo5DDgbUMR9mdwvw&_nc_zt=23&_nc_ht=scontent.fsvq1-1.fna&_nc_gid=pbAxpnOAhsfbvHQ13NcMfQ&_nc_ss=7b289&oh=00_AQAmR-9Ek8vq_wHAxwV95z8sFdW4N40TDcbPpIkEDwMxVQ&oe=6A580D0C" alt="Medical Linares" loading="lazy">
+        </div>
+      </section>
+  </div>
+</div>
+
+
+<div class="city-modal city-modal--right" id="modalMaracena" aria-hidden="true">
+  <button class="city-modal-close" type="button" data-close-modal aria-label="Cerrar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="city-modal-scroll">
+    <section class="loc-hero" id="maracena" data-nav-theme="light">
+        <div class="loc-hero-map" aria-hidden="true">
+          <iframe src="https://www.google.com/maps?q=C.%20Pablo%20Neruda%2C%201%2C%2018200%20Maracena%2C%20Granada%2C%20Espa%C3%B1a&output=embed" loading="lazy" tabindex="-1" title=""></iframe>
+        </div>
+
+        <div class="loc-hero-content">
+          <h1 class="loc-hero-title blur-text" data-direction="bottom" data-delay="40">Donde nos encontramos</h1>
+
+          <div class="loc-hero-address">
+            <p class="blur-text" data-direction="bottom" data-delay="20">Esquina Pablo Neruda, Av. Dr. López Cantarero Ballesteros, 1, 18200</p>
+            <p class="blur-text" data-direction="bottom" data-delay="20">Maracena, Granada</p>
+          </div>
+
+          <div class="loc-hero-giant" aria-hidden="true">
+            <p class="blur-text" data-direction="bottom" data-delay="15">Medical Linares</p>
+            <p class="blur-text" data-direction="bottom" data-delay="15">Maracena</p>
+          </div>
+
+          <div class="loc-hero-actions">
+            <div class="button_wrapper">
+              <a class="btn btn-green" href="tel:+34650064923">
+                <span class="word">Llamanos</span>
+                <span class="arrow-circle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#151515" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.44 1.32 4.94L2 22l5.24-1.37c1.44.79 3.06 1.2 4.8 1.2 5.5 0 9.96-4.45 9.96-9.96C22 6.46 17.54 2 12.04 2Zm0 18.2c-1.55 0-3.06-.42-4.38-1.2l-.31-.19-3.11.82.83-3.03-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.27-8.25 8.27Zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.89 2.41 1.02 2.58c.12.17 1.75 2.68 4.25 3.75.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.11-.23-.17-.48-.29Z"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+            <div class="button_wrapper">
+              <a class="btn" href="contacto.html">
+                <span class="word">Contáctanos</span>
+                <span class="arrow-circle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <section class="loc-hours" data-nav-theme="light">
+        <div class="grainient-bg" aria-hidden="true"></div>
+        <div class="loc-hours-inner">
+          <p class="loc-hours-label blur-text" data-direction="bottom" data-delay="20">Lunes a Viernes</p>
+          <div class="loc-hours-times">
+            <p class="blur-text" data-direction="bottom" data-delay="15">09:30 – 13:30</p>
+            <p class="blur-text" data-direction="bottom" data-delay="15">17:00 – 20:30</p>
+          </div>
+        </div>
+      </section>
+
+    <section class="clinic-gallery" data-nav-theme="light">
+        <div class="grainient-bg" aria-hidden="true"></div>
+        <div class="clinic-gallery-grid">
+          <div class="clinic-gallery-item reveal-up">
+            <img src="./img/imagenclinica.webp" alt="Instalaciones de Medical Linares" loading="lazy">
+          </div>
+          <div class="clinic-gallery-item reveal-up" data-reveal-delay="0.15">
+            <img src="./img/imagenclinica2.webp" alt="Instalaciones de Medical Linares" loading="lazy">
+          </div>
+        </div>
+
+        <div class="clinic-gallery-text">
+          <p class="blur-text" data-direction="bottom" data-delay="12">En Medical Linares somos un centro especializado en medicina estética en Linares enfocado en resultados naturales, seguros y armónicos. Trabajamos desde un enfoque profesional y cercano: valoramos tu caso, definimos un plan realista y te acompañamos con seguimiento para que cada mejora sea progresiva y coherente contigo.</p>
+          <p class="blur-text clinic-gallery-highlight" data-direction="bottom" data-delay="15">Integramos distintas áreas para ofrecer un servicio completo en un mismo lugar.</p>
+        </div>
+      </section>
+
+    <section class="clinic-directions" data-nav-theme="dark">
+        <div class="clinic-directions-inner">
+          <h2 class="clinic-directions-title blur-text" data-direction="bottom" data-delay="30">¿Cómo llegar a nuestra clínica?</h2>
+
+          <div class="clinic-directions-text">
+            <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
+              <p class="scroll-reveal-text">En nuestra clínica abordamos tratamientos faciales, dermatología, láser, vascular, nutrición, lipoláser y salud capilar, incluyendo injerto capilar cuando el objetivo es recuperar densidad y línea frontal con un resultado estético de alta calidad. Así conseguimos que el tratamiento no sea "uno más", sino una solución adaptada a tu necesidad y a tu estilo de vida.</p>
+            </div>
+            <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
+              <p class="scroll-reveal-text">Nos diferenciamos por la forma de trabajar: buscamos precisión, criterios claros y una atención honesta. Te explicamos opciones, tiempos, cuidados y expectativas para que tomes decisiones con seguridad, sin promesas vacías. Nuestro objetivo es que te veas mejor, sí, pero sobre todo que te sientas bien con un resultado que no "canta".</p>
+            </div>
+            <div class="scroll-reveal" data-base-opacity="0.1" data-base-rotation="0" data-blur-strength="4">
+              <p class="scroll-reveal-text">Si estás buscando una clínica de medicina estética en Jaén, en Medical Linares te ayudamos a elegir el tratamiento adecuado con una valoración personalizada y un plan diseñado para ti.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <section class="clinic-photo" data-nav-theme="dark">
+        <div class="clinic-photo-frame reveal-up">
+          <img src="https://scontent.fsvq1-1.fna.fbcdn.net/v/t51.82787-15/682032205_18006563291861447_1817102893997717936_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1405&ctp=s1080x1405&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=7zZkJeWfSdoQ7kNvwHLLagj&_nc_oc=AdqSlo5qrWM41CPSsetUaB5bILzOOtC31_qRvjSjGlq80uC0zMGpo5DDgbUMR9mdwvw&_nc_zt=23&_nc_ht=scontent.fsvq1-1.fna&_nc_gid=pbAxpnOAhsfbvHQ13NcMfQ&_nc_ss=7b289&oh=00_AQAmR-9Ek8vq_wHAxwV95z8sFdW4N40TDcbPpIkEDwMxVQ&oe=6A580D0C" alt="Medical Linares" loading="lazy">
+        </div>
+      </section>
+  </div>
+</div>
+
+
+
+<footer class="site-footer" id="site-footer">
+  <div class="footer-aurora" aria-hidden="true"></div>
+  <div class="footer-grid-bg" aria-hidden="true"></div>
+  <div class="footer-giant-text" id="footerGiantText" aria-hidden="true">MEDICAL LINARES</div>
+
+  <div class="footer-marquee" aria-hidden="true">
+    <div class="footer-marquee-track">
+      <div class="footer-marquee-group">
+        <span>Medicina Estética</span><span class="dot">✦</span>
+        <span>Dermatología</span><span class="dot">✦</span>
+        <span>Injerto Capilar</span><span class="dot">✦</span>
+        <span>Confianza</span><span class="dot">✦</span>
+        <span>Láser</span><span class="dot">✦</span>
+        <span>Cuidado Real</span><span class="dot">✦</span>
+      </div>
+      <div class="footer-marquee-group">
+        <span>Medicina Estética</span><span class="dot">✦</span>
+        <span>Dermatología</span><span class="dot">✦</span>
+        <span>Injerto Capilar</span><span class="dot">✦</span>
+        <span>Confianza</span><span class="dot">✦</span>
+        <span>Láser</span><span class="dot">✦</span>
+        <span>Cuidado Real</span><span class="dot">✦</span>
       </div>
     </div>
+  </div>
 
-    <div class="wrap footer-inner" id="footerInner">
-      <h2 class="footer-title"><img src="./img/IconoMedical.png" alt="Medical Linares" class="footer-title-icon">
-        Medical Linares</h2>
+  <div class="wrap footer-inner" id="footerInner">
+    <h2 class="footer-title">¿Dónde estamos?</h2>
 
-      <div class="footer-locations">
-        <div class="footer-loc">
-          <span class="footer-loc-name">Linares</span>
-          <p class="footer-loc-address">C. República Argentina, 7, 23700 Linares, Jaén.</p>
-          <div class="footer-loc-row">
-            <span class="footer-label">Horario L-V</span>
-            <span class="footer-value">09:30 – 13:15</span>
-            <span class="footer-value">17:00 – 20:00</span>
-          </div>
-          <a class="footer-pill footer-tel" href="tel:+34645036752">645 03 67 52</a>
+    <div class="footer-locations">
+      <div class="footer-loc">
+        <span class="footer-loc-name">Linares</span>
+        <p class="footer-loc-address">C. República Argentina, 7, 23700 Linares, Jaén.</p>
+        <div class="footer-loc-row">
+          <span class="footer-label">Horario L-V</span>
+          <span class="footer-value">09:30 – 13:15</span>
+          <span class="footer-value">17:00 – 20:00</span>
         </div>
-
-        <div class="footer-loc">
-          <span class="footer-loc-name">Granada</span>
-          <p class="footer-loc-address">Esquina Pablo Neruda, Av. Dr. López Cantarero Ballesteros, 1, 18200 Maracena,
-            Granada</p>
-          <div class="footer-loc-row">
-            <span class="footer-label">Horario L-V</span>
-            <span class="footer-value">09:30 – 13:15</span>
-            <span class="footer-value">17:00 – 20:00</span>
-          </div>
-          <a class="footer-pill footer-tel" href="tel:+34650064923">650 06 49 23</a>
-        </div>
-
-        <nav class="footer-loc footer-treatments" aria-label="Tratamientos">
-          <span class="footer-loc-name">Tratamientos</span>
-          <a href="./injerto-capilar.html" target="_blank" rel="noopener">Injerto Capilar</a>
-          <a href="./lipolaser.html" target="_blank" rel="noopener">Lipoláser</a>
-          <a href="./medicina-estetica.html" target="_blank" rel="noopener">Medicina Estética</a>
-          <a href="./dermatologia.html" target="_blank" rel="noopener">Dermatología</a>
-          <a href="./ttos-faciales-y-corporales.html " target="_blank" rel="noopener">Tratamientos
-            Faciales y Corporales</a>
-          <a href="./vascular.html" target="_blank" rel="noopener">Vascular</a>
-          <a href="./laser.html" target="_blank" rel="noopener">Láser</a>
-          <a class="footer-pill footer-all" href="./index.html" target="_blank"
-            rel="noopener">Todos →</a>
-        </nav>
+        <a class="footer-pill footer-tel" href="tel:+34645036752">645 03 67 52</a>
       </div>
 
-      <div class="footer-bottom">
-        <span class="footer-copy">© 2026 Medical Linares · Todos los derechos reservados</span>
-        <div class="footer-legal">
-          <a class="footer-pill" href="politicasdeprivacidad.html">Política de cookies</a>
-          <a class="footer-pill" href="politicasdeprivacidad.html">Aviso legal</a>
-          <a class="footer-pill" href="politicasdeprivacidad.html">Política de privacidad</a>
+      <div class="footer-loc">
+        <span class="footer-loc-name">Granada</span>
+        <p class="footer-loc-address">Esquina Pablo Neruda, Av. Dr. López Cantarero Ballesteros, 1, 18200 Maracena, Granada</p>
+        <div class="footer-loc-row">
+          <span class="footer-label">Horario L-V</span>
+          <span class="footer-value">09:30 – 13:15</span>
+          <span class="footer-value">17:00 – 20:00</span>
         </div>
-        <div class="footer-right-group">
-          <div class="footer-social">
-            <a class="footer-pill footer-icon-btn" href="https://www.instagram.com/medical_linares" target="_blank"
-              rel="noopener" aria-label="Instagram de Medical Linares">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-            </a>
-            <a class="footer-pill footer-icon-btn" href="https://www.facebook.com/medicallinares" target="_blank"
-              rel="noopener" aria-label="Facebook de Medical Linares">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-              </svg>
-            </a>
-          </div>
-          <button class="footer-pill footer-icon-btn footer-top-btn" id="footerTopBtn" aria-label="Volver arriba"
-            type="button">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        <a class="footer-pill footer-tel" href="tel:+34650064923">650 06 49 23</a>
+      </div>
+
+      <nav class="footer-loc footer-treatments" aria-label="Tratamientos">
+        <span class="footer-loc-name">Tratamientos</span>
+        <a href="https://medicallinares.com/injerto-capilar/" target="_blank" rel="noopener">Injerto Capilar</a>
+        <a href="https://medicallinares.com/lipolaser/" target="_blank" rel="noopener">Lipoláser</a>
+        <a href="https://medicallinares.com/medicina-estetica/" target="_blank" rel="noopener">Medicina Estética</a>
+        <a href="https://medicallinares.com/dermatologia/" target="_blank" rel="noopener">Dermatología</a>
+        <a href="https://medicallinares.com/ttos-faciales-y-corporales/" target="_blank" rel="noopener">Tratamientos Faciales y Corporales</a>
+        <a href="https://medicallinares.com/vascular/" target="_blank" rel="noopener">Vascular</a>
+        <a href="https://medicallinares.com/laser/" target="_blank" rel="noopener">Láser</a>
+        <a class="footer-pill footer-all" href="https://medicallinares.com/servicios/" target="_blank" rel="noopener">Todos →</a>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© Medical Linares</span>
+      <div class="footer-legal">
+        <a class="footer-pill" href="politicasdeprivacidad.html">Política de cookies</a>
+        <a class="footer-pill" href="politicasdeprivacidad.html">Aviso legal</a>
+        <a class="footer-pill" href="politicasdeprivacidad.html">Política de privacidad</a>
+      </div>
+      <div class="footer-right-group">
+        <div class="footer-social">
+          <a class="footer-pill footer-icon-btn" href="https://www.instagram.com/medical_linares" target="_blank" rel="noopener" aria-label="Instagram de Medical Linares">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
             </svg>
-          </button>
+          </a>
+          <a class="footer-pill footer-icon-btn" href="https://www.facebook.com/medicallinares" target="_blank" rel="noopener" aria-label="Facebook de Medical Linares">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
         </div>
-      </div>
-      <div class="footer-bottom-extra">
-        <div class="footer-credit">Página creada y diseñada por Saúl Expósito Jiménez</div>
-        <a class="footer-junta-link" href="https://www.juntadeandalucia.es" target="_blank" rel="noopener"
-          aria-label="Junta de Andalucía">
-          <img src="https://www.juntadeandalucia.es/sites/default/files/2023-02/byn_1.png" alt="Junta de Andalucía"
-            class="footer-junta-logo">
-        </a>
+        <button class="footer-pill footer-icon-btn footer-top-btn" id="footerTopBtn" aria-label="Volver arriba" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+        </button>
       </div>
     </div>
-  </footer>
-
+    <div class="footer-credit">Página creada y diseñada por Saúl Expósito Jiménez</div>
+  </div>
+</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -2244,11 +2441,12 @@ gsap.registerPlugin(ScrollTrigger);
     const enableBlur = el.dataset.enableBlur !== 'false';
     const rotationEnd = el.dataset.rotationEnd || 'bottom bottom';
     const wordAnimationEnd = el.dataset.wordAnimationEnd || 'bottom bottom';
+    const scroller = el.closest('.city-modal-scroll') || window;
 
     gsap.fromTo(el, { transformOrigin: '0% 50%', rotate: baseRotation }, {
       ease: 'none',
       rotate: 0,
-      scrollTrigger: { trigger: el, start: 'top bottom', end: rotationEnd, scrub: true }
+      scrollTrigger: { trigger: el, start: 'top bottom', end: rotationEnd, scrub: true, scroller }
     });
 
     const words = textEl.querySelectorAll('.word');
@@ -2257,7 +2455,7 @@ gsap.registerPlugin(ScrollTrigger);
       ease: 'none',
       opacity: 1,
       stagger: 0.05,
-      scrollTrigger: { trigger: el, start: 'top bottom-=20%', end: wordAnimationEnd, scrub: true }
+      scrollTrigger: { trigger: el, start: 'top bottom-=20%', end: wordAnimationEnd, scrub: true, scroller }
     });
 
     if (enableBlur) {
@@ -2265,7 +2463,7 @@ gsap.registerPlugin(ScrollTrigger);
         ease: 'none',
         filter: 'blur(0px)',
         stagger: 0.05,
-        scrollTrigger: { trigger: el, start: 'top bottom-=20%', end: wordAnimationEnd, scrub: true }
+        scrollTrigger: { trigger: el, start: 'top bottom-=20%', end: wordAnimationEnd, scrub: true, scroller }
       });
     }
   });
@@ -2304,16 +2502,17 @@ gsap.registerPlugin(ScrollTrigger);
   document.querySelectorAll('.reveal-up').forEach((item) => {
     const media = item.querySelector('img');
     const delay = parseFloat(item.dataset.revealDelay || '0');
+    const scroller = item.closest('.city-modal-scroll') || window;
 
     gsap.fromTo(item, { y: 60, opacity: 0 }, {
       y: 0, opacity: 1, duration: 1, delay, ease: 'power3.out',
-      scrollTrigger: { trigger: item, start: 'top 85%' }
+      scrollTrigger: { trigger: item, start: 'top 85%', scroller }
     });
 
     if (media) {
       gsap.fromTo(media, { scale: 1.15 }, {
         scale: 1.03, ease: 'none',
-        scrollTrigger: { trigger: item, start: 'top bottom', end: 'bottom top', scrub: true }
+        scrollTrigger: { trigger: item, start: 'top bottom', end: 'bottom top', scrub: true, scroller }
       });
     }
   });
@@ -2589,6 +2788,58 @@ void main(){
 }
 
 document.querySelectorAll('.grainient-bg').forEach(createGrainient);
+</script>
+
+
+<script>
+// ---------- CIUDADES: abre/cierra la ventana emergente de cada localizacion ----------
+(function initCityModals(){
+  const modals = Array.from(document.querySelectorAll('.city-modal'));
+  const openBtns = document.querySelectorAll('[data-open-modal]');
+  const closeBtns = document.querySelectorAll('[data-close-modal]');
+  if (!modals.length) return;
+
+  function closeAllModals(){
+    modals.forEach((m) => {
+      m.classList.remove('is-open');
+      m.setAttribute('aria-hidden', 'true');
+    });
+    document.body.style.overflow = '';
+  }
+
+  function openModal(id){
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modals.forEach((m) => {
+      if (m !== modal) {
+        m.classList.remove('is-open');
+        m.setAttribute('aria-hidden', 'true');
+      }
+    });
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    const scrollEl = modal.querySelector('.city-modal-scroll');
+    if (scrollEl) scrollEl.scrollTop = 0;
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+      });
+    }
+  }
+
+  openBtns.forEach((btn) => {
+    btn.addEventListener('click', () => openModal(btn.dataset.openModal));
+  });
+  closeBtns.forEach((btn) => {
+    btn.addEventListener('click', closeAllModals);
+  });
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape') closeAllModals();
+  });
+})();
 </script>
 
 </body>
