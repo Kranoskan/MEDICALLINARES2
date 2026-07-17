@@ -797,6 +797,14 @@
       opacity: .85;
     }
 
+    /* padding-block:24 (6rem arriba y abajo) dejaba mucho hueco por encima de
+       "Dónde encontrarnos" justo después de reviews-section */
+    @media (max-width: 640px) {
+      .keyfacts {
+        padding-block: calc(var(--spacing) * 8) calc(var(--spacing) * 14);
+      }
+    }
+
     /* ---------- BORDER GLOW: borde con degradado (verde/teal) que sigue al cursor ---------- */
     .border-glow-card {
       --edge-sensitivity: 30;
@@ -1224,6 +1232,20 @@
 
     .service-card:hover .service-media {
       opacity: .85;
+    }
+
+    /* En movil el gap/padding por defecto (3.5rem/2.5rem) es tan grande que la
+       siguiente tarjeta no asoma nunca: no se nota que esto es scroll horizontal.
+       Lo ajustamos para que siempre quede un trozo de la siguiente visible. */
+    @media (max-width: 640px) {
+      .services-track {
+        gap: 1rem;
+        padding-inline: 1rem;
+      }
+
+      .service-card {
+        width: 78vw;
+      }
     }
 
     /* ---------- SITE CONTENT BLUR (when panel open) ---------- */
@@ -1855,6 +1877,15 @@
       color: var(--color-light-font);
     }
 
+    /* En movil el min-height:60vh + padding grande dejaba mucho hueco antes
+       de llegar a team-section */
+    @media (max-width: 640px) {
+      .services-more {
+        min-height: auto;
+        padding-block: calc(var(--spacing) * 10) calc(var(--spacing) * 6);
+      }
+    }
+
     /* ---------- EQUIPO: seccion con carrusel 3D + tilted card ---------- */
     .team-section {
       position: relative;
@@ -2052,6 +2083,22 @@
       .team-carousel-viewport {
         height: 18rem;
       }
+
+      /* La seccion forzaba min-height:100dvh, lo que dejaba mucho hueco vacio
+         arriba/abajo en movil cuando el contenido no llena la pantalla. La
+         acercamos a services-more (arriba) y reviews-section (abajo). */
+      .team-section {
+        min-height: auto;
+        padding-block: calc(var(--spacing) * 6) calc(var(--spacing) * 10);
+        gap: calc(var(--spacing) * 8);
+      }
+
+      /* El texto vivia sin padding lateral propio (fuera de .wrap) y tocaba
+         los bordes de la pantalla */
+      .team-below,
+      .team-hint {
+        padding-inline: 1.75rem;
+      }
     }
 
     /* ---------- RESEÑAS DE GOOGLE ---------- */
@@ -2171,6 +2218,13 @@
       .review-card {
         width: 15.5rem;
         padding: 1.3rem 1.4rem;
+      }
+
+      /* min-height:100vh forzaba un hueco enorme antes/despues de las filas
+         de reseñas (reviews-bg), separandola de team-section y de keyfacts */
+      .reviews-section {
+        min-height: auto;
+        padding-block: calc(var(--spacing) * 10);
       }
     }
 
@@ -3826,6 +3880,25 @@
         dragging = false;
         locked = null;
         wrapper.classList.remove('is-dragging');
+
+        // En movil, al soltar el dedo encajamos la fila en la tarjeta mas cercana,
+        // dejando siempre un trozo de la siguiente tarjeta asomando: asi se nota
+        // claramente que esto es un scroll horizontal (y no tarjetas sueltas).
+        if (window.innerWidth <= 640) {
+          const firstCard = track.querySelector('.service-card');
+          if (firstCard) {
+            const cardWidth = firstCard.getBoundingClientRect().width;
+            const trackStyle = getComputedStyle(track);
+            const gapPx = parseFloat(trackStyle.columnGap) || parseFloat(trackStyle.gap) || 0;
+            const step = cardWidth + gapPx;
+            if (step > 0) {
+              const index = Math.round(-current / step);
+              const maxIndex = Math.round(maxScroll / step);
+              const clampedIndex = Math.max(0, Math.min(maxIndex, index));
+              setPosition(-clampedIndex * step, true);
+            }
+          }
+        }
       }
 
       // Ratón (ordenador)
