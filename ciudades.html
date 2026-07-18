@@ -328,6 +328,15 @@
       padding: 1rem 0;
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
+    .topnav-actions .nav-link,
+.topnav.on-light .topnav-actions .nav-link{
+  color: #fff;
+}
+.topnav-actions .nav-link:hover,
+.topnav.on-light .topnav-actions .nav-link:hover{
+  color: #4a9c7a;
+  opacity: 1;
+}
     .topnav-actions .nav-link::after{ display:none; }
     .topnav-actions .button_wrapper{ margin-top: 1.25rem; width:100%; }
     .topnav-actions .btn{ width:100%; justify-content:space-between; }
@@ -1748,6 +1757,8 @@
   @media(max-width: 780px){
     .city-select-cols{ grid-template-columns: 1fr; gap: 3rem; }
     .city-select-divider{ display:none; }
+
+    
   }
 
   /* ---------- CIUDADES: ventana emergente por localizacion (desliza desde el lado elegido) ---------- */
