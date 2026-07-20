@@ -102,27 +102,27 @@
     transform: translate(2px,-2px);
   }
 
-  /* ---------- PEDIR CITA: version negativa (blanca) del boton, solo aqui ---------- */
+  /* ---------- PEDIR CITA: version negativa (verde) del boton ---------- */
   .btn-negative{
-    color:#111;
-    background: linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(232,232,232,.98) 100%);
-    border: 1px solid rgba(0,0,0,.10);
+    color:#fff;
+    background: linear-gradient(180deg, #4a9c7a 0%, #2c6b52 100%);
+    border: 1px solid rgba(255,255,255,.18);
     box-shadow:
-      inset 0 1px 1px rgba(255,255,255,.7),
-      inset 0 -6px 10px rgba(0,0,0,.05),
-      0 10px 24px rgba(0,0,0,.18);
+      inset 0 1px 1px rgba(255,255,255,.3),
+      inset 0 -6px 10px rgba(0,0,0,.2),
+      0 10px 24px rgba(20,60,45,.35);
   }
   .btn-negative:hover{
     box-shadow:
-      inset 0 1px 1px rgba(255,255,255,.8),
-      inset 0 -6px 10px rgba(0,0,0,.07),
-      0 14px 30px rgba(0,0,0,.22);
+      inset 0 1px 1px rgba(255,255,255,.4),
+      inset 0 -6px 10px rgba(0,0,0,.25),
+      0 14px 30px rgba(20,60,45,.45);
   }
   .btn-negative .arrow-circle{
     background:
-      radial-gradient(circle at 32% 28%, rgba(0,0,0,.3), rgba(0,0,0,.03) 55%),
-      rgba(0,0,0,.05);
-    border-color: rgba(0,0,0,.14);
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,.55), rgba(255,255,255,.08) 55%),
+      rgba(255,255,255,.14);
+    border-color: rgba(255,255,255,.28);
   }
 
   /* ---------- TOP NAV ---------- */
@@ -170,7 +170,7 @@
     padding-bottom: .5rem;
     transition: color .4s var(--ease-soft), opacity .3s var(--ease-soft);
   }
-  .nav-link:hover{ opacity:.7; }
+  .nav-link:hover{ color:#4a9c7a; opacity:1; }
   .topnav.on-light .nav-link{ color:#000; }
   .nav-link::after{
     content:'';
@@ -253,116 +253,193 @@
     .topnav-actions .btn{ width:100%; justify-content:space-between; }
   }
 
-  /* ---------- FLOWING MENU: desplegable de "Especialidades" ---------- */
-  .flowing-menu-overlay{
+  /* ---------- ESPECIALIDADES: menu lateral off-canvas (blanco, minimalista) ---------- */
+  .specialties-overlay {
     position: fixed;
     inset: 0;
-    z-index: 90;
-    background: #120F17;
+    z-index: 95;
+    background: rgba(4, 5, 8, .35);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity .5s var(--ease-soft), visibility 0s linear .5s;
+    transition: opacity .45s var(--ease-soft), visibility 0s linear .45s;
   }
-  .flowing-menu-overlay.is-open{
+
+  .specialties-overlay.is-open {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transition: opacity .5s var(--ease-soft), visibility 0s linear 0s;
+    transition: opacity .45s var(--ease-soft), visibility 0s linear 0s;
   }
-  .flowing-menu-close{
-    position: absolute;
-    top: 1.85rem;
-    right: calc(var(--spacing) * 10);
-    z-index: 2;
-    width: 3rem; height: 3rem;
+
+  body.specialties-open {
+    overflow: hidden;
+  }
+
+  .specialties-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100dvh;
+    width: min(26rem, 100vw);
+    background: #fff;
+    color: #171717;
+    z-index: 96;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .55s var(--ease-soft);
+    overflow-y: auto;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, .18);
+  }
+
+  .specialties-panel.is-open {
+    transform: translateX(0);
+  }
+
+  .specialties-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.85rem calc(var(--spacing) * 9) 1.5rem;
+  }
+
+  .specialties-eyebrow {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: #171717;
+  }
+
+  .specialties-close {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
     border-radius: 50%;
-    display:flex; align-items:center; justify-content:center;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.18);
-    color:#fff;
-    cursor:pointer;
-    transition: background .3s var(--ease-soft), transform .4s var(--ease-soft);
+    background: #e8e8e6;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .3s var(--ease-soft), transform .3s var(--ease-soft);
   }
-  .flowing-menu-close:hover{ background: rgba(255,255,255,.18); transform: rotate(90deg); }
 
-  .menu-wrap{
-    width:100%;
-    height:100%;
-    overflow:hidden;
+  .specialties-close:hover {
+    background: #d9d9d6;
+    transform: rotate(90deg);
   }
-  .menu{
-    display:flex;
-    flex-direction:column;
-    height:100%;
-    margin:0;
-    padding: 0 calc(var(--spacing) * 10);
-    list-style:none;
-  }
-  .menu__item{
-    flex:1;
-    position:relative;
-    overflow:hidden;
-    text-align:center;
-    border-top:1px solid;
-  }
-  .menu__item:first-child{ border-top:none; }
-  .menu__item-link{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    height:100%;
-    position:relative;
-    cursor:pointer;
-    text-transform:uppercase;
-    text-decoration:none;
-    white-space:nowrap;
-    font-weight:600;
-    font-size: clamp(1.3rem, 4vh, 2.6rem);
-    letter-spacing: var(--tracking-tight);
-  }
-  .menu__item-link:hover{ color:inherit; }
-  .menu__item-link:focus:not(:focus-visible){ color:inherit; }
 
-  .marquee{
-    position:absolute;
-    top:0; left:0;
-    overflow:hidden;
-    width:100%; height:100%;
-    pointer-events:none;
-    transform: translate3d(0, 101%, 0);
+  .specialties-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: calc(var(--spacing) * 10);
   }
-  .marquee__inner-wrap{ height:100%; width:100%; overflow:hidden; }
-  .marquee__inner{
-    display:flex;
-    align-items:center;
-    position:relative;
-    height:100%;
-    width:fit-content;
-    will-change:transform;
+
+  .specialty-row {
+    display: flex;
+    flex-direction: column;
   }
-  .marquee__part{ display:flex; align-items:center; flex-shrink:0; }
-  .marquee span{
-    white-space:nowrap;
-    text-transform:uppercase;
-    font-weight:400;
-    font-size: clamp(1.3rem, 4vh, 2.6rem);
-    line-height:1;
-    padding: 0 1vw;
-    letter-spacing: var(--tracking-tight);
+
+  .specialty-link,
+  .specialty-toggle {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: clamp(1.35rem, 4.6vw, 1.7rem);
+    letter-spacing: var(--tracking-normal);
+    color: #171717;
+    text-decoration: none;
+    cursor: pointer;
+    padding: .85rem calc(var(--spacing) * 9);
+    transition: background .3s var(--ease-soft);
   }
-  .marquee__img{
-    width:200px;
-    height:7vh;
-    margin: 2em 2vw;
-    padding: 1em 0;
-    border-radius:50px;
-    background-size:cover;
-    background-position:50% 50%;
+
+  .specialty-link:hover,
+  .specialty-toggle:hover {
+    background: #f1f1ef;
   }
-  @media(max-width: 900px){
-    .menu__item-link, .marquee span{ font-size: clamp(1.05rem, 3.2vh, 1.7rem); }
-    .marquee__img{ width:130px; }
+
+  .specialty-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s var(--ease-soft);
+  }
+
+  .specialty-row.is-open .specialty-submenu {
+    max-height: 4rem;
+  }
+
+  .specialty-sublink {
+    display: block;
+    font-size: 1rem;
+    color: #171717;
+    opacity: .65;
+    text-decoration: none;
+    padding: .6rem calc(var(--spacing) * 9) .6rem calc(var(--spacing) * 15);
+    transition: background .3s var(--ease-soft), opacity .3s var(--ease-soft);
+  }
+
+  .specialty-sublink:hover {
+    background: #f1f1ef;
+    opacity: 1;
+  }
+
+  .specialties-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    padding: 1.5rem calc(var(--spacing) * 9) 1.85rem;
+    border-top: 1px solid #ececea;
+  }
+
+  .specialties-social,
+  .specialties-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: var(--text-sm);
+    color: #171717;
+    text-decoration: none;
+    transition: opacity .3s var(--ease-soft);
+  }
+
+  .specialties-phone span {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .specialties-social:hover,
+  .specialties-phone:hover {
+    opacity: .6;
+  }
+
+  @media (max-width: 480px) {
+    .specialties-header {
+      padding: 1.5rem calc(var(--spacing) * 7) 1.25rem;
+    }
+
+    .specialty-link,
+    .specialty-toggle {
+      padding: .8rem calc(var(--spacing) * 7);
+    }
+
+    .specialty-sublink {
+      padding-left: calc(var(--spacing) * 13);
+    }
+
+    .specialties-footer {
+      padding: 1.25rem calc(var(--spacing) * 7) 1.5rem;
+    }
   }
 
 
@@ -511,21 +588,21 @@
     .contact-hero{ padding-top: 8rem; }
     .glass-circle{ width: 5.75rem; height: 5.75rem; }
     .glass-circle svg{ transform: scale(.85); }
-    .contact-buttons{ gap: 2.5rem 1.85rem; }
     .contact-btn-label{ font-size: .68rem; max-width: 7.5rem; }
-  }
-  @media(max-width: 460px){
     .contact-buttons{
       display: grid;
       grid-template-columns: repeat(2, auto);
       justify-content: center;
       align-items: start;
-      gap: 2.25rem 1.65rem;
+      gap: 2.5rem 1.85rem;
     }
     .contact-btn-item:last-child{
       grid-column: 1 / -1;
       justify-self: center;
     }
+  }
+  @media(max-width: 460px){
+    .contact-buttons{ gap: 2.25rem 1.65rem; }
   }
 
   /* ---------- ENCUESTA MINIMALISTA (paso 1: categoría · paso 2: subtema) ---------- */
@@ -656,96 +733,122 @@
     padding-inline: calc(var(--spacing) * 10);
   }
 
-  .site-footer{
+  .site-footer {
     position: relative;
+    background: linear-gradient(180deg, #061710 0%, #030d09 45%, #000 100%);
     overflow: hidden;
-    background: #000;
-    padding-top: clamp(5rem, 9vw, 8rem);
-    padding-bottom: calc(var(--spacing) * 10);
-    border-top: 1px solid rgba(255,255,255,.1);
+    isolation: isolate;
+    padding-block: calc(var(--spacing) * 26) calc(var(--spacing) * 8);
   }
 
-  .footer-aurora{
-    position: absolute;
-    inset: -15% -10% auto -10%;
-    height: 55%;
-    background:
-      radial-gradient(50% 50% at 25% 10%, rgba(255,255,255,.09) 0%, rgba(255,255,255,0) 70%),
-      radial-gradient(45% 45% at 78% 0%, rgba(255,255,255,.06) 0%, rgba(255,255,255,0) 70%);
-    filter: blur(50px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .footer-grid-bg{
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
-    background-size: 64px 64px;
-    -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 25%, #000 40%, transparent 100%);
-    mask-image: radial-gradient(ellipse 75% 55% at 50% 25%, #000 40%, transparent 100%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .footer-giant-text{
+  .footer-aurora {
     position: absolute;
     left: 50%;
-    bottom: -3vw;
-    transform: translateX(-50%);
-    font-size: clamp(3.5rem, 13.5vw, 12.5rem);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--tracking-tight);
-    text-transform: uppercase;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,.09);
-    white-space: nowrap;
-    pointer-events: none;
+    top: 38%;
+    width: 78vw;
+    height: 52vh;
+    transform: translate(-50%, -50%) scale(1);
+    background: radial-gradient(circle at 50% 50%, rgba(52, 211, 153, .2) 0%, rgba(16, 163, 127, .12) 45%, transparent 72%);
+    border-radius: 50%;
+    filter: blur(70px);
     z-index: 0;
+    pointer-events: none;
+    animation: footer-breathe 9s ease-in-out infinite alternate;
+  }
+
+  @keyframes footer-breathe {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: .55;
+    }
+
+    100% {
+      transform: translate(-50%, -50%) scale(1.14);
+      opacity: .9;
+    }
+  }
+
+  .footer-grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: 60px 60px;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, .045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, .045) 1px, transparent 1px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+    pointer-events: none;
+  }
+
+  .footer-giant-text {
+    position: absolute;
+    left: 50%;
+    bottom: -3.2vw;
+    transform: translateX(-50%);
+    font-size: 11vw;
+    line-height: .8;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, .07);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .1) 0%, transparent 65%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    z-index: 0;
+    pointer-events: none;
     user-select: none;
   }
 
-  .footer-marquee{
+  .footer-marquee {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    width: 100%;
     overflow: hidden;
-    border-top: 1px solid rgba(255,255,255,.1);
-    border-bottom: 1px solid rgba(255,255,255,.1);
-    padding: 1.1rem 0;
-    margin-bottom: calc(var(--spacing) * 14);
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    padding-block: .9rem;
+    margin-bottom: calc(var(--spacing) * 16);
+    background: rgba(255, 255, 255, .02);
+    transform: rotate(-1deg) scale(1.03);
   }
-  .footer-marquee-track{
+
+  .footer-marquee-track {
     display: flex;
     width: max-content;
-    animation: footerMarquee 28s linear infinite;
+    animation: footer-marquee 34s linear infinite;
   }
-  .footer-marquee-group{
+
+  .footer-marquee-group {
     display: flex;
     align-items: center;
+    gap: 2.5rem;
+    padding-inline: 1.25rem;
     flex-shrink: 0;
-    gap: 1.5rem;
-    padding-right: 1.5rem;
   }
-  .footer-marquee-group span{
-    font-size: clamp(1rem, 2vw, 1.35rem);
-    letter-spacing: var(--tracking-tight);
+
+  .footer-marquee-group span {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
     color: var(--color-light-font);
     opacity: .55;
     white-space: nowrap;
   }
-  .footer-marquee-group .dot{
+
+  .footer-marquee-group .dot {
     opacity: .35;
-    font-size: 1rem;
   }
-  @keyframes footerMarquee{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .footer-marquee-track{ animation: none; }
+
+  @keyframes footer-marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   .footer-inner {
@@ -831,7 +934,7 @@
     text-decoration: none;
   }
 
-  /* pastilla de cristal (glass pill) reutilizable, con efecto iman via JS */
+  /* pastilla de cristal (glass pill) reutilizable, con efecto iman via JS (GSAP) */
   .footer-pill {
     display: inline-flex;
     align-items: center;
@@ -846,7 +949,7 @@
     text-decoration: none;
     color: var(--color-light-font);
     width: fit-content;
-    transition: background .4s var(--ease-soft), border-color .4s var(--ease-soft), color .3s var(--ease-soft), transform .3s var(--ease-soft);
+    transition: background .4s var(--ease-soft), border-color .4s var(--ease-soft), color .3s var(--ease-soft);
     cursor: pointer;
   }
 
@@ -986,13 +1089,19 @@
     opacity: .75;
   }
 
+  @media(max-width: 900px){
+    .footer-locations{ grid-template-columns: 1fr 1fr; }
+    .footer-treatments{ grid-column: 1 / -1; }
+  }
   @media(max-width: 780px){
     .footer-locations{ grid-template-columns: 1fr; gap: 2.5rem; }
-    .footer-giant-text{ display: none; }
   }
   @media(max-width: 640px){
     .footer-bottom{ flex-direction: column; align-items: flex-start; }
     .footer-bottom-extra{ flex-direction: column; align-items: flex-start; }
+  }
+  @media(max-width: 560px){
+    .footer-giant-text{ font-size: 18vw; }
   }
 </style>
 </head>
@@ -1012,7 +1121,7 @@
 </svg>
 
 <nav class="topnav" id="topnav">
-  <a class="topnav-logo-link" href="index.html" aria-label="Ir al inicio — Medical Linares">
+  <a class="topnav-logo-link" href="index.html" aria-label="Ir al inicio — Medical Linares" title="Bienvenido a Medical Linares">
     <img src="./img/medicalinareslogo.png" alt="Medical Linares" class="topnav-logo" id="topnavLogo">
   </a>
   <div class="topnav-actions" id="topnavActions">
@@ -1038,14 +1147,82 @@
   </button>
 </nav>
 
-<div class="flowing-menu-overlay" id="flowingMenuOverlay" aria-hidden="true">
-  <button class="flowing-menu-close" id="flowingMenuClose" type="button" aria-label="Cerrar menú">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-  </button>
-  <div class="menu-wrap">
-    <nav class="menu" id="flowingMenu" aria-label="Especialidades"></nav>
+<div class="specialties-overlay" id="specialtiesOverlay" aria-hidden="true"></div>
+<aside class="specialties-panel" id="specialtiesPanel" aria-hidden="true" aria-label="Especialidades">
+  <div class="specialties-header">
+    <span class="specialties-eyebrow">Especialidades</span>
+    <button class="specialties-close" id="specialtiesClose" type="button" aria-label="Cerrar menú de especialidades">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1L13 13M13 1L1 13" stroke="#171717" stroke-width="1.4" stroke-linecap="round" />
+      </svg>
+    </button>
   </div>
-</div>
+
+  <nav class="specialties-body" aria-label="Lista de especialidades">
+    <div class="specialty-row">
+      <a class="specialty-link" href="injerto-capilar.html">Injerto Capilar</a>
+    </div>
+
+    <div class="specialty-row has-sub">
+      <button class="specialty-link specialty-toggle" type="button" aria-expanded="false">Cirugía Estética</button>
+      <div class="specialty-submenu">
+        <a class="specialty-sublink" href="lipolaser.html">Lipoláser</a>
+      </div>
+    </div>
+
+    <div class="specialty-row">
+      <a class="specialty-link" href="medicina-estetica.html">Medicina Estética</a>
+    </div>
+
+    <div class="specialty-row">
+      <a class="specialty-link" href="dermatologia.html">Dermatología</a>
+    </div>
+
+    <div class="specialty-row has-sub">
+      <button class="specialty-link specialty-toggle" type="button" aria-expanded="false">Tratamientos Faciales
+        &amp; Corporales</button>
+      <div class="specialty-submenu">
+        <a class="specialty-sublink" href="ttos-faciales-y-corporales.html">Faciales y Corporales</a>
+      </div>
+    </div>
+
+    <div class="specialty-row has-sub">
+      <button class="specialty-link specialty-toggle" type="button" aria-expanded="false">Vascular</button>
+      <div class="specialty-submenu">
+        <a class="specialty-sublink" href="vascular.html">Vascular</a>
+      </div>
+    </div>
+
+    <div class="specialty-row has-sub">
+      <button class="specialty-link specialty-toggle" type="button" aria-expanded="false">Láser</button>
+      <div class="specialty-submenu">
+        <a class="specialty-sublink" href="laser.html">Láser</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="specialties-footer">
+    <a class="specialties-social" href="https://www.instagram.com/medical_linares/?hl=es" target="_blank"
+      rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+      <span>Medical_linares</span>
+    </a>
+    <a class="specialties-phone" href="tel:+34645036752">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z">
+        </path>
+      </svg>
+      <span>645 03 67 52</span>
+    </a>
+  </div>
+</aside>
 
 <!-- Fondo animado Color Bends -->
 <div class="colorbends-bg" id="colorBendsBg" aria-hidden="true"></div>
@@ -1053,7 +1230,7 @@
 
 <main class="contact-hero">
   <p class="contact-eyebrow">Estamos en contacto</p>
-  <h1 class="contact-title">Elige cómo prefieres hablar con nosotros</h1>
+  <h1 class="contact-title">Elige cómo prefieres <br> hablar con nosotros</h1>
 
   <div class="contact-buttons">
 
@@ -1238,7 +1415,10 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
+gsap.registerPlugin(ScrollTrigger);
+
 // Menu: linea blanca que se forma de izquierda a derecha al seleccionar una opcion
 document.querySelectorAll('.nav-link').forEach((link) => {
   if (link.id === 'navEspecialidades') return; // este abre el desplegable, no cambia de pagina
@@ -1282,169 +1462,64 @@ document.querySelectorAll('.nav-link').forEach((link) => {
   });
 })();
 
-// ---------- FLOWING MENU: desplegable de "Especialidades" con todos los servicios ----------
-(function initFlowingMenu(){
-  const overlay = document.getElementById('flowingMenuOverlay');
-  const menuEl = document.getElementById('flowingMenu');
+// ---------- ESPECIALIDADES: panel lateral off-canvas ----------
+(function initSpecialtiesPanel(){
+  const overlay = document.getElementById('specialtiesOverlay');
+  const panel = document.getElementById('specialtiesPanel');
+  const closeBtn = document.getElementById('specialtiesClose');
   const trigger = document.getElementById('navEspecialidades');
-  const closeBtn = document.getElementById('flowingMenuClose');
-  if (!overlay || !menuEl || !trigger || typeof gsap === 'undefined') return;
+  if (!overlay || !panel || !trigger) return;
 
-  const SPEED = 15;
-  const BORDER_COLOR = '#ffffff';
-  const TEXT_COLOR = '#ffffff';
-  const MARQUEE_BG = '#ffffff';
-  const MARQUEE_TEXT = '#120F17';
-
-  const SERVICES_NAV = [
-    { link: 'injerto-capilar.html', text: 'Injerto Capilar', image: './img/services/injerto-capilar.webp' },
-    { link: 'lipolaser.html', text: 'Lipoláser', image: './img/lipolaser.webp' },
-    { link: 'medicina-estetica.html', text: 'Medicina Estética', image: './img/medicina-estetica.webp' },
-    { link: 'dermatologia.html', text: 'Dermatología', image: './img/dermatologia.webp' },
-    { link: 'ttos-faciales-y-corporales.html', text: 'Tratamientos Faciales y Corporales', image: './img/laser.webp' },
-    { link: 'vascular.html', text: 'Vascular', image: './img/vascular.webp' },
-    { link: 'laser.html', text: 'Láser', image: './img/laserlaser.webp' }
-  ];
-
-  const distMetric = (x, y, x2, y2) => {
-    const dx = x - x2, dy = y - y2;
-    return dx * dx + dy * dy;
-  };
-  const findClosestEdge = (mouseX, mouseY, width, height) => {
-    const topDist = distMetric(mouseX, mouseY, width / 2, 0);
-    const bottomDist = distMetric(mouseX, mouseY, width / 2, height);
-    return topDist < bottomDist ? 'top' : 'bottom';
-  };
-  const animationDefaults = { duration: 0.6, ease: 'expo' };
-
-  const refreshers = [];
-
-  SERVICES_NAV.forEach((item) => {
-    const itemEl = document.createElement('div');
-    itemEl.className = 'menu__item';
-    itemEl.style.borderColor = BORDER_COLOR;
-
-    const linkEl = document.createElement('a');
-    linkEl.className = 'menu__item-link';
-    linkEl.href = item.link;
-    linkEl.style.color = TEXT_COLOR;
-    linkEl.textContent = item.text;
-
-    const marquee = document.createElement('div');
-    marquee.className = 'marquee';
-    marquee.style.backgroundColor = MARQUEE_BG;
-
-    const marqueeInnerWrap = document.createElement('div');
-    marqueeInnerWrap.className = 'marquee__inner-wrap';
-
-    const marqueeInner = document.createElement('div');
-    marqueeInner.className = 'marquee__inner';
-    marqueeInner.setAttribute('aria-hidden', 'true');
-
-    function renderParts(count){
-      marqueeInner.innerHTML = '';
-      for (let i = 0; i < count; i++){
-        const part = document.createElement('div');
-        part.className = 'marquee__part';
-        part.style.color = MARQUEE_TEXT;
-
-        const span = document.createElement('span');
-        span.textContent = item.text;
-
-        const img = document.createElement('div');
-        img.className = 'marquee__img';
-        img.style.backgroundImage = 'url(' + item.image + ')';
-
-        part.appendChild(span);
-        part.appendChild(img);
-        marqueeInner.appendChild(part);
-      }
-    }
-    renderParts(4);
-
-    marqueeInnerWrap.appendChild(marqueeInner);
-    marquee.appendChild(marqueeInnerWrap);
-    itemEl.appendChild(linkEl);
-    itemEl.appendChild(marquee);
-    menuEl.appendChild(itemEl);
-
-    let marqueeAnim = null;
-
-    function calcRepetitions(){
-      const part = marqueeInner.querySelector('.marquee__part');
-      if (!part) return;
-      const contentWidth = part.offsetWidth;
-      if (!contentWidth) return;
-      const needed = Math.ceil(window.innerWidth / contentWidth) + 2;
-      const reps = Math.max(4, needed);
-      if (reps !== marqueeInner.children.length) renderParts(reps);
-    }
-
-    function setupMarqueeLoop(){
-      const part = marqueeInner.querySelector('.marquee__part');
-      if (!part) return;
-      const contentWidth = part.offsetWidth;
-      if (!contentWidth) return;
-      if (marqueeAnim) marqueeAnim.kill();
-      gsap.set(marqueeInner, { x: 0 });
-      marqueeAnim = gsap.to(marqueeInner, { x: -contentWidth, duration: SPEED, ease: 'none', repeat: -1 });
-    }
-
-    function refresh(){
-      calcRepetitions();
-      setTimeout(setupMarqueeLoop, 50);
-    }
-    refreshers.push(refresh);
-
-    linkEl.addEventListener('mouseenter', (ev) => {
-      const rect = itemEl.getBoundingClientRect();
-      const x = ev.clientX - rect.left;
-      const y = ev.clientY - rect.top;
-      const edge = findClosestEdge(x, y, rect.width, rect.height);
-      gsap.timeline({ defaults: animationDefaults })
-        .set(marquee, { y: edge === 'top' ? '-101%' : '101%' }, 0)
-        .set(marqueeInner, { y: edge === 'top' ? '101%' : '-101%' }, 0)
-        .to([marquee, marqueeInner], { y: '0%' }, 0);
+  function resetAccordion(){
+    panel.querySelectorAll('.specialty-row.is-open').forEach((row) => {
+      row.classList.remove('is-open');
+      const toggle = row.querySelector('.specialty-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
     });
-
-    linkEl.addEventListener('mouseleave', (ev) => {
-      const rect = itemEl.getBoundingClientRect();
-      const x = ev.clientX - rect.left;
-      const y = ev.clientY - rect.top;
-      const edge = findClosestEdge(x, y, rect.width, rect.height);
-      gsap.timeline({ defaults: animationDefaults })
-        .to(marquee, { y: edge === 'top' ? '-101%' : '101%' }, 0)
-        .to(marqueeInner, { y: edge === 'top' ? '101%' : '-101%' }, 0);
-    });
-  });
-
-  function refreshAll(){ refreshers.forEach((fn) => fn()); }
-
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(refreshAll, 150);
-  });
-
-  function openMenu(){
-    overlay.classList.add('is-open');
-    overlay.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    setTimeout(refreshAll, 60);
   }
-  function closeMenu(){
+
+  function openPanel(ev){
+    if (ev) ev.preventDefault();
+    overlay.classList.add('is-open');
+    panel.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('specialties-open');
+  }
+
+  function closePanel(){
     overlay.classList.remove('is-open');
+    panel.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('specialties-open');
+    setTimeout(resetAccordion, 400);
   }
 
   trigger.addEventListener('click', (ev) => {
     ev.preventDefault();
-    overlay.classList.contains('is-open') ? closeMenu() : openMenu();
+    panel.classList.contains('is-open') ? closePanel() : openPanel();
   });
-  closeBtn.addEventListener('click', closeMenu);
+  closeBtn?.addEventListener('click', closePanel);
+  overlay.addEventListener('click', closePanel);
   document.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Escape' && overlay.classList.contains('is-open')) closeMenu();
+    if (ev.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
+  });
+
+  // Acordeon: los submenus se despliegan al hacer clic en el titulo de la categoria
+  panel.querySelectorAll('.specialty-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const row = btn.closest('.specialty-row');
+      if (!row) return;
+      const willOpen = !row.classList.contains('is-open');
+      row.classList.toggle('is-open', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
+
+  // Cerrar el panel al navegar a un enlace real
+  panel.querySelectorAll('a.specialty-link, a.specialty-sublink').forEach((link) => {
+    link.addEventListener('click', closePanel);
   });
 })();
 
@@ -1850,26 +1925,44 @@ void main() {
   });
 })();
 
-// ---------- FOOTER: volver arriba + efecto imán en las pastillas ----------
-(function initFooter(){
-  const topBtn = document.getElementById('footerTopBtn');
-  if (topBtn) {
-    topBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+// ---------- FOOTER CINEMATOGRÁFICO: volver arriba + efecto imán (GSAP) + reveal al hacer scroll ----------
+(function initCinematicFooter(){
+  if (typeof gsap === 'undefined') return;
+
+  // Efecto iman en las pastillas de cristal (tel, legal, "todos", volver arriba)
+  document.querySelectorAll('.footer-pill').forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      gsap.to(el, { x: x * 0.3, y: y * 0.3, duration: 0.4, ease: 'power2.out' });
+    });
+    el.addEventListener('mouseleave', () => {
+      gsap.to(el, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, 0.3)' });
+    });
+  });
+
+  // Texto gigante de fondo: entra con sensacion de profundidad al hacer scroll
+  const giant = document.getElementById('footerGiantText');
+  if (giant) {
+    gsap.fromTo(giant, { y: '8vh', opacity: 0 }, {
+      y: '0vh', opacity: 1, ease: 'power1.out',
+      scrollTrigger: { trigger: '#site-footer', start: 'top 85%', end: 'top 25%', scrub: 1 }
     });
   }
 
-  const pills = document.querySelectorAll('.footer-pill');
-  pills.forEach((pill) => {
-    pill.addEventListener('mousemove', (e) => {
-      const rect = pill.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      pill.style.transform = 'translate(' + (x * 0.18) + 'px, ' + (y * 0.35) + 'px)';
+  // Contenido del footer: aparece de forma escalonada
+  const footerInner = document.getElementById('footerInner');
+  if (footerInner) {
+    gsap.fromTo([footerInner.querySelector('.footer-title'), footerInner.querySelector('.footer-locations')], { y: 40, opacity: 0 }, {
+      y: 0, opacity: 1, stagger: 0.15, ease: 'power3.out',
+      scrollTrigger: { trigger: '#site-footer', start: 'top 70%', end: 'top 25%', scrub: 1 }
     });
-    pill.addEventListener('mouseleave', () => {
-      pill.style.transform = '';
-    });
+  }
+
+  // Volver arriba
+  document.getElementById('footerTopBtn')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 })();
 </script>
